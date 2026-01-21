@@ -1,24 +1,1297 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Ethan Fellows</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    body {
-      font-family: system-ui, sans-serif;
-      max-width: 720px;
-      margin: 4rem auto;
-      line-height: 1.6;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ethan Leigh-Fellows | Product Manager</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=SF+Pro+Display:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', 'Segoe UI', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            background: #000;
+        }
+
+        /* Preloader */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0a0a;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
+        }
+
+        #preloader.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 3px solid #333;
+            border-top: 3px solid #007AFF;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .loader-text {
+            color: #007AFF;
+            margin-top: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+            font-size: 14px;
+            font-weight: 300;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Video Background */
+        #bg-video {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            z-index: -2;
+            object-fit: cover;
+        }
+
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.3);
+            z-index: -1;
+        }
+
+        /* Desktop Environment */
+        .desktop {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* macOS Menu Bar */
+        .menu-bar {
+            background: rgba(30, 30, 30, 0.8);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            padding: 8px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
+            font-size: 14px;
+            height: 32px;
+        }
+
+        .menu-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .apple-logo {
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            opacity: 0.9;
+        }
+
+        .menu-items {
+            display: flex;
+            gap: 20px;
+            color: #fff;
+            font-weight: 400;
+            font-size: 13px;
+        }
+
+        .menu-items span {
+            cursor: pointer;
+            opacity: 0.85;
+            transition: opacity 0.2s;
+        }
+
+        .menu-items span:hover {
+            opacity: 1;
+        }
+
+        .language-switcher {
+            display: flex;
+            gap: 10px;
+            margin-left: 15px;
+        }
+
+        .lang-btn {
+            padding: 3px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .lang-btn:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .lang-btn.active {
+            color: #007AFF;
+            border-color: #007AFF;
+            background: rgba(0, 122, 255, 0.1);
+        }
+
+        .menu-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: #fff;
+            font-size: 12px;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background: #30d158;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Name Display */
+        .name-display {
+            position: absolute;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .name-main {
+            font-size: 72px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #007AFF 0%, #00D4FF 50%, #0A84FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 4px 20px rgba(0, 122, 255, 0.3);
+            letter-spacing: -2px;
+            line-height: 1;
+            margin-bottom: 10px;
+            animation: fadeInDown 1s ease-out;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', sans-serif;
+        }
+
+        .name-subtitle {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.85);
+            font-weight: 400;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Desktop Icons */
+        .desktop-icons {
+            position: absolute;
+            top: 60px;
+            right: 30px;
+            display: grid;
+            grid-template-columns: repeat(2, 80px);
+            gap: 20px;
+            z-index: 1;
+        }
+
+        .desktop-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 80px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 10px;
+            background: transparent;
+            transition: all 0.2s ease;
+        }
+
+        .desktop-icon:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .desktop-icon.selected {
+            background: rgba(0, 122, 255, 0.25);
+        }
+
+        .icon-image {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 6px;
+            font-size: 36px;
+            backdrop-filter: blur(10px);
+            border: 0.5px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .desktop-icon:hover .icon-image {
+            transform: scale(1.08) translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 30px rgba(255, 255, 255, 0.15);
+        }
+
+        .desktop-icon:active .icon-image {
+            transform: scale(0.95);
+        }
+
+        .icon-image.linkedin {
+            background: linear-gradient(135deg, #0077b5 0%, #00a0dc 50%, #0077b5 100%);
+            border: 1px solid rgba(0, 160, 220, 0.5);
+            box-shadow: 0 4px 20px rgba(0, 119, 181, 0.4);
+        }
+
+        .icon-image.linkedin i {
+            color: #fff;
+        }
+
+        .icon-image.github {
+            background: linear-gradient(135deg, #6e5494 0%, #8b5cf6 50%, #6e5494 100%);
+            border: 1px solid rgba(139, 92, 246, 0.5);
+            box-shadow: 0 4px 20px rgba(110, 84, 148, 0.4);
+        }
+
+        .icon-image.github i {
+            color: #fff;
+        }
+
+        .icon-image.contact {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #f093fb 100%);
+            border: 1px solid rgba(245, 87, 108, 0.5);
+            box-shadow: 0 4px 20px rgba(240, 147, 251, 0.4);
+        }
+
+        .icon-image.contact i {
+            color: #fff;
+        }
+
+        .icon-image.terminal {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 50%, #4facfe 100%);
+            border: 1px solid rgba(0, 242, 254, 0.5);
+            box-shadow: 0 4px 20px rgba(79, 172, 254, 0.4);
+        }
+
+        .icon-image.terminal i {
+            color: #fff;
+        }
+
+        .icon-image.music {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 50%, #fa709a 100%);
+            border: 1px solid rgba(254, 225, 64, 0.5);
+            box-shadow: 0 4px 20px rgba(250, 112, 154, 0.4);
+        }
+
+        .icon-image.music i {
+            color: #fff;
+        }
+
+        .icon-image.hacker {
+            background: linear-gradient(135deg, #30cfd0 0%, #330867 50%, #30cfd0 100%);
+            border: 1px solid rgba(48, 207, 208, 0.5);
+            box-shadow: 0 4px 20px rgba(48, 207, 208, 0.4);
+        }
+
+        .icon-image.hacker i {
+            color: #fff;
+        }
+
+        .icon-label {
+            color: #fff;
+            font-size: 12px;
+            text-align: center;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+            user-select: none;
+            font-weight: 400;
+        }
+
+        /* Main Content Area */
+        .content-area {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Window Base Styles */
+        .window {
+            position: absolute;
+            background: rgba(28, 28, 30, 0.85);
+            backdrop-filter: blur(40px) saturate(180%);
+            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            border-radius: 12px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            border: 0.5px solid rgba(255, 255, 255, 0.15);
+            z-index: 10;
+        }
+
+        .window.active {
+            display: flex;
+            animation: windowAppear 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .window.dragging {
+            cursor: move;
+            user-select: none;
+        }
+
+        @keyframes windowAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.85);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .window-header {
+            background: rgba(50, 50, 52, 0.95);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
+            cursor: move;
+            user-select: none;
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .window-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .window-btn:hover {
+            filter: brightness(1.15);
+        }
+
+        .window-btn.close { background: #ff5f57; }
+        .window-btn.minimize { background: #febc2e; }
+        .window-btn.maximize { background: #28c840; }
+
+        .window-title {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 13px;
+            margin-left: 10px;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+            font-weight: 400;
+        }
+
+        .window-body {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            background: rgba(18, 18, 20, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: #fff;
+        }
+
+        .window-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .window-body::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .window-body::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+
+        /* Terminal Window */
+        #terminal {
+            width: 650px;
+            height: 450px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #terminal .window-body {
+            font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+            color: #30d158;
+            padding: 20px;
+        }
+
+        .terminal-line {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        .prompt {
+            color: #007AFF;
+            font-weight: 600;
+        }
+
+        .command {
+            color: #30d158;
+        }
+
+        .repo-list {
+            margin-top: 20px;
+        }
+
+        .repo-item {
+            background: rgba(48, 209, 88, 0.05);
+            border-left: 2px solid #30d158;
+            padding: 14px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-radius: 6px;
+        }
+
+        .repo-item:hover {
+            background: rgba(48, 209, 88, 0.12);
+            transform: translateX(4px);
+            border-left-color: #007AFF;
+        }
+
+        .repo-name {
+            color: #007AFF;
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .repo-description {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .repo-meta {
+            display: flex;
+            gap: 12px;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.4);
+            flex-wrap: wrap;
+        }
+
+        .repo-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .language-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        /* Contact Window */
+        #contact {
+            width: 450px;
+            height: 350px;
+            top: 20%;
+            right: 15%;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(0, 122, 255, 0.1);
+            border-radius: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .contact-item:hover {
+            background: rgba(0, 122, 255, 0.2);
+            transform: translateX(5px);
+        }
+
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 122, 255, 0.3);
+            border-radius: 10px;
+            font-size: 20px;
+            color: #007AFF;
+        }
+
+        .contact-text {
+            flex: 1;
+        }
+
+        .contact-label {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .contact-value {
+            font-size: 15px;
+            color: #fff;
+            margin-top: 3px;
+        }
+
+        .contact-value a {
+            color: #007AFF;
+            text-decoration: none;
+        }
+
+        /* Music Window */
+        #music {
+            width: 400px;
+            height: 240px;
+            top: 15%;
+            left: 15%;
+        }
+
+        #music .window-body {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        #music iframe {
+            width: 100%;
+            border: none;
+            border-radius: 12px;
+        }
+
+        /* Hacker Window */
+        #hacker {
+            width: 700px;
+            height: 500px;
+            top: 20%;
+            left: 25%;
+            background: rgba(0, 0, 0, 0.95);
+            border: 2px solid #00ff41;
+            box-shadow: 0 0 30px rgba(0, 255, 65, 0.3);
+        }
+
+        #hacker .window-header {
+            background: rgba(0, 20, 0, 0.95);
+            border-bottom: 1px solid #00ff41;
+        }
+
+        #hacker .window-body {
+            font-family: 'Courier New', monospace;
+            color: #00ff41;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.95);
+            text-shadow: 0 0 5px rgba(0, 255, 65, 0.5);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hacker-ascii {
+            font-size: 11px;
+            line-height: 1.2;
+            white-space: pre;
+            text-align: center;
+            margin: 30px 0;
+            animation: glitch 3s infinite;
+        }
+
+        @keyframes glitch {
+            0%, 90%, 100% {
+                opacity: 1;
+                text-shadow: 0 0 5px rgba(0, 255, 65, 0.5);
+            }
+            91%, 93%, 95%, 97% {
+                opacity: 0.8;
+                text-shadow: 2px 0 5px rgba(0, 255, 65, 0.8), -2px 0 5px rgba(255, 0, 0, 0.5);
+            }
+        }
+
+        .hacker-text {
+            font-size: 14px;
+            margin: 8px 0;
+            opacity: 0;
+            animation: typeIn 0.5s forwards;
+            text-align: center;
+        }
+
+        @keyframes typeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .hacker-text:nth-child(1) { animation-delay: 0.5s; }
+        .hacker-text:nth-child(2) { animation-delay: 1s; }
+        .hacker-text:nth-child(3) { animation-delay: 1.5s; }
+        .hacker-text:nth-child(4) { animation-delay: 4s; }
+        .hacker-text:nth-child(5) { animation-delay: 4.5s; }
+        .hacker-text:nth-child(6) { animation-delay: 5s; }
+
+        .cursor-blink {
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .menu-items {
+                display: none;
+            }
+
+            .name-main {
+                font-size: 48px;
+            }
+
+            .name-subtitle {
+                font-size: 14px;
+            }
+
+            .desktop-icons {
+                grid-template-columns: repeat(3, 70px);
+                gap: 15px;
+                right: 50%;
+                transform: translateX(50%);
+                top: auto;
+                bottom: 20px;
+            }
+
+            .window {
+                width: 95vw !important;
+                height: 80vh !important;
+                top: 10% !important;
+                left: 2.5% !important;
+                transform: none !important;
+            }
+
+            .hacker-ascii {
+                font-size: 8px;
+            }
+        }
+
+        .loading-repos {
+            color: rgba(255, 255, 255, 0.5);
+            font-style: italic;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
 </head>
 <body>
-  <h1>Hi, I’m Ethan</h1>
-  <p>This is my GitHub Pages landing page.</p>
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader"></div>
+        <div class="loader-text" data-i18n="loading">Initializing system...</div>
+    </div>
 
-  <ul>
-    <li><a href="https://github.com/ethanleighfellows">GitHub</a></li>
-  </ul>
+    <!-- Background Video -->
+    <video id="bg-video" autoplay muted loop playsinline>
+        <source src="background.mp4" type="video/mp4">
+    </video>
+    <div class="video-overlay"></div>
+
+    <!-- Desktop Environment -->
+    <div class="desktop">
+        <!-- macOS Menu Bar -->
+        <div class="menu-bar">
+            <div class="menu-left">
+                <div class="apple-logo"></div>
+                <div class="menu-items">
+                    <span data-i18n="menu.finder">Finder</span>
+                    <span data-i18n="menu.file">File</span>
+                    <span data-i18n="menu.edit">Edit</span>
+                    <span data-i18n="menu.view">View</span>
+                </div>
+                <div class="language-switcher">
+                    <div class="lang-btn active" data-lang="en">EN</div>
+                    <div class="lang-btn" data-lang="fr">FR</div>
+                    <div class="lang-btn" data-lang="ru">RU</div>
+                </div>
+            </div>
+            <div class="menu-right">
+                <div class="status-indicator">
+                    <div class="status-dot"></div>
+                    <span data-i18n="status">Online</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Name Display -->
+        <div class="name-display">
+            <div class="name-main">Ethan Leigh-Fellows</div>
+            <div class="name-subtitle" data-i18n="subtitle">San Francisco | 23 y/o | Product</div>
+        </div>
+
+        <!-- Desktop Icons -->
+        <div class="desktop-icons">
+            <div class="desktop-icon" data-app="terminal">
+                <div class="icon-image terminal">
+                    <i class="fas fa-terminal"></i>
+                </div>
+                <div class="icon-label" data-i18n="icon.projects">Projects</div>
+            </div>
+            <div class="desktop-icon" data-app="hacker">
+                <div class="icon-image hacker">
+                    <i class="fas fa-user-secret"></i>
+                </div>
+                <div class="icon-label" data-i18n="icon.access">Access</div>
+            </div>
+            <div class="desktop-icon" data-app="music">
+                <div class="icon-image music">
+                    <i class="fas fa-music"></i>
+                </div>
+                <div class="icon-label" data-i18n="icon.music">Music</div>
+            </div>
+            <div class="desktop-icon" data-app="contact">
+                <div class="icon-image contact">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="icon-label" data-i18n="icon.contact">Contact</div>
+            </div>
+            <div class="desktop-icon" data-app="linkedin">
+                <div class="icon-image linkedin">
+                    <i class="fab fa-linkedin"></i>
+                </div>
+                <div class="icon-label">LinkedIn</div>
+            </div>
+            <div class="desktop-icon" data-app="github">
+                <div class="icon-image github">
+                    <i class="fab fa-github"></i>
+                </div>
+                <div class="icon-label">GitHub</div>
+            </div>
+        </div>
+
+        <!-- Content Area -->
+        <div class="content-area">
+            <!-- Terminal Window -->
+            <div class="window active" id="terminal">
+                <div class="window-header">
+                    <div class="window-controls">
+                        <div class="window-btn close"></div>
+                        <div class="window-btn minimize"></div>
+                        <div class="window-btn maximize"></div>
+                    </div>
+                    <span class="window-title">ethan@localhost — zsh — 80×24</span>
+                </div>
+                <div class="window-body">
+                    <div class="terminal-line">
+                        <span class="prompt">ethan@localhost</span> <span style="color:#007AFF">~</span> % <span class="command">ls -la repositories/</span>
+                    </div>
+                    <div class="terminal-line" style="color: rgba(255, 255, 255, 0.5);">
+                        <span data-i18n="terminal.fetching">Fetching public repositories from GitHub...</span>
+                    </div>
+                    <div class="repo-list" id="repo-list">
+                        <div class="loading-repos" data-i18n="terminal.loading">Loading repositories...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hacker Window -->
+            <div class="window" id="hacker">
+                <div class="window-header">
+                    <div class="window-controls">
+                        <div class="window-btn close"></div>
+                        <div class="window-btn minimize"></div>
+                        <div class="window-btn maximize"></div>
+                    </div>
+                    <span class="window-title" style="color: #00ff41;" data-i18n="hacker.title">[SYSTEM ACCESS] — AUTHORIZED</span>
+                </div>
+                <div class="window-body">
+                    <div class="hacker-text" data-i18n="hacker.msg1">> Initiating connection...</div>
+                    <div class="hacker-text" data-i18n="hacker.msg2">> Establishing secure link...</div>
+                    <div class="hacker-text" data-i18n="hacker.msg3">> Access granted. Welcome, visitor.</div>
+                    <div class="hacker-ascii">
+██╗    ██╗███████╗██╗      ██████╗ ██████╗ ███╗   ███╗███████╗
+██║    ██║██╔════╝██║     ██╔════╝██╔═══██╗████╗ ████║██╔════╝
+██║ █╗ ██║█████╗  ██║     ██║     ██║   ██║██╔████╔██║█████╗  
+██║███╗██║██╔══╝  ██║     ██║     ██║   ██║██║╚██╔╝██║██╔══╝  
+╚███╔███╔╝███████╗███████╗╚██████╗╚██████╔╝██║ ╚═╝ ██║███████╗
+ ╚══╝╚══╝ ╚══════╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝
+
+████████╗ ██████╗     ███╗   ███╗██╗   ██╗                    
+╚══██╔══╝██╔═══██╗    ████╗ ████║╚██╗ ██╔╝                    
+   ██║   ██║   ██║    ██╔████╔██║ ╚████╔╝                     
+   ██║   ██║   ██║    ██║╚██╔╝██║  ╚██╔╝                      
+   ██║   ╚██████╔╝    ██║ ╚═╝ ██║   ██║                       
+   ╚═╝    ╚═════╝     ╚═╝     ╚═╝   ╚═╝                       
+
+ ██████╗ ██╗████████╗██╗  ██╗██╗   ██╗██████╗                 
+██╔════╝ ██║╚══██╔══╝██║  ██║██║   ██║██╔══██╗                
+██║  ███╗██║   ██║   ███████║██║   ██║██████╔╝                
+██║   ██║██║   ██║   ██╔══██║██║   ██║██╔══██╗                
+╚██████╔╝██║   ██║   ██║  ██║╚██████╔╝██████╔╝                
+ ╚═════╝ ╚═╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝ ╚═════╝                 
+                    </div>
+                    <div class="hacker-text" data-i18n="hacker.msg4">> Repository access enabled</div>
+                    <div class="hacker-text" data-i18n="hacker.msg5">> Decrypting file system...</div>
+                    <div class="hacker-text"><span data-i18n="hacker.msg6">> All systems operational</span> <span class="cursor-blink">█</span></div>
+                </div>
+            </div>
+
+            <!-- Music Window -->
+            <div class="window" id="music">
+                <div class="window-header">
+                    <div class="window-controls">
+                        <div class="window-btn close"></div>
+                        <div class="window-btn minimize"></div>
+                        <div class="window-btn maximize"></div>
+                    </div>
+                    <span class="window-title" data-i18n="music.title">Spotify — Now Playing</span>
+                </div>
+                <div class="window-body">
+                    <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/album/1HIFwmtC9ah3ujJhAhTL29?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                </div>
+            </div>
+
+            <!-- Contact Window -->
+            <div class="window" id="contact">
+                <div class="window-header">
+                    <div class="window-controls">
+                        <div class="window-btn close"></div>
+                        <div class="window-btn minimize"></div>
+                        <div class="window-btn maximize"></div>
+                    </div>
+                    <span class="window-title" data-i18n="contact.title">Get In Touch</span>
+                </div>
+                <div class="window-body">
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <div class="contact-icon"><i class="fab fa-linkedin"></i></div>
+                            <div class="contact-text">
+                                <div class="contact-label">LinkedIn</div>
+                                <div class="contact-value"><a href="https://www.linkedin.com/in/ethan-leigh-fellows/" target="_blank">ethan-leigh-fellows</a></div>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon"><i class="fab fa-github"></i></div>
+                            <div class="contact-text">
+                                <div class="contact-label">GitHub</div>
+                                <div class="contact-value"><a href="https://github.com/ethanleighfellows" target="_blank">@ethanleighfellows</a></div>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                            <div class="contact-text">
+                                <div class="contact-label" data-i18n="contact.location">Location</div>
+                                <div class="contact-value" data-i18n="contact.locationValue">San Francisco Bay Area</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Translations
+        const translations = {
+            en: {
+                loading: "Initializing system...",
+                menu: { finder: "Finder", file: "File", edit: "Edit", view: "View" },
+                status: "Online",
+                subtitle: "San Francisco | 23 y/o | Product",
+                icon: { projects: "Projects", access: "Access", music: "Music", contact: "Contact" },
+                terminal: { fetching: "Fetching public repositories from GitHub...", loading: "Loading repositories..." },
+                hacker: {
+                    title: "[SYSTEM ACCESS] — AUTHORIZED",
+                    msg1: "> Initiating connection...",
+                    msg2: "> Establishing secure link...",
+                    msg3: "> Access granted. Welcome, visitor.",
+                    msg4: "> Repository access enabled",
+                    msg5: "> Decrypting file system...",
+                    msg6: "> All systems operational"
+                },
+                music: { title: "Spotify — Now Playing" },
+                contact: { title: "Get In Touch", location: "Location", locationValue: "San Francisco Bay Area" }
+            },
+            fr: {
+                loading: "Initialisation du système...",
+                menu: { finder: "Finder", file: "Fichier", edit: "Éditer", view: "Affichage" },
+                status: "En ligne",
+                subtitle: "San Francisco | 23 ans | Product",
+                icon: { projects: "Projets", access: "Accès", music: "Musique", contact: "Contact" },
+                terminal: { fetching: "Récupération des dépôts publics depuis GitHub...", loading: "Chargement des dépôts..." },
+                hacker: {
+                    title: "[ACCÈS SYSTÈME] — AUTORISÉ",
+                    msg1: "> Initialisation de la connexion...",
+                    msg2: "> Établissement du lien sécurisé...",
+                    msg3: "> Accès accordé. Bienvenue, visiteur.",
+                    msg4: "> Accès au dépôt activé",
+                    msg5: "> Déchiffrement du système de fichiers...",
+                    msg6: "> Tous les systèmes opérationnels"
+                },
+                music: { title: "Spotify — En lecture" },
+                contact: { title: "Me Contacter", location: "Localisation", locationValue: "Région de San Francisco" }
+            },
+            ru: {
+                loading: "Инициализация системы...",
+                menu: { finder: "Finder", file: "Файл", edit: "Правка", view: "Вид" },
+                status: "В сети",
+                subtitle: "Сан-Франциско | 23 года | Продукт",
+                icon: { projects: "Проекты", access: "Доступ", music: "Музыка", contact: "Контакт" },
+                terminal: { fetching: "Получение публичных репозиториев с GitHub...", loading: "Загрузка репозиториев..." },
+                hacker: {
+                    title: "[ДОСТУП К СИСТЕМЕ] — АВТОРИЗОВАН",
+                    msg1: "> Инициализация соединения...",
+                    msg2: "> Установка защищённой связи...",
+                    msg3: "> Доступ предоставлен. Добро пожаловать, посетитель.",
+                    msg4: "> Доступ к репозиторию активирован",
+                    msg5: "> Расшифровка файловой системы...",
+                    msg6: "> Все системы функционируют"
+                },
+                music: { title: "Spotify — Сейчас играет" },
+                contact: { title: "Связаться", location: "Местоположение", locationValue: "Район Залива Сан-Франциско" }
+            }
+        };
+
+        let currentLang = 'en';
+
+        function updateTranslations(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                const keys = key.split('.');
+                let value = t;
+                for (const k of keys) {
+                    value = value[k];
+                }
+                el.textContent = value;
+            });
+
+            // Update language buttons
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+            });
+        }
+
+        // Language switcher
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const lang = btn.getAttribute('data-lang');
+                updateTranslations(lang);
+            });
+        });
+
+        const languageColors = {
+            'JavaScript': '#f1e05a', 'Python': '#3572A5', 'HTML': '#e34c26',
+            'CSS': '#563d7c', 'TypeScript': '#2b7489', 'Java': '#b07219',
+            'Go': '#00ADD8', 'Rust': '#dea584', 'C++': '#f34b7d',
+            'Shell': '#89e051', 'Jupyter Notebook': '#DA5B0B'
+        };
+
+        // Preloader
+        const preloader = document.getElementById('preloader');
+        const video = document.getElementById('bg-video');
+        let videoLoaded = false, pageLoaded = false;
+
+        function checkLoadingComplete() {
+            if (videoLoaded && pageLoaded) {
+                setTimeout(() => {
+                    preloader.classList.add('fade-out');
+                    setTimeout(() => preloader.style.display = 'none', 500);
+                }, 300);
+            }
+        }
+
+        video.addEventListener('loadeddata', () => {
+            videoLoaded = true;
+            checkLoadingComplete();
+        });
+
+        setTimeout(() => {
+            if (!videoLoaded) {
+                videoLoaded = true;
+                checkLoadingComplete();
+            }
+        }, 5000);
+
+        window.addEventListener('load', () => {
+            pageLoaded = true;
+            checkLoadingComplete();
+        });
+
+        // Desktop Icon Management
+        const desktopIcons = document.querySelectorAll('.desktop-icon');
+
+        desktopIcons.forEach(icon => {
+            icon.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const app = icon.getAttribute('data-app');
+
+                if (app === 'linkedin') {
+                    window.open('https://www.linkedin.com/in/ethan-leigh-fellows/', '_blank');
+                } else if (app === 'github') {
+                    window.open('https://github.com/ethanleighfellows', '_blank');
+                } else {
+                    openWindow(app);
+                }
+            });
+        });
+
+        document.querySelector('.content-area').addEventListener('click', (e) => {
+            if (e.target.classList.contains('content-area')) {
+                desktopIcons.forEach(i => i.classList.remove('selected'));
+            }
+        });
+
+        // Window Management
+        function openWindow(windowId) {
+            const win = document.getElementById(windowId);
+            if (win) {
+                win.classList.add('active');
+                bringToFront(win);
+            }
+        }
+
+        function closeWindow(windowId) {
+            const win = document.getElementById(windowId);
+            if (win) {
+                win.style.transition = 'all 0.3s ease';
+                win.style.opacity = '0';
+                win.style.transform = win.style.transform + ' scale(0.9)';
+                setTimeout(() => {
+                    win.classList.remove('active');
+                    win.style.transition = '';
+                    win.style.opacity = '';
+                }, 300);
+            }
+        }
+
+        function minimizeWindow(windowId) {
+            const win = document.getElementById(windowId);
+            if (win) {
+                const currentTransform = win.style.transform || '';
+                win.style.transition = 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                win.style.opacity = '0';
+                win.style.transform = currentTransform + ' scale(0.1) translateY(100%)';
+                setTimeout(() => {
+                    win.style.opacity = '1';
+                    win.style.transform = currentTransform;
+                    win.style.transition = '';
+                }, 300);
+            }
+        }
+
+        function maximizeWindow(windowId) {
+            const win = document.getElementById(windowId);
+            if (win) {
+                const isMaximized = win.style.width === '95vw';
+                if (isMaximized) {
+                    win.style.width = '';
+                    win.style.height = '';
+                } else {
+                    win.style.width = '95vw';
+                    win.style.height = '90vh';
+                }
+            }
+        }
+
+        let zIndex = 10;
+        function bringToFront(win) {
+            win.style.zIndex = ++zIndex;
+        }
+
+        // Window Dragging
+        document.querySelectorAll('.window').forEach(win => {
+            const header = win.querySelector('.window-header');
+            let isDragging = false, currentX, currentY, initialX, initialY, xOffset = 0, yOffset = 0;
+
+            header.addEventListener('mousedown', (e) => {
+                if (!e.target.classList.contains('window-btn')) {
+                    isDragging = true;
+                    const rect = win.getBoundingClientRect();
+                    initialX = e.clientX - rect.left;
+                    initialY = e.clientY - rect.top;
+                    win.classList.add('dragging');
+                    bringToFront(win);
+                }
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    e.preventDefault();
+                    const x = e.clientX - initialX;
+                    const y = e.clientY - initialY;
+                    win.style.left = x + 'px';
+                    win.style.top = y + 'px';
+                    win.style.transform = 'none';
+                }
+            });
+
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+                win.classList.remove('dragging');
+            });
+        });
+
+        // Window Controls
+        document.querySelectorAll('.window-btn.close').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const win = btn.closest('.window');
+                closeWindow(win.id);
+            });
+        });
+
+        document.querySelectorAll('.window-btn.minimize').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const win = btn.closest('.window');
+                minimizeWindow(win.id);
+            });
+        });
+
+        document.querySelectorAll('.window-btn.maximize').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const win = btn.closest('.window');
+                maximizeWindow(win.id);
+            });
+        });
+
+        // Fetch GitHub Repos
+        async function fetchRepositories() {
+            const repoList = document.getElementById('repo-list');
+            const excludedRepos = ['ethanleighfellows.github.io', 'school'];
+
+            try {
+                const response = await fetch('https://api.github.com/users/ethanleighfellows/repos?sort=updated&per_page=100');
+                if (!response.ok) throw new Error('Failed to fetch');
+
+                const repos = await response.json();
+                const filteredRepos = repos
+                    .filter(repo => !repo.fork && !excludedRepos.includes(repo.name.toLowerCase()))
+                    .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+
+                if (filteredRepos.length === 0) {
+                    repoList.innerHTML = '<div class="loading-repos" data-i18n="terminal.loading">' + translations[currentLang].terminal.loading + '</div>';
+                    return;
+                }
+
+                repoList.innerHTML = filteredRepos.map(repo => {
+                    const languageColor = languageColors[repo.language] || '#888';
+                    return `
+                        <div class="repo-item" onclick="window.open('${repo.html_url}', '_blank')">
+                            <div class="repo-name">${repo.name}</div>
+                            <div class="repo-description">${repo.description || 'No description'}</div>
+                            <div class="repo-meta">
+                                ${repo.language ? `<span><span class="language-dot" style="background:${languageColor}"></span>${repo.language}</span>` : ''}
+                                <span>⭐ ${repo.stargazers_count}</span>
+                                <span>🔱 ${repo.forks_count}</span>
+                                <span>Updated: ${new Date(repo.updated_at).toLocaleDateString()}</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } catch (error) {
+                repoList.innerHTML = '<div style="color:#ff5f57;text-align:center;padding:20px">Failed to load repositories</div>';
+            }
+        }
+
+        fetchRepositories();
+    </script>
 </body>
 </html>
