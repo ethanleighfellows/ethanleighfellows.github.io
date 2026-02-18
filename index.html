@@ -213,16 +213,45 @@
         .name-main {
             font-size: 72px;
             font-weight: 700;
-            background: linear-gradient(135deg, #007AFF 0%, #00D4FF 50%, #0A84FF 100%);
+            background: linear-gradient(
+                to right,
+                #007AFF 20%,
+                #00D4FF 40%,
+                #fff 50%,
+                #00D4FF 60%,
+                #007AFF 80%
+            );
+            background-size: 200% auto;
+            background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 4px 20px rgba(0, 122, 255, 0.3);
             letter-spacing: -2px;
-            line-height: 1;
-            margin-bottom: 10px;
-            animation: fadeInDown 1s ease-out;
+            line-height: 1.4;
+            margin-bottom: 0;
+            display: inline-block;
+            padding-bottom: 10px;
+            animation: shine 5s linear infinite;
             font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', sans-serif;
+            position: relative;
+            cursor: default;
+        }
+
+        @keyframes shine {
+            to {
+                background-position: 200% center;
+            }
+        }
+
+        .name-main.glitch:hover {
+            animation: shine 5s linear infinite, glitch-text 0.3s infinite;
+        }
+
+        @keyframes glitch-text {
+            0% { transform: translate(0); text-shadow: 2px 0 #ff00c1, -2px 0 #00fff9; }
+            25% { transform: translate(-2px, 2px); }
+            50% { transform: translate(2px, -2px); text-shadow: -2px 0 #ff00c1, 2px 0 #00fff9; }
+            75% { transform: translate(-2px, -2px); }
+            100% { transform: translate(0); }
         }
 
         .name-subtitle {
@@ -232,6 +261,7 @@
             letter-spacing: 1px;
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
             animation: fadeInUp 1s ease-out 0.3s both;
+            margin-top: -5px;
         }
 
         @keyframes fadeInDown {
@@ -244,6 +274,23 @@
                 transform: translateY(0);
             }
         }
+        
+        .terminal-header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        #github-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid #007AFF;
+            box-shadow: 0 0 15px rgba(0, 122, 255, 0.5);
+            display: none;
+        }
+
 
         @keyframes fadeInUp {
             from {
@@ -741,10 +788,13 @@
 
             .name-main {
                 font-size: 48px;
+                line-height: 1.3;
+                padding-bottom: 10px;
             }
 
             .name-subtitle {
                 font-size: 14px;
+                margin-top: 0;
             }
 
             .desktop-icons {
@@ -775,6 +825,118 @@
             text-align: center;
             padding: 20px;
         }
+
+        /* Notifications */
+        .notification-container {
+            position: fixed;
+            top: 45px;
+            right: 20px;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
+
+        .notification {
+            width: 300px;
+            background: rgba(30, 30, 30, 0.7);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 0.5px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: #fff;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            display: flex;
+            gap: 12px;
+            transform: translateX(350px);
+            transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            pointer-events: auto;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification-icon {
+            width: 36px;
+            height: 36px;
+            background: #007AFF;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-title {
+            font-weight: 600;
+            font-size: 13px;
+            margin-bottom: 2px;
+        }
+
+        .notification-body {
+            font-size: 12px;
+            opacity: 0.8;
+            line-height: 1.4;
+        }
+
+        /* Terminal Input */
+        .terminal-input-line {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-top: 15px;
+            border-top: 1px solid rgba(48, 209, 88, 0.1);
+            padding-top: 15px;
+        }
+
+        #terminal-input {
+            background: transparent;
+            border: none;
+            color: #30d158;
+            font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+            font-size: 14px;
+            flex: 1;
+            outline: none;
+            width: 100%;
+        }
+
+        /* Superuser Mode Theme */
+        body.superuser-mode .name-main {
+            background: linear-gradient(110deg, #FFD700 0%, #FFA500 25%, #fff 50%, #FFA500 75%, #FFD700 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
+        }
+
+        body.superuser-mode .lang-btn.active,
+        body.superuser-mode .status-dot {
+            background: #FFD700;
+            color: #000;
+            border-color: #FFD700;
+        }
+
+        /* System Stats in Menu Bar */
+        .system-stats {
+            display: flex;
+            gap: 15px;
+            margin-right: 15px;
+            opacity: 0.7;
+            font-family: 'SF Mono', monospace;
+            font-size: 11px;
+        }
+
+        @media (max-width: 1000px) {
+            .system-stats { display: none; }
+        }
     </style>
 </head>
 <body>
@@ -783,6 +945,9 @@
         <div class="loader"></div>
         <div class="loader-text" data-i18n="loading">Initializing system...</div>
     </div>
+
+    <!-- Notifications -->
+    <div class="notification-container" id="notification-container"></div>
 
     <!-- Background Video -->
     <video id="bg-video" autoplay muted loop playsinline>
@@ -809,6 +974,10 @@
                 </div>
             </div>
             <div class="menu-right">
+                <div class="system-stats">
+                    <span>☕ <span id="coffee-stat">98%</span></span>
+                    <span>🧠 <span id="brain-stat">42%</span></span>
+                </div>
                 <div class="status-indicator">
                     <div class="status-dot"></div>
                     <span data-i18n="status">Online</span>
@@ -818,7 +987,7 @@
 
         <!-- Name Display -->
         <div class="name-display">
-            <div class="name-main">Ethan Leigh-Fellows</div>
+            <div class="name-main glitch" data-i18n="name">Ethan Leigh-Fellows</div>
             <div class="name-subtitle" data-i18n="subtitle">San Francisco | 23 y/o | Product</div>
         </div>
 
@@ -852,13 +1021,13 @@
                 <div class="icon-image linkedin">
                     <i class="fab fa-linkedin"></i>
                 </div>
-                <div class="icon-label">LinkedIn</div>
+                <div class="icon-label" data-i18n="icon.linkedin">LinkedIn</div>
             </div>
             <div class="desktop-icon" data-app="github">
                 <div class="icon-image github">
                     <i class="fab fa-github"></i>
                 </div>
-                <div class="icon-label">GitHub</div>
+                <div class="icon-label" data-i18n="icon.github">GitHub</div>
             </div>
         </div>
 
@@ -872,17 +1041,26 @@
                         <div class="window-btn minimize"></div>
                         <div class="window-btn maximize"></div>
                     </div>
-                    <span class="window-title">ethan@localhost — zsh — 80×24</span>
+                    <span class="window-title" data-i18n="terminal.title">ethan@localhost — zsh — 80×24</span>
                 </div>
                 <div class="window-body">
-                    <div class="terminal-line">
-                        <span class="prompt">ethan@localhost</span> <span style="color:#007AFF">~</span> % <span class="command">ls -la repositories/</span>
-                    </div>
-                    <div class="terminal-line" style="color: rgba(255, 255, 255, 0.5);">
-                        <span data-i18n="terminal.fetching">Fetching public repositories from GitHub...</span>
+                    <div class="terminal-header-content">
+                        <div>
+                            <div class="terminal-line">
+                                <span class="prompt">ethan@localhost</span> <span style="color:#007AFF">~</span> % <span class="command">ls -la repositories/</span>
+                            </div>
+                            <div class="terminal-line" style="color: rgba(255, 255, 255, 0.5);">
+                                <span data-i18n="terminal.fetching">Fetching public repositories from GitHub...</span>
+                            </div>
+                        </div>
+                        <img id="github-avatar" src="" alt="GitHub Avatar">
                     </div>
                     <div class="repo-list" id="repo-list">
                         <div class="loading-repos" data-i18n="terminal.loading">Loading repositories...</div>
+                    </div>
+                    <div class="terminal-input-line">
+                        <span class="prompt">ethan@localhost</span> <span style="color:#007AFF">~</span> % 
+                        <input type="text" id="terminal-input" autocomplete="off" spellcheck="false" placeholder="Type 'help' for secrets...">
                     </div>
                 </div>
             </div>
@@ -990,9 +1168,10 @@
                 loading: "Initializing system...",
                 menu: { finder: "Finder", file: "File", edit: "Edit", view: "View" },
                 status: "Online",
+                name: "Ethan Leigh-Fellows",
                 subtitle: "San Francisco | 23 y/o | Product",
-                icon: { projects: "Projects", access: "Access", music: "Music", contact: "Contact" },
-                terminal: { fetching: "Fetching public repositories from GitHub...", loading: "Loading repositories..." },
+                icon: { projects: "Projects", access: "Access", music: "Music", contact: "Contact", linkedin: "LinkedIn", github: "GitHub" },
+                terminal: { fetching: "Fetching public repositories from GitHub...", loading: "Loading repositories...", updated: "Updated:", title: "ethan@localhost — zsh — 80×24" },
                 hacker: {
                     title: "[SYSTEM ACCESS] — AUTHORIZED",
                     msg1: "> Initiating connection...",
@@ -1009,9 +1188,10 @@
                 loading: "Initialisation du système...",
                 menu: { finder: "Finder", file: "Fichier", edit: "Éditer", view: "Affichage" },
                 status: "En ligne",
+                name: "Ethan Leigh-Fellows",
                 subtitle: "San Francisco | 23 ans | Product",
-                icon: { projects: "Projets", access: "Accès", music: "Musique", contact: "Contact" },
-                terminal: { fetching: "Récupération des dépôts publics depuis GitHub...", loading: "Chargement des dépôts..." },
+                icon: { projects: "Projets", access: "Accès", music: "Musique", contact: "Contact", linkedin: "LinkedIn", github: "GitHub" },
+                terminal: { fetching: "Récupération des dépôts publics depuis GitHub...", loading: "Chargement des dépôts...", updated: "Mis à jour le :", title: "ethan@localhost — zsh — 80×24" },
                 hacker: {
                     title: "[ACCÈS SYSTÈME] — AUTORISÉ",
                     msg1: "> Initialisation de la connexion...",
@@ -1028,9 +1208,10 @@
                 loading: "Инициализация системы...",
                 menu: { finder: "Finder", file: "Файл", edit: "Правка", view: "Вид" },
                 status: "В сети",
+                name: "Итан Ли-Феллоуз",
                 subtitle: "Сан-Франциско | 23 года | Продукт",
-                icon: { projects: "Проекты", access: "Доступ", music: "Музыка", contact: "Контакт" },
-                terminal: { fetching: "Получение публичных репозиториев с GitHub...", loading: "Загрузка репозиториев..." },
+                icon: { projects: "Проекты", access: "Доступ", music: "Музыка", contact: "Контакт", linkedin: "LinkedIn", github: "GitHub" },
+                terminal: { fetching: "Получение публичных репозиториев с GitHub...", loading: "Загрузка репозиториев...", updated: "Обновлено:", title: "итан@localhost — zsh — 80×24" },
                 hacker: {
                     title: "[ДОСТУП К СИСТЕМЕ] — АВТОРИЗОВАН",
                     msg1: "> Инициализация соединения...",
@@ -1259,9 +1440,18 @@
 
             try {
                 const response = await fetch('https://api.github.com/users/ethanleighfellows/repos?sort=updated&per_page=100');
-                if (!response.ok) throw new Error('Failed to fetch');
+                const userResponse = await fetch('https://api.github.com/users/ethanleighfellows');
+                if (!response.ok || !userResponse.ok) throw new Error('Failed to fetch');
 
                 const repos = await response.json();
+                const userData = await userResponse.json();
+
+                // Display avatar
+                const avatarImg = document.getElementById('github-avatar');
+                avatarImg.src = userData.avatar_url;
+                avatarImg.style.display = 'block';
+
+
                 const filteredRepos = repos
                     .filter(repo => !repo.fork && !excludedRepos.includes(repo.name.toLowerCase()))
                     .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
@@ -1281,7 +1471,7 @@
                                 ${repo.language ? `<span><span class="language-dot" style="background:${languageColor}"></span>${repo.language}</span>` : ''}
                                 <span>⭐ ${repo.stargazers_count}</span>
                                 <span>🔱 ${repo.forks_count}</span>
-                                <span>Updated: ${new Date(repo.updated_at).toLocaleDateString()}</span>
+                                <span>${translations[currentLang].terminal.updated} ${new Date(repo.updated_at).toLocaleDateString()}</span>
                             </div>
                         </div>
                     `;
@@ -1292,6 +1482,122 @@
         }
 
         fetchRepositories();
+
+        // --- New Interaction Features ---
+
+        // Notification System
+        function showNotification(title, body, icon = 'fas fa-info-circle') {
+            const container = document.getElementById('notification-container');
+            const id = 'notif-' + Date.now();
+            
+            const notif = document.createElement('div');
+            notif.className = 'notification';
+            notif.id = id;
+            notif.innerHTML = `
+                <div class="notification-icon"><i class="${icon}"></i></div>
+                <div class="notification-content">
+                    <div class="notification-title">${title}</div>
+                    <div class="notification-body">${body}</div>
+                </div>
+            `;
+            
+            container.appendChild(notif);
+            
+            // Show with slight delay
+            setTimeout(() => notif.classList.add('show'), 100);
+            
+            // Remove after 5s
+            setTimeout(() => {
+                notif.classList.remove('show');
+                setTimeout(() => notif.remove(), 500);
+            }, 5000);
+        }
+
+        // Terminal Command Logic
+        const terminalInput = document.getElementById('terminal-input');
+        const repoList = document.getElementById('repo-list');
+        let secretsFound = new Set();
+
+        terminalInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const cmd = terminalInput.value.toLowerCase().trim();
+                terminalInput.value = '';
+                handleCommand(cmd);
+            }
+        });
+
+        function handleCommand(cmd) {
+            if (cmd === 'help') {
+                showNotification('System Guide', 'Available: help, clear, whoami, sudo mode, projects', 'fas fa-terminal');
+            } else if (cmd === 'clear') {
+                repoList.innerHTML = '<div style="color: rgba(48, 209, 88, 0.3)">Terminal buffer cleared. Reloading repos...</div>';
+                setTimeout(fetchRepositories, 1000);
+            } else if (cmd === 'whoami') {
+                showNotification('User Identity', 'Ethan Leigh-Fellows: Product Enjoyer.', 'fas fa-user');
+            } else if (cmd === 'sudo mode') {
+                unlockSecret('sudo');
+            } else if (cmd === 'projects') {
+                openWindow('terminal');
+            } else if (cmd === 'coffee') {
+                updateStat('coffee', 100);
+                showNotification('Refilled', 'Coffee level restored to 100%', 'fas fa-coffee');
+            } else {
+                showNotification('Error', `Command not found: ${cmd}`, 'fas fa-exclamation-triangle');
+            }
+        }
+
+        // Secret Tracking
+        function unlockSecret(name) {
+            if (secretsFound.has(name)) return;
+            secretsFound.add(name);
+            
+            if (name === 'sudo') {
+                document.body.classList.add('superuser-mode');
+                showNotification('SUPERUSER UNLOCKED', 'Golden theme activated. You found a system secret!', 'fas fa-crown');
+                confettiEffect();
+            }
+            
+            if (secretsFound.size >= 3) {
+                showNotification('Quest Complete', 'You found all secrets! Welcome to the inner circle.', 'fas fa-check-double');
+            }
+        }
+
+        // Stats Logic
+        function updateStat(id, val) {
+            const el = document.getElementById(`${id}-stat`);
+            if (el) el.textContent = `${val}%`;
+        }
+
+        setInterval(() => {
+            // Keep stats at 100%
+            updateStat('brain', 100);
+            updateStat('coffee', 100);
+        }, 1000);
+
+        // Apple Logo Secret
+        const appleLogo = document.querySelector('.apple-logo');
+        if (appleLogo) {
+            appleLogo.addEventListener('click', () => {
+                showNotification('System Tip', 'Try typing "sudo mode" in the terminal...', 'fab fa-apple');
+            });
+        }
+
+        // Simple Confetti
+        function confettiEffect() {
+            const overlay = document.querySelector('.video-overlay');
+            if (overlay) {
+                overlay.style.background = 'rgba(255, 215, 0, 0.2)';
+                setTimeout(() => overlay.style.background = 'rgba(0, 0, 0, 0.3)', 500);
+            }
+        }
+
+        // Initial welcome (show only once)
+        if (!localStorage.getItem('welcome_shown')) {
+            setTimeout(() => {
+                showNotification('System Update', 'New zsh features available. Type "help" in terminal.', 'fas fa-robot');
+                localStorage.setItem('welcome_shown', 'true');
+            }, 3000);
+        }
     </script>
 </body>
 </html>
