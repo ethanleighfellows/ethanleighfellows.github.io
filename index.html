@@ -937,6 +937,104 @@
         @media (max-width: 1000px) {
             .system-stats { display: none; }
         }
+        /* Game Container */
+        #game-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 10000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+        }
+
+        #game-canvas {
+            image-rendering: pixelated;
+            max-width: 100%;
+            max-height: 100%;
+            box-shadow: 0 0 50px rgba(0, 122, 255, 0.2);
+        }
+
+        .boot-sequence {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #30d158;
+            text-align: left;
+            width: 400px;
+            pointer-events: none;
+        }
+
+        .boot-line {
+            margin: 5px 0;
+            opacity: 0;
+            white-space: pre-wrap;
+        }
+
+        @keyframes fadeInLine {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .glitch-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            pointer-events: none;
+            display: none;
+            z-index: 10001;
+        }
+
+        .game-close-btn {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 10002;
+            transition: all 0.2s;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .game-close-btn.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .game-close-btn:hover {
+            background: #ff5f57;
+            border-color: #ff5f57;
+            transform: scale(1.1);
+        }
+
+        @keyframes glitch-anim {
+            0% { transform: translate(0); }
+            20% { transform: translate(-5px, 5px); }
+            40% { transform: translate(-5px, -5px); }
+            60% { transform: translate(5px, 5px); }
+            80% { transform: translate(5px, -5px); }
+            100% { transform: translate(0); }
+        }
     </style>
 </head>
 <body>
@@ -945,6 +1043,15 @@
         <div class="loader"></div>
         <div class="loader-text" data-i18n="loading">Initializing system...</div>
     </div>
+
+    <!-- Game Container -->
+    <div id="game-container">
+        <div class="game-close-btn" id="game-close-btn">&times;</div>
+        <div class="boot-sequence" id="boot-sequence"></div>
+        <canvas id="game-canvas"></canvas>
+        <div id="game-music-container"></div>
+    </div>
+    <div class="glitch-overlay" id="glitch-overlay"></div>
 
     <!-- Notifications -->
     <div class="notification-container" id="notification-container"></div>
@@ -1528,7 +1635,7 @@
 
         function handleCommand(cmd) {
             if (cmd === 'help') {
-                showNotification('System Guide', 'Available: help, clear, whoami, sudo mode, projects', 'fas fa-terminal');
+                showNotification('System Guide', 'Available: help, clear, whoami, sudo mode, projects. Try "run invader_protocol"', 'fas fa-terminal');
             } else if (cmd === 'clear') {
                 repoList.innerHTML = '<div style="color: rgba(48, 209, 88, 0.3)">Terminal buffer cleared. Reloading repos...</div>';
                 setTimeout(fetchRepositories, 1000);
@@ -1541,11 +1648,669 @@
             } else if (cmd === 'coffee') {
                 updateStat('coffee', 100);
                 showNotification('Refilled', 'Coffee level restored to 100%', 'fas fa-coffee');
+            } else if (cmd === 'run invader_protocol' || cmd === 'init arcade') {
+                launchGame();
             } else {
                 showNotification('Error', `Command not found: ${cmd}`, 'fas fa-exclamation-triangle');
             }
         }
 
+        // --- Invader Protocol Game Logic ---
+
+        let gameInstance = null;
+
+        function launchGame() {
+            const gameContainer = document.getElementById('game-container');
+            const bootSequence = document.getElementById('boot-sequence');
+            const glitchOverlay = document.getElementById('glitch-overlay');
+            const musicContainer = document.getElementById('game-music-container');
+            const closeBtn = document.getElementById('game-close-btn');
+            
+            // Blur input and close terminal to prevent keyboard interference
+            const terminalInput = document.getElementById('terminal-input');
+            if (terminalInput) terminalInput.blur();
+            closeWindow('terminal');
+            
+            gameContainer.style.display = 'flex';
+            closeBtn.classList.remove('show');
+            
+            const bootLines = [
+                "INITIATING ARCADE_MODULE...",
+                "CHECKING SYSTEM INTEGRITY... [OK]",
+                "ALLOCATING MEMORY... [OK]",
+                "LOADING SPRITE_ASSETS... PROCEDURALLY.",
+                "COMPILING MOTION_CURVES... [DONE]",
+                "CALIBRATING WEAPON_SYSTEMS...",
+                "WARNING: UNKNOWN ENERGY SIGNATURES DETECTED.",
+                "PROTOCOL: INVADER",
+                "LAUNCHING... GOOD LUCK.",
+            ];
+
+            bootSequence.innerHTML = '';
+            bootLines.forEach((line, index) => {
+                setTimeout(() => {
+                    const lineEl = document.createElement('div');
+                    lineEl.className = 'boot-line';
+                    lineEl.textContent = line;
+                    bootSequence.appendChild(lineEl);
+                    lineEl.style.animation = `fadeInLine 0.5s forwards`;
+                    
+                    // Glitch effect
+                    if (index > 4) {
+                        glitchOverlay.style.display = 'block';
+                        glitchOverlay.style.animation = `glitch-anim 0.1s ${Math.random() > 0.5 ? 'reverse' : ''}`;
+                        setTimeout(() => glitchOverlay.style.display = 'none', 100);
+                    }
+                }, index * 250);
+            });
+
+                        setTimeout(() => {
+                            bootSequence.style.display = 'none';
+                            closeBtn.classList.add('show');
+                            
+                            // Add music
+                            musicContainer.innerHTML = `<iframe width="1" height="1" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/necmusic/holst-the-planets-jupiter-the&color=%23ff5500&auto_play=true&hide_related=false&show_comments=false&show_user=false&show_reposts=false&show_teaser=false"></iframe>`;
+                            
+                            if (gameInstance) {
+                                gameInstance.stop();
+                            }
+                            gameInstance = new InvaderProtocol('game-canvas');
+                            gameInstance.start();
+            
+                            // Close button handler
+                            const closeHandler = () => {
+                                gameInstance.stop();
+                                closeBtn.removeEventListener('click', closeHandler);
+                            };
+                            closeBtn.addEventListener('click', closeHandler);
+            
+                            // Add escape key listener to quit
+                            const quitHandler = (e) => {
+                                if (e.key === 'Escape') {
+                                    if (gameInstance.isPaused) {
+                                        gameInstance.resume();
+                                    } else {
+                                        gameInstance.pause();
+                                    }
+                                }
+                            };
+                            document.addEventListener('keydown', quitHandler);
+                            gameInstance.onStop = () => {
+                                document.removeEventListener('keydown', quitHandler);
+                                gameContainer.style.display = 'none';
+                                bootSequence.style.display = 'block';
+                                musicContainer.innerHTML = ''; // Stop music
+                                closeBtn.classList.remove('show');
+                                openWindow('terminal'); // Restore terminal
+                            };
+            
+                        }, bootLines.length * 250 + 500);
+                    }
+            
+                            class InvaderProtocol {
+                                constructor(canvasId) {
+                                    this.canvas = document.getElementById(canvasId);
+                                    this.ctx = this.canvas.getContext('2d');
+                                    this.onStop = null;
+                                    this.isPaused = false;
+                                    
+                                    this.width = 800;
+                                    this.height = 600;
+                                    this.canvas.width = this.width;
+                                    this.canvas.height = this.height;
+                    
+                                    this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                                    this.keys = {};
+                                    this.player = new Player(this);
+                                    this.bullets = [];
+                                    this.enemies = [];
+                                    this.particles = [];
+                                    this.stars = [];
+                                    this.powerUps = [];
+                                    
+                                    this.shakeAmount = 0;
+                                    this.enemiesToSpawn = 8;
+                                    this.spawnTimer = 0;
+                                    this.spawnInterval = 2.0;
+                                    
+                                    this.enemySpeed = 60;
+                                    this.score = 0;
+                                    this.highScore = parseInt(localStorage.getItem('invader_high_score')) || 0;
+                                    this.wave = 1;
+                                    this.lives = 3;
+                                    
+                                    this.combo = 0;
+                                    this.comboTimer = 0;
+                                    
+                                    this.waveAlpha = 0;
+                                    this.showWaveTitle = true;
+                                    this.starWarp = 1;
+                                    
+                                    this.gameOver = false;
+                                    this.lastTime = 0;
+
+                                    // Store listener references for removal
+                                    this._keydownListener = (e) => {
+                                        if (['ArrowLeft', 'ArrowRight', ' ', 'a', 'd', 'Escape'].includes(e.key)) {
+                                            e.preventDefault();
+                                        }
+                                        this.keys[e.key] = true;
+                                    };
+                                    this._keyupListener = (e) => this.keys[e.key] = false;
+                    
+                                    this.bindEvents();
+                                    this.initStars();
+                                }
+                    
+                                playSound(freq, type, duration, vol) {
+                                    if (this.audioCtx.state === 'suspended') this.audioCtx.resume();
+                                    const osc = this.audioCtx.createOscillator();
+                                    const gain = this.audioCtx.createGain();
+                                    osc.type = type;
+                                    osc.frequency.setValueAtTime(freq, this.audioCtx.currentTime);
+                                    osc.frequency.exponentialRampToValueAtTime(10, this.audioCtx.currentTime + duration);
+                                    gain.gain.setValueAtTime(vol, this.audioCtx.currentTime);
+                                    gain.gain.exponentialRampToValueAtTime(0.01, this.audioCtx.currentTime + duration);
+                                    osc.connect(gain);
+                                    gain.connect(this.audioCtx.destination);
+                                    osc.start();
+                                    osc.stop(this.audioCtx.currentTime + duration);
+                                }
+                    
+                                bindEvents() {
+                                    window.addEventListener('keydown', this._keydownListener);
+                                    window.addEventListener('keyup', this._keyupListener);
+                                }
+
+                                unbindEvents() {
+                                    window.removeEventListener('keydown', this._keydownListener);
+                                    window.removeEventListener('keyup', this._keyupListener);
+                                }
+                    
+                                initStars() {
+                                    for (let i = 0; i < 150; i++) {
+                                        this.stars.push(new Star(this));
+                                    }
+                                }
+                    
+                                spawnEnemy() {
+                                    if (this.enemiesToSpawn > 0) {
+                                        const x = Math.random() * (this.width - 100) + 50;
+                                        const y = -50;
+                                        this.enemies.push(new Enemy(this, x, y));
+                                        this.enemiesToSpawn--;
+                                    }
+                                }
+                    
+                                applyShake(amount) {
+                                    this.shakeAmount = amount;
+                                }
+                                
+                                pause() {
+                                    this.isPaused = true;
+                                }
+                    
+                                resume() {
+                                    this.isPaused = false;
+                                    this.gameLoop(this.lastTime);
+                                }
+                    
+                                start() {
+                                    this.waveAlpha = 1;
+                                    this.gameLoop(0);
+                                }
+                    
+                                stop() {
+                                    if (this.gameOver && this.lives > 0) return; // Prevent multiple stops
+                                    this.gameOver = true;
+                                    this.unbindEvents();
+                                    if (this.onStop) this.onStop();
+                                }
+                    
+                                update(deltaTime) {
+                                    if (this.gameOver) return;
+                    
+                                    if (this.shakeAmount > 0) {
+                                        this.shakeAmount -= deltaTime * 20;
+                                    } else {
+                                        this.shakeAmount = 0;
+                                    }
+                    
+                                    if (this.comboTimer > 0) {
+                                        this.comboTimer -= deltaTime;
+                                        if (this.comboTimer <= 0) this.combo = 0;
+                                    }
+                    
+                                    if (this.showWaveTitle) {
+                                        this.starWarp = Math.min(10, this.starWarp + deltaTime * 20);
+                                    } else {
+                                        this.starWarp = Math.max(1, this.starWarp - deltaTime * 5);
+                                    }
+                    
+                                    this.stars.forEach(star => star.update(deltaTime, this.starWarp));
+                                    this.player.update(deltaTime);
+                    
+                                    this.spawnTimer += deltaTime;
+                                    if (this.spawnTimer >= this.spawnInterval) {
+                                        this.spawnEnemy();
+                                        this.spawnTimer = 0;
+                                    }
+                    
+                                    if (this.showWaveTitle) {
+                                        this.waveAlpha -= deltaTime * 0.5;
+                                        if (this.waveAlpha <= 0) this.showWaveTitle = false;
+                                    }
+                    
+                                    for (let i = this.bullets.length - 1; i >= 0; i--) {
+                                        this.bullets[i].update(deltaTime);
+                                        if (this.bullets[i].y < -20 || this.bullets[i].y > this.height + 20) {
+                                            this.bullets.splice(i, 1);
+                                        }
+                                    }
+                    
+                                    for (let i = this.enemies.length - 1; i >= 0; i--) {
+                                        const enemy = this.enemies[i];
+                                        enemy.update(deltaTime);
+                                        enemy.x += Math.sin(this.lastTime / 500 + i) * 1.5;
+                                        enemy.x = Math.max(20, Math.min(this.width - 20, enemy.x));
+                    
+                                        if (enemy.y > this.height + 50) {
+                                            this.enemies.splice(i, 1);
+                                            this.lives--;
+                                            this.applyShake(10);
+                                            this.playSound(100, 'sawtooth', 0.5, 0.2);
+                                            showNotification('HULL BREACH', 'An invader bypassed our defenses!', 'fas fa-exclamation-circle');
+                                        }
+                                    }
+                    
+                                    for (let i = this.powerUps.length - 1; i >= 0; i--) {
+                                        this.powerUps[i].update(deltaTime);
+                                        if (this.powerUps[i].isCollidingWith(this.player)) {
+                                            this.player.applyPowerUp(this.powerUps[i].type);
+                                            this.powerUps.splice(i, 1);
+                                            this.playSound(600, 'sine', 0.3, 0.3);
+                                            showNotification('SYSTEM UPGRADE', 'Weapon systems enhanced.', 'fas fa-bolt');
+                                        } else if (this.powerUps[i].y > this.height + 20) {
+                                            this.powerUps.splice(i, 1);
+                                        }
+                                    }
+                                    
+                                    this.checkCollisions();
+                    
+                                    for (let i = this.particles.length - 1; i >= 0; i--) {
+                                        this.particles[i].update(deltaTime);
+                                        if (this.particles[i].life <= 0) {
+                                            this.particles.splice(i, 1);
+                                        }
+                                    }
+                    
+                                    if (this.enemies.length === 0 && this.enemiesToSpawn === 0) {
+                                        this.wave++;
+                                        this.enemiesToSpawn = 8 + (this.wave * 3);
+                                        this.spawnInterval = Math.max(0.4, 2.0 - (this.wave * 0.15));
+                                        this.enemySpeed += 25;
+                                        this.showWaveTitle = true;
+                                        this.waveAlpha = 1;
+                                        this.playSound(400, 'square', 0.5, 0.1);
+                                    }
+                    
+                                    if (this.lives <= 0) {
+                                        this.endGame();
+                                    }
+                                }
+                    
+                                checkCollisions() {
+                                    for (let i = this.bullets.length - 1; i >= 0; i--) {
+                                        for (let j = this.enemies.length - 1; j >= 0; j--) {
+                                            if (this.bullets[i] && this.enemies[j] && this.bullets[i].isCollidingWith(this.enemies[j])) {
+                                                this.createExplosion(this.enemies[j].x, this.enemies[j].y, this.enemies[j].color);
+                                                this.applyShake(5);
+                                                this.playSound(150, 'sawtooth', 0.2, 0.1);
+                                                
+                                                this.combo++;
+                                                this.comboTimer = 2.0;
+                                                
+                                                if (Math.random() < 0.15) {
+                                                    this.powerUps.push(new PowerUp(this, this.enemies[j].x, this.enemies[j].y));
+                                                }
+                    
+                                                const points = 100 * this.wave * Math.min(5, this.combo);
+                                                this.score += points;
+                                                if (this.score > this.highScore) {
+                                                    this.highScore = this.score;
+                                                    localStorage.setItem('invader_high_score', this.highScore);
+                                                }
+                    
+                                                this.enemies.splice(j, 1);
+                                                this.bullets.splice(i, 1);
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                                
+                                endGame() {
+                                    if (this.gameOver) return;
+                                    this.gameOver = true;
+                                    this.applyShake(20);
+                                    this.playSound(50, 'sawtooth', 1.0, 0.4);
+                                    setTimeout(() => this.stop(), 3000);
+                                }
+                    
+                                createExplosion(x, y, color) {
+                                    for (let i = 0; i < 20; i++) {
+                                        this.particles.push(new Particle(this, x, y, color));
+                                    }
+                                }
+                                
+                                draw() {
+                                    this.ctx.save();
+                                    if (this.shakeAmount > 0) {
+                                        const sx = (Math.random() - 0.5) * this.shakeAmount;
+                                        const sy = (Math.random() - 0.5) * this.shakeAmount;
+                                        this.ctx.translate(sx, sy);
+                                    }
+                    
+                                    const grad = this.ctx.createRadialGradient(this.width/2, this.height/2, 0, this.width/2, this.height/2, this.width);
+                                    grad.addColorStop(0, '#050510');
+                                    grad.addColorStop(1, '#000');
+                                    this.ctx.fillStyle = grad;
+                                    this.ctx.fillRect(-20, -20, this.width + 40, this.height + 40);
+                    
+                                    this.stars.forEach(star => star.draw());
+                                    this.powerUps.forEach(p => p.draw());
+                                    this.player.draw();
+                                    this.bullets.forEach(b => b.draw());
+                                    this.enemies.forEach(e => e.draw());
+                                    this.particles.forEach(p => p.draw());
+                    
+                                    this.ctx.restore();
+                                    this.drawHUD();
+                                    
+                                    if (this.showWaveTitle) {
+                                        this.ctx.save();
+                                        this.ctx.globalAlpha = this.waveAlpha;
+                                        this.ctx.fillStyle = '#fff';
+                                        this.ctx.font = "bold 40px 'SF Mono', monospace";
+                                        this.ctx.textAlign = 'center';
+                                        this.ctx.shadowBlur = 20;
+                                        this.ctx.shadowColor = '#007AFF';
+                                        this.ctx.fillText(`WAVE ${this.wave}`, this.width/2, this.height/2);
+                                        this.ctx.restore();
+                                    }
+                    
+                                    if (this.combo > 1) {
+                                        this.ctx.fillStyle = '#FFD700';
+                                        this.ctx.font = "bold 14px 'SF Mono', monospace";
+                                        this.ctx.textAlign = 'center';
+                                        this.ctx.fillText(`${this.combo}X COMBO`, this.player.x, this.player.y - 40);
+                                    }
+                    
+                                    if (this.gameOver && this.lives <= 0) {
+                                         this.ctx.fillStyle = 'rgba(0, 0, 0, 0.85)';
+                                         this.ctx.fillRect(0, 0, this.width, this.height);
+                                         this.ctx.fillStyle = '#ff5f57';
+                                         this.ctx.font = "bold 50px 'SF Mono', monospace";
+                                         this.ctx.textAlign = 'center';
+                                         this.ctx.fillText('CRITICAL FAILURE', this.width / 2, this.height / 2);
+                                         this.ctx.font = "20px 'SF Mono', monospace";
+                                         this.ctx.fillStyle = '#fff';
+                                         this.ctx.fillText(`COMMANDER, YOUR FINAL SCORE: ${this.score.toLocaleString()}`, this.width / 2, this.height / 2 + 60);
+                                         this.ctx.font = "16px 'SF Mono', monospace";
+                                         this.ctx.fillStyle = '#FFD700';
+                                         this.ctx.fillText(`HIGH SCORE: ${this.highScore.toLocaleString()}`, this.width / 2, this.height / 2 + 100);
+                                    }
+                                }
+                    
+                                drawHUD() {
+                                    this.ctx.save();
+                                    this.ctx.fillStyle = 'rgba(10, 10, 30, 0.8)';
+                                    this.ctx.fillRect(0, 0, this.width, 60);
+                                    this.ctx.strokeStyle = '#007AFF';
+                                    this.ctx.lineWidth = 2;
+                                    this.ctx.beginPath();
+                                    this.ctx.moveTo(0, 60);
+                                    this.ctx.lineTo(this.width, 60);
+                                    this.ctx.stroke();
+                    
+                                    this.ctx.fillStyle = '#fff';
+                                    this.ctx.font = "bold 16px 'SF Mono', monospace";
+                                    this.ctx.textAlign = 'left';
+                                    this.ctx.fillText(`INTEL: ${this.score.toLocaleString()}`, 30, 38);
+                                    
+                                    this.ctx.textAlign = 'right';
+                                    this.ctx.fillText(`BEST: ${this.highScore.toLocaleString()}`, this.width - 30, 38);
+                                    
+                                    this.ctx.textAlign = 'center';
+                                    this.ctx.fillText(`SECTOR: ${this.wave}`, this.width/2, 38);
+                                    
+                                    // Move lives to be next to Score to avoid center overlap
+                                    for (let i = 0; i < this.lives; i++) {
+                                        this.drawTemplarCross(180 + i * 35, 32, 10, '#007AFF');
+                                    }
+                                    this.ctx.restore();
+                                }
+                    
+                                drawTemplarCross(x, y, size, color) {
+                                    this.ctx.save();
+                                    this.ctx.translate(x, y);
+                                    this.ctx.fillStyle = color;
+                                    for (let i = 0; i < 4; i++) {
+                                        this.ctx.beginPath();
+                                        this.ctx.moveTo(0, 0);
+                                        this.ctx.lineTo(-size/2, -size);
+                                        this.ctx.lineTo(size/2, -size);
+                                        this.ctx.lineTo(0, 0);
+                                        this.ctx.fill();
+                                        this.ctx.rotate(Math.PI / 2);
+                                    }
+                                    this.ctx.restore();
+                                }
+                    
+                                gameLoop(timestamp) {
+                                    if (this.gameOver) return;
+                                    if (this.isPaused) { this.draw(); return; }
+                                    const deltaTime = Math.min((timestamp - this.lastTime) / 1000, 0.1);
+                                    this.lastTime = timestamp;
+                                    this.update(deltaTime);
+                                    this.draw();
+                                    requestAnimationFrame(this.gameLoop.bind(this));
+                                }
+                            }
+                    
+                            class Star {
+                                constructor(game) {
+                                    this.game = game;
+                                    this.reset(true);
+                                }
+                                reset(initial = false) {
+                                    this.x = Math.random() * this.game.width;
+                                    this.y = initial ? Math.random() * this.game.height : -10;
+                                    this.layer = Math.floor(Math.random() * 3) + 1;
+                                    this.speedBase = this.layer * 60;
+                                    this.size = this.layer * 0.8;
+                                    this.color = this.layer === 3 ? '#FFD700' : (this.layer === 2 ? '#80A0FF' : '#fff');
+                                }
+                                update(deltaTime, warp) {
+                                    this.y += this.speedBase * warp * deltaTime;
+                                    if (this.y > this.game.height) this.reset();
+                                }
+                                draw() {
+                                    this.game.ctx.fillStyle = this.color;
+                                    this.game.ctx.beginPath();
+                                    this.game.ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                                    this.game.ctx.fill();
+                                }
+                            }
+                    
+                            class Player {
+                                constructor(game) {
+                                    this.game = game;
+                                    this.width = 40;
+                                    this.x = this.game.width / 2;
+                                    this.y = this.game.height - 80;
+                                    this.speed = 450;
+                                    this.shootCooldown = 0;
+                                    this.weaponType = 'standard';
+                                    this.powerUpTimer = 0;
+                                }
+                                applyPowerUp(type) {
+                                    this.weaponType = type;
+                                    this.powerUpTimer = 8.0;
+                                }
+                                update(deltaTime) {
+                                    if (this.game.keys['ArrowLeft'] || this.game.keys['a']) this.x -= this.speed * deltaTime;
+                                    if (this.game.keys['ArrowRight'] || this.game.keys['d']) this.x += this.speed * deltaTime;
+                                    this.x = Math.max(30, Math.min(this.game.width - 30, this.x));
+                                    
+                                    if (this.powerUpTimer > 0) {
+                                        this.powerUpTimer -= deltaTime;
+                                        if (this.powerUpTimer <= 0) this.weaponType = 'standard';
+                                    }
+                    
+                                    const fireRate = this.weaponType === 'rapid' ? 0.1 : 0.25;
+                                    if ((this.game.keys[' '] || this.game.keys['Space']) && this.shootCooldown <= 0) {
+                                        this.shoot();
+                                        this.shootCooldown = fireRate;
+                                        this.game.playSound(500, 'sine', 0.1, 0.1);
+                                    }
+                                    if (this.shootCooldown > 0) this.shootCooldown -= deltaTime;
+                                }
+                                shoot() {
+                                    if (this.weaponType === 'triple') {
+                                        this.game.bullets.push(new Bullet(this.game, this.x, this.y - 20, -1, -0.2));
+                                        this.game.bullets.push(new Bullet(this.game, this.x, this.y - 20, -1, 0));
+                                        this.game.bullets.push(new Bullet(this.game, this.x, this.y - 20, -1, 0.2));
+                                    } else {
+                                        this.game.bullets.push(new Bullet(this.game, this.x, this.y - 20, -1, 0));
+                                    }
+                                }
+                                draw() {
+                                    this.game.ctx.save();
+                                    if (this.weaponType !== 'standard') {
+                                        this.game.ctx.shadowBlur = 15;
+                                        this.game.ctx.shadowColor = '#FFD700';
+                                    }
+                                    this.game.drawTemplarCross(this.x, this.y, 20, '#007AFF');
+                                    this.game.ctx.restore();
+                                    const grad = this.game.ctx.createRadialGradient(this.x, this.y + 15, 0, this.x, this.y + 15, 25);
+                                    grad.addColorStop(0, 'rgba(0, 122, 255, 0.5)');
+                                    grad.addColorStop(1, 'transparent');
+                                    this.game.ctx.fillStyle = grad;
+                                    this.game.ctx.beginPath();
+                                    this.game.ctx.arc(this.x, this.y + 15, 20, 0, Math.PI * 2);
+                                    this.game.ctx.fill();
+                                }
+                            }
+                
+                class PowerUp {
+                    constructor(game, x, y) {
+                        this.game = game;
+                        this.x = x;
+                        this.y = y;
+                        this.type = Math.random() > 0.5 ? 'triple' : 'rapid';
+                        this.size = 15;
+                        this.color = '#FFD700';
+                    }
+                    update(deltaTime) { this.y += 120 * deltaTime; }
+                    draw() {
+                        this.game.ctx.fillStyle = this.color;
+                        this.game.ctx.beginPath();
+                        this.game.ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                        this.game.ctx.fill();
+                        this.game.ctx.fillStyle = '#000';
+                        this.game.ctx.font = "bold 12px monospace";
+                        this.game.ctx.textAlign = 'center';
+                        this.ctxText = this.type === 'triple' ? 'III' : '>>>';
+                        this.game.ctx.fillText(this.ctxText, this.x, this.y + 4);
+                    }
+                    isCollidingWith(player) {
+                        const dist = Math.hypot(this.x - player.x, this.y - player.y);
+                        return dist < this.size + 20;
+                    }
+                }
+        
+                class Enemy {
+                    constructor(game, x, y) {
+                         this.game = game;
+                         this.x = x;
+                         this.y = y;
+                         this.width = 32;
+                         this.rotation = 0;
+                         this.rotSpeed = Math.random() * 4 + 2;
+                         this.color = '#30d158';
+                    }
+                    update(deltaTime) {
+                        this.y += this.game.enemySpeed * deltaTime;
+                        this.rotation += this.rotSpeed * deltaTime;
+                    }
+                    draw() {
+                        this.game.ctx.save();
+                        this.game.ctx.translate(this.x, this.y);
+                        this.game.ctx.rotate(this.rotation);
+                        this.game.ctx.fillStyle = this.color;
+                        this.game.ctx.beginPath();
+                        for (let i = 0; i < 5; i++) {
+                            this.game.ctx.rotate(Math.PI / 5);
+                            this.game.ctx.lineTo(0, -this.width / 2);
+                            this.game.ctx.rotate(Math.PI / 5);
+                            this.game.ctx.lineTo(0, -this.width / 4);
+                        }
+                        this.game.ctx.closePath();
+                        this.game.ctx.fill();
+                        this.game.ctx.restore();
+                    }
+                }
+        
+                class Bullet {
+                    constructor(game, x, y, direction, angle = 0) {
+                        this.game = game;
+                        this.x = x;
+                        this.y = y;
+                        this.speed = 650;
+                        this.direction = direction;
+                        this.vx = angle * this.speed;
+                        this.vy = direction * this.speed;
+                    }
+                    update(deltaTime) {
+                        this.x += this.vx * deltaTime;
+                        this.y += this.vy * deltaTime;
+                    }
+                    draw() {
+                        this.game.ctx.fillStyle = '#fff';
+                        this.game.ctx.shadowBlur = 10;
+                        this.game.ctx.shadowColor = '#007AFF';
+                        this.game.ctx.fillRect(this.x - 2, this.y - 8, 4, 16);
+                        this.game.ctx.shadowBlur = 0;
+                    }
+                    isCollidingWith(other) {
+                        return Math.abs(this.x - other.x) < 20 && Math.abs(this.y - other.y) < 20;
+                    }
+                }
+                
+                class Particle {
+                    constructor(game, x, y, color) {
+                        this.game = game;
+                        this.x = x;
+                        this.y = y;
+                        this.size = Math.random() * 4 + 1;
+                        this.life = 1.0;
+                        this.vx = (Math.random() - 0.5) * 250;
+                        this.vy = (Math.random() - 0.5) * 250;
+                        this.color = color;
+                    }
+                    update(deltaTime) {
+                        this.x += this.vx * deltaTime;
+                        this.y += this.vy * deltaTime;
+                        this.life -= deltaTime * 1.8;
+                    }
+                    draw() {
+                        this.game.ctx.globalAlpha = this.life;
+                        this.game.ctx.fillStyle = this.color;
+                        this.game.ctx.fillRect(this.x, this.y, this.size, this.size);
+                        this.game.ctx.globalAlpha = 1.0;
+                    }
+                }
         // Secret Tracking
         function unlockSecret(name) {
             if (secretsFound.has(name)) return;
