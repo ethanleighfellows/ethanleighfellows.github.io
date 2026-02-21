@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pitchybird</title>
+
+  <!-- Load a modern Google Font for a sleeker look -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Raleway:wght@600;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    /* GLOBAL STYLES */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      /* Dark gradient background */
+      background: linear-gradient(135deg, #1A1A1A 0%, #2C2C2C 100%);
+      font-family: 'Raleway', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: #eee; /* default text color if needed */
+    }
+
+    /* GAME CONTAINER */
+    #gameContainer {
+      position: relative;
+      width: 400px;
+      height: 512px;
+      overflow: hidden;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+      background: #1C1C1C; /* Dark container background */
+    }
+
+    /* CANVAS */
+    canvas {
+      display: block;
+      border-radius: 12px;
+      background-color: #2E2E2E; /* Dark fallback behind your BG image */
+    }
+
+    /* GAME-OVER MESSAGE */
+    .game-over {
+      position: absolute;
+      top: 38%;
+      width: 100%;
+      text-align: center;
+      font-size: 2rem;
+      color: #fff;
+      font-weight: 800;
+      z-index: 100;
+      text-shadow: 1px 1px 3px #000;
+      animation: popIn 0.5s ease forwards;
+      display: none;
+    }
+
+    /* GAME-OVER SUBTEXT (Press SPACE) */
+    .game-over-sub {
+      font-size: 1rem;
+      color: #ccc;
+      font-weight: 600;
+      margin-top: 0.5em;
+    }
+
+    /* Simple pop-in animation for game-over text */
+    @keyframes popIn {
+      from {
+        transform: scale(0.3);
+        opacity: 0.3;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="gameContainer">
+    <canvas id="flappyCanvas" width="400" height="512"></canvas>
+    <div id="gameOverText" class="game-over">
+      GAME OVER
+      <div class="game-over-sub">Press SPACE to Restart</div>
+    </div>
+  </div>
+
+  <script>
+    /**************************************************************
+     * Configuration and Global Variables
+     **************************************************************/
+    const canvas = document.getElementById("flappyCanvas");
+    const ctx = canvas.getContext("2d");
+
+    // Background (still references your existing assets/bg.jpg).
+    // Ideally replace with a dark-friendly image, e.g. "assets/bg_dark.jpg".
+    const bgImage = new Image();
+    bgImage.src = "assets/bg.png"; 
+
+    let bgScaledWidth = 0;  
+    let bgScaledHeight = 0; 
+    let bgX = 0;            
+    const bgScrollSpeed = 1;  
+
+    // Bird images
+    const birdSprites = [
+      "assets/pitchsurprise.png", 
+      "assets/pitchsurprise.png"  
+    ];
+    // Pipe images
+    const pipeTopImg = "assets/pitchcatdown.png";
+    const pipeBottomImg = "assets/pitchcatup.png";
+    // Email sprite
+    const emailSpritePath = "assets/email.png";
+
+    let frames = 0;
+    let gameOver = false;
+    let pitchlaneCredits = 0; 
+
+    // Bird parameters
+    let birdX = 50;
+    let birdY = canvas.height / 2;
+    let birdWidth = 34;
+    let birdHeight = 24;
+    let birdVelocity = 0;
+    let gravity = 0.4;
+    let jumpHeight = -6;
+
+    // Bird Animation
+    let birdFrameIndex = 0;
+    const birdFrameDelay = 5;
+
+    // Pipes
+    const pipeSpeed = 2;
+    const pipeGap = 150;
+    const pipeWidth = 60;
+    const pipeFrequency = 120;
+    let pipes = [];
+
+    // Email collectibles
+    const emailSpeed = 3;
+    const emailSpawnRate = 200;
+    let emails = [];
+
+    // Load background, then compute scaling
+    bgImage.onload = () => {
+      const scaleFactor = canvas.height / bgImage.height;
+      bgScaledWidth = bgImage.width * scaleFactor;
+      bgScaledHeight = canvas.height; 
+      resetGame(); // Start game once BG is ready
+    };
+
+    /**************************************************************
+     * Event Listeners
+     **************************************************************/
+    document.addEventListener("keydown", function(e) {
+      if (e.code === "Space") {
+        if (!gameOver) {
+          birdVelocity = jumpHeight;
+        } else {
+          resetGame();
+        }
+      }
+    });
+
+    /**************************************************************
+     * Main Game Loop
+     **************************************************************/
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // 1) Draw scrolling background
+      drawBackground();
+
+      // 2) Draw pipes
+      for (let i = 0; i < pipes.length; i++) {
+        let p = pipes[i];
+        ctx.drawImage(p.topImg, p.x, p.topY, pipeWidth, p.topHeight);
+        ctx.drawImage(p.bottomImg, p.x, p.bottomY, pipeWidth, p.bottomHeight);
+      }
+
+      // 3) Draw emails
+      drawEmails();
+
+      // 4) Draw the bird with subtle outline / drop shadow
+      drawBird();
+
+      // 5) Display "Pitchlane Credits" with a black stroke + white fill
+      ctx.font = "bold 20px Raleway, sans-serif";
+      ctx.strokeStyle = "#000";
+      ctx.lineWidth = 3;
+      ctx.strokeText("Pitchlane Credits: " + pitchlaneCredits, 10, 30);
+      ctx.fillStyle = "#fff";
+      ctx.fillText("Pitchlane Credits: " + pitchlaneCredits, 10, 30);
+    }
+
+    function update() {
+      frames++;
+
+      // 1) Scroll the background
+      bgX -= bgScrollSpeed;
+      if (bgX <= -bgScaledWidth) {
+        bgX = 0;
+      }
+
+      // 2) Generate pipes
+      if (frames % pipeFrequency === 0) {
+        generatePipes();
+      }
+
+      // 3) Move pipes
+      for (let i = 0; i < pipes.length; i++) {
+        pipes[i].x -= pipeSpeed;
+        if (pipes[i].x + pipeWidth < 0) {
+          pipes.splice(i, 1);
+          i--;
+          pitchlaneCredits++;
+        }
+      }
+
+      // 4) Generate emails
+      if (frames % emailSpawnRate === 0) {
+        spawnEmail();
+      }
+
+      // 5) Move emails + check collisions
+      updateEmails();
+
+      // 6) Bird physics
+      birdVelocity += gravity;
+      birdY += birdVelocity;
+
+      if (birdY + birdHeight >= canvas.height) {
+        birdY = canvas.height - birdHeight;
+        triggerGameOver();
+      }
+      if (birdY < 0) {
+        birdY = 0;
+        birdVelocity = 0;
+      }
+
+      // 7) Check collisions with pipes
+      checkPipeCollisions();
+    }
+
+    function gameLoop() {
+      if (!gameOver) {
+        update();
+        draw();
+        requestAnimationFrame(gameLoop);
+      }
+    }
+
+    /**************************************************************
+     * Helper Functions
+     **************************************************************/
+
+    function drawBackground() {
+      if (!bgScaledWidth || !bgScaledHeight) return;
+      ctx.drawImage(bgImage, bgX, 0, bgScaledWidth, bgScaledHeight);
+      ctx.drawImage(bgImage, bgX + bgScaledWidth, 0, bgScaledWidth, bgScaledHeight);
+    }
+
+    function drawBird() {
+      if (frames % birdFrameDelay === 0) {
+        birdFrameIndex = (birdFrameIndex + 1) % birdSprites.length;
+      }
+      const frameImage = new Image();
+      frameImage.src = birdSprites[birdFrameIndex];
+
+      // Subtle shadow around bird
+      ctx.save();
+      ctx.shadowColor = "rgba(0, 0, 0, 0.6)";
+      ctx.shadowBlur = 6;
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = 0;
+      ctx.drawImage(frameImage, birdX, birdY, birdWidth, birdHeight);
+      ctx.restore();
+    }
+
+    function drawEmails() {
+      for (let i = 0; i < emails.length; i++) {
+        const e = emails[i];
+        ctx.drawImage(e.img, e.x, e.y, e.width, e.height);
+      }
+    }
+
+    function updateEmails() {
+      for (let i = 0; i < emails.length; i++) {
+        emails[i].x -= emailSpeed;
+
+        if (emails[i].x + emails[i].width < 0) {
+          emails.splice(i, 1);
+          i--;
+          continue;
+        }
+
+        if (checkEmailCollision(emails[i])) {
+          pitchlaneCredits += 3;
+          emails.splice(i, 1);
+          i--;
+        }
+      }
+    }
+
+    function checkEmailCollision(email) {
+      const birdLeft = birdX;
+      const birdRight = birdX + birdWidth;
+      const birdTop = birdY;
+      const birdBottom = birdY + birdHeight;
+
+      const emailLeft = email.x;
+      const emailRight = email.x + email.width;
+      const emailTop = email.y;
+      const emailBottom = email.y + email.height;
+
+      return !(
+        birdBottom < emailTop ||
+        birdTop > emailBottom ||
+        birdRight < emailLeft ||
+        birdLeft > emailRight
+      );
+    }
+
+    function spawnEmail() {
+      const emailY = Math.random() * (canvas.height - 40) + 10;
+      emails.push({
+        x: canvas.width,
+        y: emailY,
+        width: 32,
+        height: 24,
+        img: new Image()
+      });
+      emails[emails.length - 1].img.src = emailSpritePath;
+    }
+
+    function generatePipes() {
+      const topHeight = Math.floor(
+        Math.random() * (canvas.height - pipeGap - 100)
+      ) + 50;
+      const bottomHeight = canvas.height - topHeight - pipeGap;
+
+      const pipeObj = {
+        x: canvas.width,
+        topY: 0,
+        topHeight: topHeight,
+        bottomY: topHeight + pipeGap,
+        bottomHeight: bottomHeight,
+        topImg: new Image(),
+        bottomImg: new Image()
+      };
+
+      pipeObj.topImg.src = pipeTopImg;
+      pipeObj.bottomImg.src = pipeBottomImg;
+      pipes.push(pipeObj);
+    }
+
+    function checkPipeCollisions() {
+      for (let i = 0; i < pipes.length; i++) {
+        const p = pipes[i];
+
+        let birdLeft = birdX;
+        let birdRight = birdX + birdWidth;
+        let birdTop = birdY;
+        let birdBottom = birdY + birdHeight;
+
+        let pipeTopLeft = p.x;
+        let pipeTopRight = p.x + pipeWidth;
+        let pipeTopBottom = p.topY + p.topHeight;
+
+        let pipeBottomLeft = p.x;
+        let pipeBottomRight = p.x + pipeWidth;
+        let pipeBottomTop = p.bottomY;
+
+        // Collision with top pipe
+        if (
+          birdRight > pipeTopLeft &&
+          birdLeft < pipeTopRight &&
+          birdTop < pipeTopBottom
+        ) {
+          triggerGameOver();
+        }
+
+        // Collision with bottom pipe
+        if (
+          birdRight > pipeBottomLeft &&
+          birdLeft < pipeBottomRight &&
+          birdBottom > pipeBottomTop
+        ) {
+          triggerGameOver();
+        }
+      }
+    }
+
+    function triggerGameOver() {
+      if (!gameOver) {
+        gameOver = true;
+        document.getElementById("gameOverText").style.display = "block";
+      }
+    }
+
+    function resetGame() {
+      frames = 0;
+      gameOver = false;
+      pitchlaneCredits = 0;
+      birdY = canvas.height / 2;
+      birdVelocity = 0;
+      pipes = [];
+      emails = [];
+      bgX = 0;
+      document.getElementById("gameOverText").style.display = "none";
+
+      gameLoop();
+    }
+  </script>
+</body>
+</html>
