@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ethan Leigh-Fellows | Product Manager</title>
+    <title>Ethan Leigh-Fellows | Product</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=SF+Pro+Display:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=SF+Pro+Display:wght@300;400;600&family=Raleway:wght@600;800&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -1035,6 +1035,31 @@
             80% { transform: translate(5px, -5px); }
             100% { transform: translate(0); }
         }
+
+        .flag-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 20000;
+            user-select: none;
+            font-size: 2rem;
+            animation: flyAcross linear forwards;
+            left: 0;
+            top: 0;
+        }
+
+        @keyframes flyAcross {
+            from {
+                transform: translate(var(--x-start), var(--y-start)) rotate(0deg);
+            }
+            to {
+                transform: translate(var(--x-end), var(--y-end)) rotate(360deg);
+            }
+        }
+
+        body.battleship-active #game-container {
+            display: flex !important;
+            background: #94b9b8a3;
+        }
     </style>
 </head>
 <body>
@@ -1225,7 +1250,7 @@
                     <span class="window-title" data-i18n="music.title">Spotify — Now Playing</span>
                 </div>
                 <div class="window-body">
-                    <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/album/1HIFwmtC9ah3ujJhAhTL29?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                    <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/album/1HIFwmtC9ah3ujJhAhTL29?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
                 </div>
             </div>
 
@@ -1268,6 +1293,15 @@
         </div>
     </div>
 
+    <script src="js/spacecadet/maths.js?v=20260220"></script>
+    <script src="js/spacecadet/loader.js?v=20260220"></script>
+    <script src="js/spacecadet/render.js?v=20260220"></script>
+    <script src="js/spacecadet/physics.js?v=20260220"></script>
+    <script src="js/spacecadet/table.js?v=20260220"></script>
+    <script src="js/spacecadet/pinball.js?v=20260220"></script>
+    <script src="js/pitchybird.js?v=20260220"></script>
+    <script src="js/2048.js?v=20260220"></script>
+    <script src="js/battleship_game.js?v=20260220"></script>
     <script>
         // Translations
         const translations = {
@@ -1635,7 +1669,7 @@
 
         function handleCommand(cmd) {
             if (cmd === 'help') {
-                showNotification('System Guide', 'Available: help, clear, whoami, sudo mode, projects. Try "run invader_protocol"', 'fas fa-terminal');
+                showNotification('System Guide', 'Available: help, clear, whoami, sudo mode, projects, nation. Games: run invader_protocol, run pitchybird, run 2048, run battleship', 'fas fa-terminal');
             } else if (cmd === 'clear') {
                 repoList.innerHTML = '<div style="color: rgba(48, 209, 88, 0.3)">Terminal buffer cleared. Reloading repos...</div>';
                 setTimeout(fetchRepositories, 1000);
@@ -1648,8 +1682,18 @@
             } else if (cmd === 'coffee') {
                 updateStat('coffee', 100);
                 showNotification('Refilled', 'Coffee level restored to 100%', 'fas fa-coffee');
+            } else if (cmd === 'nation') {
+                launchNationEffect();
             } else if (cmd === 'run invader_protocol' || cmd === 'init arcade') {
-                launchGame();
+                launchGame('invader_protocol');
+            } else if (cmd === 'run pinball') {
+                launchGame('pinball');
+            } else if (cmd === 'run pitchybird') {
+                launchGame('pitchybird');
+            } else if (cmd === 'run 2048') {
+                launchGame('2048');
+            } else if (cmd === 'run battleship') {
+                launchGame('battleship');
             } else {
                 showNotification('Error', `Command not found: ${cmd}`, 'fas fa-exclamation-triangle');
             }
@@ -1659,7 +1703,7 @@
 
         let gameInstance = null;
 
-        function launchGame() {
+        function launchGame(gameType) {
             const gameContainer = document.getElementById('game-container');
             const bootSequence = document.getElementById('boot-sequence');
             const glitchOverlay = document.getElementById('glitch-overlay');
@@ -1673,18 +1717,73 @@
             
             gameContainer.style.display = 'flex';
             closeBtn.classList.remove('show');
-            
-            const bootLines = [
-                "INITIATING ARCADE_MODULE...",
-                "CHECKING SYSTEM INTEGRITY... [OK]",
-                "ALLOCATING MEMORY... [OK]",
-                "LOADING SPRITE_ASSETS... PROCEDURALLY.",
-                "COMPILING MOTION_CURVES... [DONE]",
-                "CALIBRATING WEAPON_SYSTEMS...",
-                "WARNING: UNKNOWN ENERGY SIGNATURES DETECTED.",
-                "PROTOCOL: INVADER",
-                "LAUNCHING... GOOD LUCK.",
-            ];
+
+            let bootLines;
+            let GameClass;
+
+            if (gameType === 'invader_protocol') {
+                bootLines = [
+                    "INITIATING ARCADE_MODULE...",
+                    "CHECKING SYSTEM INTEGRITY... [OK]",
+                    "ALLOCATING MEMORY... [OK]",
+                    "LOADING SPRITE_ASSETS... PROCEDURALLY.",
+                    "COMPILING MOTION_CURVES... [DONE]",
+                    "CALIBRATING WEAPON_SYSTEMS...",
+                    "WARNING: UNKNOWN ENERGY SIGNATURES DETECTED.",
+                    "PROTOCOL: INVADER",
+                    "LAUNCHING... GOOD LUCK.",
+                ];
+                GameClass = InvaderProtocol;
+            } else if (gameType === 'pinball') {
+                bootLines = [
+                    "INITIATING PINBALL_SIMULATOR...",
+                    "CALIBRATING PHYSICS_ENGINE... [OK]",
+                    "LOADING ASSETS... [PLACEHOLDER]",
+                    "PREPARING BALL LAUNCH SYSTEM...",
+                    "ENGAGING FLIPPER MECHANISMS...",
+                    "SIMULATION READY.",
+                    "LAUNCHING... HAVE FUN.",
+                ];
+                GameClass = PinballGame;
+            } else if (gameType === 'pitchybird') {
+                bootLines = [
+                    "INITIATING PITCHYBIRD...",
+                    "LOADING PITCHLANE ASSETS...",
+                    "CALIBRATING GRAVITY... [OK]",
+                    "WAKING UP THE CATS...",
+                    "PREPARING EMAIL COLLECTORS...",
+                    "SYSTEM READY.",
+                    "LAUNCHING... GOOD LUCK.",
+                ];
+                GameClass = Pitchybird;
+            } else if (gameType === '2048') {
+                bootLines = [
+                    "INITIATING 2048_MODULE...",
+                    "PREPARING GRID... [4x4]",
+                    "GENERATING SEED TILES...",
+                    "CALIBRATING SLIDE_ENGINE...",
+                    "MERGE_LOGIC: OPTIMIZED.",
+                    "SYSTEM READY.",
+                    "LAUNCHING... REACH THE TILE.",
+                ];
+                GameClass = Game2048;
+            } else if (gameType === 'battleship') {
+                bootLines = [
+                    "INITIATING BATTLESHIP_PROTOCOL...",
+                    "SCANNING FOR ENEMY VESSELS...",
+                    "CALIBRATING SONAR ARRAYS...",
+                    "LOADING COORDINATE_SYSTEM...",
+                    "PREPARING SHIP_FLEET...",
+                    "SYSTEM READY.",
+                    "LAUNCHING... GOOD LUCK, COMMANDER.",
+                ];
+                GameClass = BattleshipGame;
+            } else {
+                showNotification('Error', `Unknown game type: ${gameType}`, 'fas fa-exclamation-triangle');
+                gameContainer.style.display = 'none';
+                openWindow('terminal');
+                return;
+            }
 
             bootSequence.innerHTML = '';
             bootLines.forEach((line, index) => {
@@ -1695,8 +1794,8 @@
                     bootSequence.appendChild(lineEl);
                     lineEl.style.animation = `fadeInLine 0.5s forwards`;
                     
-                    // Glitch effect
-                    if (index > 4) {
+                    // Glitch effect (only for invader protocol)
+                    if (gameType === 'invader_protocol' && index > 4) {
                         glitchOverlay.style.display = 'block';
                         glitchOverlay.style.animation = `glitch-anim 0.1s ${Math.random() > 0.5 ? 'reverse' : ''}`;
                         setTimeout(() => glitchOverlay.style.display = 'none', 100);
@@ -1704,48 +1803,59 @@
                 }, index * 250);
             });
 
-                        setTimeout(() => {
-                            bootSequence.style.display = 'none';
-                            closeBtn.classList.add('show');
-                            
-                            // Add music
-                            musicContainer.innerHTML = `<iframe width="1" height="1" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/necmusic/holst-the-planets-jupiter-the&color=%23ff5500&auto_play=true&hide_related=false&show_comments=false&show_user=false&show_reposts=false&show_teaser=false"></iframe>`;
-                            
-                            if (gameInstance) {
-                                gameInstance.stop();
-                            }
-                            gameInstance = new InvaderProtocol('game-canvas');
-                            gameInstance.start();
+            setTimeout(() => {
+                bootSequence.style.display = 'none';
+                closeBtn.classList.add('show');
+                
+                // Add music - Randomly choose a song from the provided list
+                const trackUrls = [
+                    "https://soundcloud.com/royal-philharmonic-orchestra/knightsbride-march",
+                    "https://soundcloud.com/royal-philharmonic-orchestra/nimrod",
+                    "https://soundcloud.com/royal-philharmonic-orchestra/crown-imperial",
+                    "https://soundcloud.com/royal-philharmonic-orchestra/rule-britannia-2",
+                    "https://soundcloud.com/royal-philharmonic-orchestra/jerusalem-2",
+                    "https://soundcloud.com/royal-philharmonic-orchestra/auld-lang-syne",
+                    "https://soundcloud.com/lucie-507943032/god-save-the-king",
+                    "https://soundcloud.com/theroyalairforce-music/battle-of-britain-theme"
+                ];
+                const selectedTrack = trackUrls[Math.floor(Math.random() * trackUrls.length)];
+                musicContainer.innerHTML = `<iframe width="1" height="1" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=${encodeURIComponent(selectedTrack)}&color=%23ff5500&auto_play=true&hide_related=false&show_comments=false&show_user=false&show_reposts=false&show_teaser=false"></iframe>`;
+                
+                if (gameInstance) {
+                    gameInstance.stop(); // Stop previous game instance
+                }
+                gameInstance = new GameClass('game-canvas');
+                gameInstance.start();
             
-                            // Close button handler
-                            const closeHandler = () => {
-                                gameInstance.stop();
-                                closeBtn.removeEventListener('click', closeHandler);
-                            };
-                            closeBtn.addEventListener('click', closeHandler);
+                // Close button handler
+                const closeHandler = () => {
+                    gameInstance.stop();
+                    closeBtn.removeEventListener('click', closeHandler);
+                    document.removeEventListener('keydown', quitHandler); // Remove quit handler here
+                    gameContainer.style.display = 'none';
+                    bootSequence.style.display = 'block';
+                    musicContainer.innerHTML = ''; // Stop music
+                    closeBtn.classList.remove('show');
+                    openWindow('terminal'); // Restore terminal
+                };
+                closeBtn.addEventListener('click', closeHandler);
             
-                            // Add escape key listener to quit
-                            const quitHandler = (e) => {
-                                if (e.key === 'Escape') {
-                                    if (gameInstance.isPaused) {
-                                        gameInstance.resume();
-                                    } else {
-                                        gameInstance.pause();
-                                    }
-                                }
-                            };
-                            document.addEventListener('keydown', quitHandler);
-                            gameInstance.onStop = () => {
-                                document.removeEventListener('keydown', quitHandler);
-                                gameContainer.style.display = 'none';
-                                bootSequence.style.display = 'block';
-                                musicContainer.innerHTML = ''; // Stop music
-                                closeBtn.classList.remove('show');
-                                openWindow('terminal'); // Restore terminal
-                            };
-            
-                        }, bootLines.length * 250 + 500);
+                // Add escape key listener to quit
+                const quitHandler = (e) => {
+                    if (e.key === 'Escape') {
+                        if (gameType === 'invader_protocol' && gameInstance.isPaused) {
+                            gameInstance.resume();
+                        } else if (gameType === 'invader_protocol') {
+                            gameInstance.pause();
+                        } else { 
+                             // For PinballGame or other games, Escape stops the game for now.
+                             closeHandler();
+                        }
                     }
+                };
+                document.addEventListener('keydown', quitHandler);
+            }, bootLines.length * 250 + 500);
+        }
             
                             class InvaderProtocol {
                                 constructor(canvasId) {
@@ -1848,10 +1958,16 @@
                                 
                                 pause() {
                                     this.isPaused = true;
+                                    if (this.audioCtx && this.audioCtx.state === 'running') {
+                                        this.audioCtx.suspend();
+                                    }
                                 }
                     
                                 resume() {
                                     this.isPaused = false;
+                                    if (this.audioCtx && this.audioCtx.state === 'suspended') {
+                                        this.audioCtx.resume();
+                                    }
                                     this.gameLoop(this.lastTime);
                                 }
                     
@@ -1864,6 +1980,12 @@
                                     if (this.gameOver && this.lives > 0) return; // Prevent multiple stops
                                     this.gameOver = true;
                                     this.unbindEvents();
+                                    
+                                    // Properly close audio context to prevent interference
+                                    if (this.audioCtx) {
+                                        this.audioCtx.close().catch(err => console.error("Error closing AudioContext:", err));
+                                    }
+                                    
                                     if (this.onStop) this.onStop();
                                 }
                     
@@ -2331,6 +2453,57 @@
         function updateStat(id, val) {
             const el = document.getElementById(`${id}-stat`);
             if (el) el.textContent = `${val}%`;
+        }
+
+        function launchNationEffect() {
+            const flags = ['🇬🇧', '🇨🇦'];
+            const container = document.body;
+            const count = 50;
+            
+            showNotification('Allegiance', 'Celebrating the Union Jack and the Maple Leaf!', 'fas fa-flag-checkered');
+
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const flag = document.createElement('div');
+                    flag.className = 'flag-particle';
+                    flag.textContent = flags[Math.floor(Math.random() * flags.length)];
+                    
+                    const side = Math.floor(Math.random() * 4); // 0: Left, 1: Right, 2: Top, 3: Bottom
+                    let xStart, yStart, xEnd, yEnd;
+                    const margin = 100;
+
+                    if (side === 0) { // Left to Right
+                        xStart = -margin; yStart = Math.random() * window.innerHeight;
+                        xEnd = window.innerWidth + margin; yEnd = Math.random() * window.innerHeight;
+                    } else if (side === 1) { // Right to Left
+                        xStart = window.innerWidth + margin; yStart = Math.random() * window.innerHeight;
+                        xEnd = -margin; yEnd = Math.random() * window.innerHeight;
+                    } else if (side === 2) { // Top to Bottom
+                        xStart = Math.random() * window.innerWidth; yStart = -margin;
+                        xEnd = Math.random() * window.innerWidth; yEnd = window.innerHeight + margin;
+                    } else { // Bottom to Top
+                        xStart = Math.random() * window.innerWidth; yStart = window.innerHeight + margin;
+                        xEnd = Math.random() * window.innerWidth; yEnd = -margin;
+                    }
+
+                    const duration = 2 + Math.random() * 3;
+                    const size = 1.5 + Math.random() * 2.5;
+
+                    flag.style.setProperty('--x-start', `${xStart}px`);
+                    flag.style.setProperty('--y-start', `${yStart}px`);
+                    flag.style.setProperty('--x-end', `${xEnd}px`);
+                    flag.style.setProperty('--y-end', `${yEnd}px`);
+                    flag.style.animationDuration = `${duration}s`;
+                    flag.style.fontSize = `${size}rem`;
+                    flag.style.opacity = 0.8 + Math.random() * 0.2;
+
+                    container.appendChild(flag);
+
+                    setTimeout(() => {
+                        flag.remove();
+                    }, duration * 1000);
+                }, i * 80);
+            }
         }
 
         setInterval(() => {
