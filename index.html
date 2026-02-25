@@ -616,6 +616,92 @@
             display: inline-block;
         }
 
+        /* Places Window */
+        #places {
+            width: 700px;
+            height: 450px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #places .window-body {
+            padding: 0;
+            background: rgba(18, 18, 20, 0.8);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+
+        .places-carousel-wrapper {
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            position: relative;
+        }
+
+        .places-carousel {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            animation: scrollPlaces 30s linear infinite;
+        }
+
+        .places-carousel:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes scrollPlaces {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(-50% - 10px)); }
+        }
+
+        .place-card {
+            width: 300px;
+            min-width: 300px;
+            height: 360px;
+            background: rgba(28, 28, 30, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .place-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .place-image {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .place-info {
+            padding: 15px;
+            text-align: center;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .place-name {
+            color: #fff;
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+        }
+
         /* Contact Window */
         #contact {
             width: 450px;
@@ -1254,6 +1340,25 @@
                 </div>
             </div>
 
+            <!-- Places Window -->
+            <div class="window" id="places">
+                <div class="window-header">
+                    <div class="window-controls">
+                        <div class="window-btn close"></div>
+                        <div class="window-btn minimize"></div>
+                        <div class="window-btn maximize"></div>
+                    </div>
+                    <span class="window-title">Places</span>
+                </div>
+                <div class="window-body">
+                    <div class="places-carousel-wrapper">
+                        <div class="places-carousel" id="places-carousel">
+                            <!-- Populated via JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Contact Window -->
             <div class="window" id="contact">
                 <div class="window-header">
@@ -1293,12 +1398,6 @@
         </div>
     </div>
 
-    <script src="js/spacecadet/maths.js?v=20260220"></script>
-    <script src="js/spacecadet/loader.js?v=20260220"></script>
-    <script src="js/spacecadet/render.js?v=20260220"></script>
-    <script src="js/spacecadet/physics.js?v=20260220"></script>
-    <script src="js/spacecadet/table.js?v=20260220"></script>
-    <script src="js/spacecadet/pinball.js?v=20260220"></script>
     <script src="js/pitchybird.js?v=20260220"></script>
     <script src="js/2048.js?v=20260220"></script>
     <script src="js/battleship_game.js?v=20260220"></script>
@@ -1669,7 +1768,7 @@
 
         function handleCommand(cmd) {
             if (cmd === 'help') {
-                showNotification('System Guide', 'Available: help, clear, whoami, sudo mode, projects, nation. Games: run invader_protocol, run pitchybird, run 2048, run battleship', 'fas fa-terminal');
+                showNotification('System Guide', 'Available: help, clear, whoami, sudo mode, projects, nation, places. Games: run invader_protocol, run pitchybird, run 2048, run battleship', 'fas fa-terminal');
             } else if (cmd === 'clear') {
                 repoList.innerHTML = '<div style="color: rgba(48, 209, 88, 0.3)">Terminal buffer cleared. Reloading repos...</div>';
                 setTimeout(fetchRepositories, 1000);
@@ -1679,6 +1778,8 @@
                 unlockSecret('sudo');
             } else if (cmd === 'projects') {
                 openWindow('terminal');
+            } else if (cmd === 'places') {
+                showPlacesWindow();
             } else if (cmd === 'coffee') {
                 updateStat('coffee', 100);
                 showNotification('Refilled', 'Coffee level restored to 100%', 'fas fa-coffee');
@@ -1686,8 +1787,6 @@
                 launchNationEffect();
             } else if (cmd === 'run invader_protocol' || cmd === 'init arcade') {
                 launchGame('invader_protocol');
-            } else if (cmd === 'run pinball') {
-                launchGame('pinball');
             } else if (cmd === 'run pitchybird') {
                 launchGame('pitchybird');
             } else if (cmd === 'run 2048') {
@@ -1697,6 +1796,36 @@
             } else {
                 showNotification('Error', `Command not found: ${cmd}`, 'fas fa-exclamation-triangle');
             }
+        }
+
+        let placesInitialized = false;
+
+        function showPlacesWindow() {
+            if (!placesInitialized) {
+                const carousel = document.getElementById('places-carousel');
+                const places = [
+                    { name: 'Shrewsbury', img: 'photoassets/shrewsbury.png' },
+                    { name: 'San Francisco', img: 'photoassets/SanFrancisco.png' },
+                    { name: 'Brighton', img: 'photoassets/Brighton.png' },
+                    { name: 'Bath', img: 'photoassets/Bath.png' },
+                    { name: 'Kingston', img: 'photoassets/kingston.png' }
+                ];
+                
+                // Duplicate places to create a seamless infinite scrolling effect
+                const repeatedPlaces = [...places, ...places];
+                
+                carousel.innerHTML = repeatedPlaces.map(place => `
+                    <div class="place-card">
+                        <img src="${place.img}" alt="${place.name}" class="place-image">
+                        <div class="place-info">
+                            <div class="place-name">${place.name}</div>
+                        </div>
+                    </div>
+                `).join('');
+                
+                placesInitialized = true;
+            }
+            openWindow('places');
         }
 
         // --- Invader Protocol Game Logic ---
@@ -1734,17 +1863,6 @@
                     "LAUNCHING... GOOD LUCK.",
                 ];
                 GameClass = InvaderProtocol;
-            } else if (gameType === 'pinball') {
-                bootLines = [
-                    "INITIATING PINBALL_SIMULATOR...",
-                    "CALIBRATING PHYSICS_ENGINE... [OK]",
-                    "LOADING ASSETS... [PLACEHOLDER]",
-                    "PREPARING BALL LAUNCH SYSTEM...",
-                    "ENGAGING FLIPPER MECHANISMS...",
-                    "SIMULATION READY.",
-                    "LAUNCHING... HAVE FUN.",
-                ];
-                GameClass = PinballGame;
             } else if (gameType === 'pitchybird') {
                 bootLines = [
                     "INITIATING PITCHYBIRD...",
