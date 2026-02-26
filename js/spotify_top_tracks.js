@@ -1,7 +1,7 @@
 /**
  * Spotify Top Tracks Module
  * Dynamically renders the most listened tracks using data enriched via Spotify API.
- * To keep the client secret safe, data is updated via GitHub Actions into spotify_data.js.
+ * To keep credentials safe, data is updated via a secure background process.
  */
 
 const DEFAULT_TRACKS = [
@@ -16,7 +16,7 @@ function renderSpotifyTracks() {
     const listContainer = document.getElementById('music-tracks-list');
     if (!listContainer) return;
 
-    // Use data from spotify_data.js if available (populated by GitHub Actions)
+    // Use data from spotify_data.js if available
     const tracks = (window.SPOTIFY_DATA && window.SPOTIFY_DATA.tracks) || DEFAULT_TRACKS;
 
     listContainer.innerHTML = `

@@ -43,7 +43,7 @@ async function updateData() {
     }
 
     // Write to js/spotify_data.js
-    const content = `// This file is automatically updated via GitHub Actions to keep Spotify data fresh without exposing secrets.
+    const content = `// This file is automatically updated via a background process to keep Spotify data fresh without exposing credentials.
 window.SPOTIFY_DATA = {
     updated_at: "${new Date().toISOString().split('T')[0]}",
     tracks: ${JSON.stringify(tracks, null, 8)}

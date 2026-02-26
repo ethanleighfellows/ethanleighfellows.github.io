@@ -1,4 +1,4 @@
-// This file is automatically updated via GitHub Actions to keep Spotify data fresh without exposing secrets.
+// This file is automatically updated via a background process to keep Spotify data fresh without exposing credentials.
 window.SPOTIFY_DATA = {
     updated_at: "2026-02-26",
     tracks: [

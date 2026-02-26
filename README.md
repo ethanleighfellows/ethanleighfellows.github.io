@@ -14,7 +14,7 @@ A highly interactive, macOS-inspired personal portfolio and retro arcade platfor
 
 ### 🎵 Secure Spotify Integration
 *   **Dynamic Music Hub:** Displays my Top 5 tracks from the past month in real-time.
-*   **Security Architecture:** Implements a "Build-Time Enrichment" workflow. A secure Node.js worker runs via GitHub Actions to fetch Spotify metadata, ensuring sensitive API secrets (Client Secret/Refresh Token) are never exposed to the client.
+*   **Security Architecture:** Implements a "Build-Time Enrichment" workflow. A secure Node.js worker runs to fetch Spotify metadata, ensuring sensitive credentials are never exposed to the client.
 *   **Enriched UI:** Features a custom CSS audio visualizer, pulsing "Live" status indicators, and deep-links to the native Spotify app.
 
 ### 🕹️ Retro Arcade & Apps
@@ -30,16 +30,16 @@ A highly interactive, macOS-inspired personal portfolio and retro arcade platfor
 ## 📁 File Structure
 
 ```text
-├── .github/workflows/       # GitHub Actions automation
-│   └── spotify_update.yml   # Daily cron job for Spotify data enrichment
+├── .github/workflows/       # Automated workflows
+│   └── spotify_update.yml   # Periodic Spotify data enrichment
 ├── js/                      # Client-side Logic
 │   ├── spotify_top_tracks.js # Music app UI & visualizer logic
-│   ├── spotify_data.js      # Data store for Spotify tracks (Updated by CI)
+│   ├── spotify_data.js      # Data store for Spotify tracks
 │   ├── 2048.js              # Arcade: 2048 Game logic
 │   ├── battleship_game.js   # Arcade: Battleship logic
 │   ├── pitchybird.js        # Arcade: Pitchybird logic
 │   └── hacker_ascii.js      # Identity app ASCII animations
-├── scripts/                 # Server-side / CI Utility Scripts
+├── scripts/                 # Background Utility Scripts
 │   └── update_spotify_data.js # Secure Node.js worker for Spotify API
 ├── photoassets/             # Images for the Places carousel
 ├── index.html               # Main entry point (Styles, DOM, & core Desktop OS logic)
@@ -48,14 +48,14 @@ A highly interactive, macOS-inspired personal portfolio and retro arcade platfor
 
 ## 🛡️ Security & Privacy
 The project follows modern security practices for static site deployments:
-1.  **Secret Management:** No API keys are stored in the codebase.
-2.  **Serverless Processing:** GitHub Actions are used as a secure backend to process private data before committing non-sensitive results to the public repo.
-3.  **Environment Variables:** All Spotify credentials are encrypted via GitHub Secrets.
+1.  **Credential Management:** No API keys are stored in the codebase.
+2.  **Serverless Processing:** Secure backend processing handles private data before committing non-sensitive results to the public repo.
+3.  **Encrypted Variables:** All Spotify credentials are encrypted and injected at build-time.
 
 ## 👨‍💻 Tech Stack
 *   **Frontend:** Vanilla JS (ES6+), HTML5, CSS3 (Custom Variables & Keyframes).
 *   **APIs:** Spotify Web API, GitHub REST API.
-*   **Automation:** GitHub Actions (CI/CD), Node.js.
+*   **Automation:** Node.js.
 *   **Design:** SF Pro / Inter Typography, Apple Glassmorphism, FontAwesome.
 
 ---
