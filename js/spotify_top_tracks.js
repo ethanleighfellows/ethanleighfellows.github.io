@@ -19,14 +19,29 @@ function renderSpotifyTracks() {
     // Use data from spotify_data.js if available (populated by GitHub Actions)
     const tracks = (window.SPOTIFY_DATA && window.SPOTIFY_DATA.tracks) || DEFAULT_TRACKS;
 
-    listContainer.innerHTML = '';
+    listContainer.innerHTML = `
+        <div class="music-header">
+            <h3>My Top Tracks</h3>
+            <p>The tracks I've listened to most this past month, synced from Spotify.</p>
+        </div>
+    `;
 
     tracks.forEach((track, index) => {
         const trackElement = document.createElement('div');
         trackElement.className = 'track-item';
+        
+        // Add Live badge to the first track
+        const liveBadge = index === 0 ? `
+            <div class="live-badge">
+                <div class="pulse-dot"></div>
+                Featured
+            </div>
+        ` : '';
+
         trackElement.innerHTML = `
             <div class="track-index">#${index + 1}</div>
             <div class="track-info">
+                ${liveBadge}
                 <div style="display: flex; align-items: center; justify-content: space-between;">
                     <div class="track-name">${track.name}</div>
                     <div class="visualizer">
@@ -48,6 +63,9 @@ function renderSpotifyTracks() {
                         loading="lazy">
                     </iframe>
                 </div>
+                <a href="https://open.spotify.com/track/${track.id}" target="_blank" class="spotify-link-btn">
+                    <i class="fab fa-spotify"></i> Open in Spotify
+                </a>
             </div>
         `;
         listContainer.appendChild(trackElement);
