@@ -43,26 +43,32 @@
             pointer-events: none;
         }
 
-        .loader {
-            width: 50px;
-            height: 50px;
-            border: 3px solid #333;
-            border-top: 3px solid #007AFF;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
+        .loader-3d {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            perspective: 1000px;
+        }
+
+        .cyber-loader {
+            filter: drop-shadow(0 0 15px rgba(0, 255, 65, 0.6));
         }
 
         .loader-text {
-            color: #007AFF;
-            margin-top: 20px;
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
-            font-size: 14px;
-            font-weight: 300;
+            color: #00ff41;
+            margin-top: 25px;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            font-weight: bold;
+            letter-spacing: 4px;
+            text-shadow: 0 0 5px #00ff41, 0 0 10px #00ff41;
+            animation: cyberPulse 2s infinite;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        @keyframes cyberPulse {
+            0%, 100% { opacity: 0.6; text-shadow: 0 0 5px rgba(0, 255, 65, 0.5); }
+            50% { opacity: 1; text-shadow: 0 0 15px rgba(0, 255, 65, 0.9), 0 0 30px rgba(0, 255, 65, 0.6); }
         }
 
         /* Video Background */
@@ -673,7 +679,7 @@
 
         @keyframes scrollPlaces {
             0% { transform: translateX(0); }
-            100% { transform: translateX(calc(-50% - 10px)); }
+            100% { transform: translateX(calc(-50% + 10px)); }
         }
 
         .place-card {
@@ -1171,8 +1177,44 @@
 <body>
     <!-- Preloader -->
     <div id="preloader">
-        <div class="loader"></div>
-        <div class="loader-text" data-i18n="loading">Initializing system...</div>
+        <div class="loader-3d">
+            <svg class="cyber-loader" viewBox="-50 -50 100 100" width="160" height="160" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <filter id="cyber-glow" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur stdDeviation="1.5" result="blur" />
+                        <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                    </filter>
+                </defs>
+                <g filter="url(#cyber-glow)" stroke="#00ff41" stroke-width="1.5" fill="none">
+                    <!-- Outer rotating dashed ring -->
+                    <circle cx="0" cy="0" r="45" stroke-dasharray="10 5 2 5">
+                        <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="6s" repeatCount="indefinite" />
+                    </circle>
+                    <!-- Inner fast counter-rotating dashed ring -->
+                    <circle cx="0" cy="0" r="35" stroke-dasharray="15 15">
+                        <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="4s" repeatCount="indefinite" />
+                    </circle>
+                    <!-- Hexagon frame -->
+                    <polygon points="0,-25 21.65,-12.5 21.65,12.5 0,25 -21.65,12.5 -21.65,-12.5" fill="rgba(0, 255, 65, 0.05)">
+                        <animateTransform attributeName="transform" type="scale" values="0.9; 1.05; 0.9" dur="2s" repeatCount="indefinite" />
+                    </polygon>
+                    <!-- Inner scanning triangle -->
+                    <polygon points="0,-15 13,7.5 -13,7.5" fill="rgba(0, 255, 65, 0.2)">
+                        <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="2s" repeatCount="indefinite" />
+                    </polygon>
+                    <!-- Center dot -->
+                    <circle cx="0" cy="0" r="3" fill="#00ff41">
+                        <animate attributeName="opacity" values="0; 1; 0" dur="1s" repeatCount="indefinite" />
+                    </circle>
+                    <!-- Radar scan line -->
+                    <line x1="0" y1="0" x2="0" y2="-45" stroke-width="2">
+                        <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="3s" repeatCount="indefinite" />
+                        <animate attributeName="opacity" values="0.8;0.2;0.8" dur="3s" repeatCount="indefinite" />
+                    </line>
+                </g>
+            </svg>
+        </div>
+        <div class="loader-text" data-i18n="loading">BOOTING KERNEL...</div>
     </div>
 
     <!-- Game Container -->
@@ -1239,9 +1281,9 @@
             </div>
             <div class="desktop-icon" data-app="hacker">
                 <div class="icon-image hacker">
-                    <i class="fas fa-user-secret"></i>
+                    <i class="fas fa-fingerprint"></i>
                 </div>
-                <div class="icon-label" data-i18n="icon.access">Access</div>
+                <div class="icon-label" data-i18n="icon.access">Identity</div>
             </div>
             <div class="desktop-icon" data-app="music">
                 <div class="icon-image music">
@@ -1508,7 +1550,7 @@
                 status: "Online",
                 name: "Ethan Leigh-Fellows",
                 subtitle: `San Francisco | ${age} y/o | Product`,
-                icon: { projects: "Projects", access: "Access", music: "Music", contact: "Contact", linkedin: "LinkedIn", github: "GitHub", arcade: "Arcade", places: "Places" },
+                icon: { projects: "Projects", access: "Identity", music: "Music", contact: "Contact", linkedin: "LinkedIn", github: "GitHub", arcade: "Arcade", places: "Places" },
                 terminal: { fetching: "Fetching public repositories from GitHub...", loading: "Loading repositories...", updated: "Updated:", title: "ethan@localhost — zsh — 80×24" },
                 hacker: {
                     title: "[SYSTEM ACCESS] — AUTHORIZED",
@@ -1529,7 +1571,7 @@
                 status: "En ligne",
                 name: "Ethan Leigh-Fellows",
                 subtitle: `San Francisco | ${age} ans | Product`,
-                icon: { projects: "Projets", access: "Accès", music: "Musique", contact: "Contact", linkedin: "LinkedIn", github: "GitHub", arcade: "Arcade", places: "Galerie" },
+                icon: { projects: "Projets", access: "Identité", music: "Musique", contact: "Contact", linkedin: "LinkedIn", github: "GitHub", arcade: "Arcade", places: "Galerie" },
                 terminal: { fetching: "Récupération des dépôts publics depuis GitHub...", loading: "Chargement des dépôts...", updated: "Mis à jour le :", title: "ethan@localhost — zsh — 80×24" },
                 hacker: {
                     title: "[ACCÈS SYSTÈME] — AUTORISÉ",
@@ -1550,7 +1592,7 @@
                 status: "В сети",
                 name: "Итан Ли-Феллоуз",
                 subtitle: `Сан-Франциско | ${age} ${getRussianAgeSuffix(age)} | Продукт`,
-                icon: { projects: "Проекты", access: "Доступ", music: "Музыка", contact: "Контакт", linkedin: "LinkedIn", github: "GitHub", arcade: "Аркада", places: "Галерея" },
+                icon: { projects: "Проекты", access: "Личность", music: "Музыка", contact: "Контакт", linkedin: "LinkedIn", github: "GitHub", arcade: "Аркада", places: "Галерея" },
                 terminal: { fetching: "Получение публичных репозиториев с GitHub...", loading: "Загрузка репозиториев...", updated: "Обновлено:", title: "итан@localhost — zsh — 80×24" },
                 hacker: {
                     title: "[ДОСТУП К СИСТЕМЕ] — АВТОРИЗОВАН",
