@@ -5,11 +5,11 @@
  */
 
 const DEFAULT_TRACKS = [
-    { id: '0tRDDFPijcSILWXWZ60Wx5', name: 'Location', artist: 'Dave (feat. Burna Boy)' },
-    { id: '1lWoPg6qu3RNLeXkt1OPmh', name: 'Sprinter', artist: 'Dave & Central Cee' },
-    { id: '4RqW6FZXZLUrndtWNaMGAf', name: 'Starlight', artist: 'Dave' },
-    { id: '2ITtyzWjO2Q39vjT8o51H2', name: 'Verdansk', artist: 'Dave' },
-    { id: '2nywPXZrSK91Oepjw3p5kH', name: 'Clash (feat. Stormzy)', artist: 'Dave' }
+    { id: '4WjEY877D3AgyMLqMKrUsV', name: 'Parsifal: Prelude', artist: 'Richard Wagner' },
+    { id: '7pyDecU8b4zIVuNv6YdI0q', name: 'Requiem, Op. 48: In Paradisum', artist: 'Gabriel Fauré' },
+    { id: '6bDd1ETtj3yBcTuCYMxSmM', name: 'Psalm 104', artist: 'Poor Bishop Hooper' },
+    { id: '4RqW6FZXZLUrndtWNaMGAf', name: 'Turandot: Nessun dorma!', artist: 'Giacomo Puccini' },
+    { id: '1lWoPg6qu3RNLeXkt1OPmh', name: 'The Isle of the Dead, Op. 29', artist: 'Sergei Rachmaninoff' }
 ];
 
 function renderSpotifyTracks() {
