@@ -793,24 +793,78 @@
 
         /* Music Window */
         #music {
-            width: 400px;
-            height: 240px;
+            width: 450px;
+            height: 520px;
             top: 15%;
             left: 15%;
         }
 
         #music .window-body {
-            padding: 20px;
+            padding: 15px;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(0, 0, 0, 0.8);
+            flex-direction: column;
+            gap: 12px;
+            background: rgba(10, 10, 10, 0.9);
+            overflow-y: auto;
         }
 
-        #music iframe {
+        .track-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 10px;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .track-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+            border-color: #1DB954;
+        }
+
+        .track-index {
+            color: #1DB954;
+            font-family: 'SF Mono', monospace;
+            font-weight: bold;
+            font-size: 18px;
+            width: 30px;
+            text-align: center;
+        }
+
+        .track-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .track-name {
+            color: #fff;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .track-artist {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+        }
+
+        .track-player {
             width: 100%;
-            border: none;
-            border-radius: 12px;
+            height: 80px;
+            margin-top: 5px;
+        }
+
+        #music .window-body::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        #music .window-body::-webkit-scrollbar-thumb {
+            background: #1DB954;
+            border-radius: 2px;
         }
 
         /* Hacker Window */
@@ -1414,10 +1468,11 @@
                         <div class="window-btn minimize"></div>
                         <div class="window-btn maximize"></div>
                     </div>
-                    <span class="window-title" data-i18n="music.title">Spotify — Now Playing</span>
+                    <span class="window-title" data-i18n="music.title">Spotify — Top Tracks This Month</span>
                 </div>
-                <div class="window-body">
-                    <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/album/1HIFwmtC9ah3ujJhAhTL29?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                <div class="window-body" id="music-tracks-list">
+                    <div class="loading-repos" style="color: #1DB954;">Connecting to Spotify API...</div>
+                    <!-- Dynamically populated via js/spotify_top_tracks.js -->
                 </div>
             </div>
 
@@ -1527,6 +1582,8 @@
     <script src="js/pitchybird.js?v=20260220"></script>
     <script src="js/2048.js?v=20260220"></script>
     <script src="js/battleship_game.js?v=20260220"></script>
+    <script src="js/spotify_data.js?v=20260225"></script>
+    <script src="js/spotify_top_tracks.js?v=20260225"></script>
     <script>
         // Calculate dynamic age
         const birthDate = new Date(atob('MjAwMi0wOS0yNQ=='));
