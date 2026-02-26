@@ -1,6 +1,6 @@
 # ethanleighfellows.github.io
 
-A highly interactive, macOS-inspired personal portfolio and retro arcade platform. This project serves as a technical showcase for modern web development, secure API integration, and immersive UI/UX design.
+A highly interactive, macOS-inspired personal portfolio and retro arcade platform.
 
 ## 🚀 Live Demo
 [https://ethanleighfellows.github.io/](https://ethanleighfellows.github.io/)
