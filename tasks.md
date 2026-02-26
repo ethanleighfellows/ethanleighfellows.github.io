@@ -1,8 +1,0 @@
-1. [x] On the places window, once the entire carosell gets to the end and it begins to loop, there is a jitter. Resolve this
-*(Fixed the offset in the CSS animation from `calc(-50% - 10px)` to `calc(-50% + 10px)` to properly account for the padding and gaps, resulting in a perfectly seamless loop without the 20px jitter.)*
-
-2. [x] Replace "Access" with something more inline with what it actually represents now. (having my name and the dragon)
-*(Renamed "Dragon" to "Identity", changed the icon to a more descriptive `fa-fingerprint` to reflect the terminal "whoami" / System Identity context of the popup, and updated the English, French, and Russian translations.)*
-
-3. [x] Improve the pre-loader. Give it greater animation even make it 3d if that's the design direction that you think would look cool. At the moment the 2d spinning circle looks basic. Gemini 3.1 now has improved SVG generation ability, if of value and in line with the direction you want to take, you can use this functionality to design a pre-loader animation. 
-*(Overhauled the preloader with a highly thematic Cyber-Hacker "Kernel Boot" animation. It features a bright neon-green geometric matrix aesthetic with counter-rotating dashed rings, a pulsing hexagon frame, a scanning inner triangle, and a sweeping radar line, all underscored by a glitching "BOOTING KERNEL..." terminal text. This ties perfectly into the 'Terminal' and 'Dragon/Identity' visual language of the site.)*
