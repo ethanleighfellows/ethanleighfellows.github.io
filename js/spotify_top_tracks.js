@@ -5,11 +5,11 @@
  */
 
 const DEFAULT_TRACKS = [
-    { id: '6OakIaj4T039vJ8V2AJiWa', name: 'History (feat. James Blake)', artist: 'Dave' },
-    { id: '0ylPYJtAJmAMr9jdPQ3cF7', name: 'This Is The Last Time', artist: 'Keane' },
-    { id: '1A1BitAAJBXl2wpUaDnYc5', name: 'Torturous', artist: 'Turnerjoy' },
-    { id: '7454StFiLI0EMexuqtvNv4', name: 'Psycho', artist: 'Dave' },
-    { id: '6zfczP87XO2SxWlQtnjFNa', name: 'The Look', artist: 'Metronomy' }
+    { id: '0tRDDFPijcSILWXWZ60Wx5', name: 'Location', artist: 'Dave (feat. Burna Boy)' },
+    { id: '1lWoPg6qu3RNLeXkt1OPmh', name: 'Sprinter', artist: 'Dave & Central Cee' },
+    { id: '4RqW6FZXZLUrndtWNaMGAf', name: 'Starlight', artist: 'Dave' },
+    { id: '2ITtyzWjO2Q39vjT8o51H2', name: 'Verdansk', artist: 'Dave' },
+    { id: '2nywPXZrSK91Oepjw3p5kH', name: 'Clash (feat. Stormzy)', artist: 'Dave' }
 ];
 
 function renderSpotifyTracks() {
@@ -27,7 +27,15 @@ function renderSpotifyTracks() {
         trackElement.innerHTML = `
             <div class="track-index">#${index + 1}</div>
             <div class="track-info">
-                <div class="track-name">${track.name}</div>
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <div class="track-name">${track.name}</div>
+                    <div class="visualizer">
+                        <div class="visualizer-bar"></div>
+                        <div class="visualizer-bar"></div>
+                        <div class="visualizer-bar"></div>
+                        <div class="visualizer-bar"></div>
+                    </div>
+                </div>
                 <div class="track-artist">${track.artist}</div>
                 <div class="track-player">
                     <iframe 
