@@ -45,18 +45,30 @@ async function updateFootballData() {
         const topScorer = teamData.overview.topPlayers.byGoals.players[0] ? `${teamData.overview.topPlayers.byGoals.players[0].name} (${teamData.overview.topPlayers.byGoals.players[0].value})` : "N/A";
         const topAssister = teamData.overview.topPlayers.byAssists.players[0] ? `${teamData.overview.topPlayers.byAssists.players[0].name} (${teamData.overview.topPlayers.byAssists.players[0].value})` : "N/A";
 
-        // 3. Fetch Latest YouTube Video via RSS
+        // 3. Fetch Latest YouTube Video via RSS (Excluding Shorts)
         let latestVideo = { title: "N/A", link: "#" };
         try {
             const rssXml = await fetchDataStr(`https://www.youtube.com/feeds/videos.xml?channel_id=${YOUTUBE_CHANNEL_ID}`);
-            const titleMatch = rssXml.match(/<entry>[\s\S]*?<title>([^<]+)<\/title>/);
-            const linkMatch = rssXml.match(/<entry>[\s\S]*?<link rel="alternate" href="([^"]+)"/);
             
-            if (titleMatch && linkMatch) {
-                latestVideo = {
-                    title: titleMatch[1],
-                    link: linkMatch[1]
-                };
+            // YouTube RSS feed lists entries in order. 
+            // We'll split by entries and find the first one that isn't a short.
+            const entries = rssXml.split('<entry>');
+            for (let i = 1; i < entries.length; i++) {
+                const entry = entries[i];
+                const linkMatch = entry.match(/<link rel="alternate" href="([^"]+)"/);
+                const titleMatch = entry.match(/<title>([^<]+)<\/title>/);
+                
+                if (linkMatch && titleMatch) {
+                    const link = linkMatch[1];
+                    // Exclude links that contain "/shorts/"
+                    if (!link.includes('/shorts/')) {
+                        latestVideo = {
+                            title: titleMatch[1],
+                            link: link
+                        };
+                        break; // Stop at the first non-short video
+                    }
+                }
             }
         } catch (vError) {
             console.error("Error fetching YouTube RSS:", vError.message);

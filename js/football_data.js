@@ -14,7 +14,7 @@ window.FOOTBALL_DATA = {
     "topScorer": "Ladislav Krejci (2)",
     "topAssister": "David Møller Wolfe (2)",
     "latestVideo": {
-        "title": "COADY CORE 😆",
-        "link": "https://www.youtube.com/shorts/GS7xO0SJuuw"
+        "title": "Late defeat in London | Crystal Palace 1-0 Wolves | Highlights",
+        "link": "https://www.youtube.com/watch?v=SDaaAGI9_Aw"
     }
 };
