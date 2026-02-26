@@ -6,5 +6,9 @@ window.FOOTBALL_DATA = {
     "points": 10,
     "form": [],
     "topScorer": "Ladislav Krejci (2)",
-    "topAssister": "David Møller Wolfe (2)"
+    "topAssister": "David Møller Wolfe (2)",
+    "latestVideo": {
+        "title": "COADY CORE 😆",
+        "link": "https://www.youtube.com/shorts/GS7xO0SJuuw"
+    }
 };
