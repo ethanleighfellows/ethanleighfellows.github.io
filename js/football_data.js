@@ -4,7 +4,13 @@ window.FOOTBALL_DATA = {
     "team": "Wolverhampton Wanderers",
     "nextMatch": "Aston Villa (2/27/2026, 12:00:00 PM)",
     "points": 10,
-    "form": [],
+    "form": [
+        "L",
+        "D",
+        "W",
+        "D",
+        "L"
+    ],
     "topScorer": "Ladislav Krejci (2)",
     "topAssister": "David Møller Wolfe (2)",
     "latestVideo": {

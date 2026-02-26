@@ -1,0 +1,31 @@
+name: Update Football Stats
+
+on:
+  schedule:
+    - cron: '0 2 * * *' # Every day at 2 AM UTC (after Spotify update)
+  workflow_dispatch: # Manual trigger
+
+jobs:
+  update-football:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          
+      - name: Fetch Football Data
+        run: |
+          node scripts/update_football_data.js
+          
+      - name: Commit changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add js/football_data.js
+          git commit -m "chore: update football stats [skip ci]" || echo "No changes to commit"
+          git push

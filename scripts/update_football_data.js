@@ -16,24 +16,39 @@ async function updateFootballData() {
         const nextMatchStr = nextMatch ? `${nextMatch.opponent.name} (${new Date(nextMatch.status.utcTime).toLocaleString()})` : "No upcoming matches";
         
         let points = "N/A";
-        let form = [];
         if (teamData.overview.table && teamData.overview.table.length > 0) {
             const table = teamData.overview.table[0].data.table.all;
             const wolvesRow = table.find(t => t.id === TEAM_ID);
             if (wolvesRow) {
                 points = wolvesRow.pts;
-                form = wolvesRow.form || []; 
             }
+        }
+
+        // 2. Get Form from Fixtures
+        let form = [];
+        try {
+            const allFixtures = teamData.fixtures.allFixtures.fixtures;
+            if (Array.isArray(allFixtures)) {
+                form = allFixtures
+                    .filter(f => f.status && f.status.finished)
+                    .slice(-5)
+                    .map(f => {
+                        if (f.result === 1) return 'W';
+                        if (f.result === -1) return 'L';
+                        return 'D';
+                    });
+            }
+        } catch (fError) {
+            console.error("Error parsing form:", fError.message);
         }
 
         const topScorer = teamData.overview.topPlayers.byGoals.players[0] ? `${teamData.overview.topPlayers.byGoals.players[0].name} (${teamData.overview.topPlayers.byGoals.players[0].value})` : "N/A";
         const topAssister = teamData.overview.topPlayers.byAssists.players[0] ? `${teamData.overview.topPlayers.byAssists.players[0].name} (${teamData.overview.topPlayers.byAssists.players[0].value})` : "N/A";
 
-        // 2. Fetch Latest YouTube Video via RSS
+        // 3. Fetch Latest YouTube Video via RSS
         let latestVideo = { title: "N/A", link: "#" };
         try {
             const rssXml = await fetchDataStr(`https://www.youtube.com/feeds/videos.xml?channel_id=${YOUTUBE_CHANNEL_ID}`);
-            // Simple XML parsing for title and link of first entry
             const titleMatch = rssXml.match(/<entry>[\s\S]*?<title>([^<]+)<\/title>/);
             const linkMatch = rssXml.match(/<entry>[\s\S]*?<link rel="alternate" href="([^"]+)"/);
             
@@ -62,7 +77,7 @@ async function updateFootballData() {
 window.FOOTBALL_DATA = ${JSON.stringify(footballData, null, 4)};`;
 
         fs.writeFileSync(DATA_FILE, content);
-        console.log(`Successfully updated ${DATA_FILE}`);
+        console.log(`Successfully updated ${DATA_FILE} with form: ${form.join(', ')}`);
 
     } catch (error) {
         console.error("Error updating football data:", error.message);
@@ -77,7 +92,13 @@ function fetchData(url) {
         https.get(url, options, (res) => {
             let body = '';
             res.on('data', d => body += d);
-            res.on('end', () => resolve(JSON.parse(body)));
+            res.on('end', () => {
+                try {
+                    resolve(JSON.parse(body));
+                } catch (e) {
+                    reject(new Error("Failed to parse JSON response"));
+                }
+            });
         }).on('error', reject);
     });
 }
