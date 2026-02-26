@@ -2,7 +2,7 @@
 window.FOOTBALL_DATA = {
     "updated_at": "2026-02-26",
     "team": "Wolverhampton Wanderers",
-    "nextMatch": "Aston Villa (2/27/2026, 12:00:00 PM)",
+    "nextMatch": "Aston Villa (2/27/2026, 8:00:00 PM)",
     "points": 10,
     "form": [
         "L",
