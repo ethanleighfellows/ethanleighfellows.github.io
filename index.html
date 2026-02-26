@@ -1788,6 +1788,7 @@
     <script src="js/battleship_game.js?v=20260220"></script>
     <script src="js/spotify_data.js?v=20260225"></script>
     <script src="js/spotify_top_tracks.js?v=20260225"></script>
+    <script src="js/football_data.js?v=20260226"></script>
     <script>
         // Calculate dynamic age
         const birthDate = new Date(atob('MjAwMi0wOS0yNQ=='));
@@ -2176,7 +2177,7 @@
 
         function handleCommand(cmd) {
             if (cmd === 'help') {
-                showNotification('System Guide', 'Available: help, clear, whoami, sudo mode, projects, nation, places. Games: run invader_protocol, run pitchybird, run 2048, run battleship', 'fas fa-terminal');
+                showNotification('System Guide', 'Available: help, clear, whoami, sudo mode, projects, nation, places, football. Games: run invader_protocol, run pitchybird, run 2048, run battleship', 'fas fa-terminal');
             } else if (cmd === 'clear') {
                 repoList.innerHTML = '<div style="color: rgba(48, 209, 88, 0.3)">Terminal buffer cleared. Reloading repos...</div>';
                 setTimeout(fetchRepositories, 1000);
@@ -2191,6 +2192,8 @@
             } else if (cmd === 'coffee') {
                 updateStat('coffee', 100);
                 showNotification('Refilled', 'Coffee level restored to 100%', 'fas fa-coffee');
+            } else if (cmd === 'football') {
+                displayFootballStats();
             } else if (cmd === 'nation') {
                 launchNationEffect();
             } else if (cmd === 'run invader_protocol' || cmd === 'init arcade') {
@@ -2204,6 +2207,56 @@
             } else {
                 showNotification('Error', `Command not found: ${cmd}`, 'fas fa-exclamation-triangle');
             }
+        }
+
+        function displayFootballStats() {
+            const data = window.FOOTBALL_DATA;
+            if (!data) {
+                showNotification('System Error', 'Football data not loaded.', 'fas fa-exclamation-triangle');
+                return;
+            }
+
+            const formIcons = data.form.map(res => {
+                if (res === 'W') return '<span style="color:#30d158">W</span>';
+                if (res === 'L') return '<span style="color:#ff453a">L</span>';
+                return '<span style="color:#ffd60a">D</span>';
+            }).join(' ');
+
+            const statsHTML = `
+                <div style="margin-top: 15px; border: 1px solid rgba(48, 209, 88, 0.3); padding: 15px; border-radius: 8px; background: rgba(0,0,0,0.3); font-family: 'SF Mono', monospace;">
+                    <div style="color: #ffd60a; font-weight: bold; margin-bottom: 10px; border-bottom: 1px solid rgba(255,214,10,0.3); padding-bottom: 5px;">
+                        ⚽ ${data.team.toUpperCase()} STATUS REPORT
+                    </div>
+                    <div style="display: grid; grid-template-columns: 140px 1fr; gap: 8px; font-size: 13px;">
+                        <div style="color: rgba(255,255,255,0.5)">Next Match:</div>
+                        <div style="color: #fff">${data.nextMatch}</div>
+                        
+                        <div style="color: rgba(255,255,255,0.5)">Current Points:</div>
+                        <div style="color: #fff; font-weight: bold;">${data.points} pts</div>
+                        
+                        <div style="color: rgba(255,255,255,0.5)">Recent Form:</div>
+                        <div>${formIcons || "N/A"}</div>
+                        
+                        <div style="color: rgba(255,255,255,0.5)">Top Scorer:</div>
+                        <div style="color: #fff">${data.topScorer}</div>
+                        
+                        <div style="color: rgba(255,255,255,0.5)">Top Assister:</div>
+                        <div style="color: #fff">${data.topAssister}</div>
+                    </div>
+                    <div style="margin-top: 10px; font-size: 10px; color: rgba(255,255,255,0.3); text-align: right;">
+                        Source: FotMob | Updated: ${data.updated_at}
+                    </div>
+                </div>
+            `;
+
+            // Append to terminal buffer
+            const output = document.createElement('div');
+            output.innerHTML = statsHTML;
+            repoList.appendChild(output);
+            
+            // Scroll to bottom
+            const terminalBody = document.querySelector('#terminal .window-body');
+            terminalBody.scrollTop = terminalBody.scrollHeight;
         }
 
         let placesInitialized = false;
