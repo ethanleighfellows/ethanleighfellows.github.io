@@ -418,6 +418,26 @@
             color: #fff;
         }
 
+        .icon-image.arcade {
+            background: linear-gradient(135deg, #ff0844 0%, #ffb199 100%);
+            border: 1px solid rgba(255, 8, 68, 0.5);
+            box-shadow: 0 4px 20px rgba(255, 8, 68, 0.4);
+        }
+
+        .icon-image.arcade i {
+            color: #fff;
+        }
+
+        .icon-image.places {
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            border: 1px solid rgba(253, 160, 133, 0.5);
+            box-shadow: 0 4px 20px rgba(253, 160, 133, 0.4);
+        }
+
+        .icon-image.places i {
+            color: #fff;
+        }
+
         .icon-label {
             color: #fff;
             font-size: 12px;
@@ -1206,7 +1226,7 @@
         <!-- Name Display -->
         <div class="name-display">
             <div class="name-main glitch" data-i18n="name">Ethan Leigh-Fellows</div>
-            <div class="name-subtitle" data-i18n="subtitle">San Francisco | 23 y/o | Product</div>
+            <div class="name-subtitle" data-i18n="subtitle">San Francisco | Product</div>
         </div>
 
         <!-- Desktop Icons -->
@@ -1246,6 +1266,18 @@
                     <i class="fab fa-github"></i>
                 </div>
                 <div class="icon-label" data-i18n="icon.github">GitHub</div>
+            </div>
+            <div class="desktop-icon" data-app="arcade">
+                <div class="icon-image arcade">
+                    <i class="fas fa-gamepad"></i>
+                </div>
+                <div class="icon-label" data-i18n="icon.arcade">Arcade</div>
+            </div>
+            <div class="desktop-icon" data-app="places">
+                <div class="icon-image places">
+                    <i class="fa-solid fa-city"></i>
+                </div>
+                <div class="icon-label" data-i18n="icon.places">Places</div>
             </div>
         </div>
 
@@ -1293,35 +1325,42 @@
                     </div>
                     <span class="window-title" style="color: #00ff41;" data-i18n="hacker.title">[SYSTEM ACCESS] — AUTHORIZED</span>
                 </div>
-                <div class="window-body">
-                    <div class="hacker-text" data-i18n="hacker.msg1">> Initiating connection...</div>
-                    <div class="hacker-text" data-i18n="hacker.msg2">> Establishing secure link...</div>
-                    <div class="hacker-text" data-i18n="hacker.msg3">> Access granted. Welcome, visitor.</div>
-                    <div class="hacker-ascii">
-██╗    ██╗███████╗██╗      ██████╗ ██████╗ ███╗   ███╗███████╗
-██║    ██║██╔════╝██║     ██╔════╝██╔═══██╗████╗ ████║██╔════╝
-██║ █╗ ██║█████╗  ██║     ██║     ██║   ██║██╔████╔██║█████╗  
-██║███╗██║██╔══╝  ██║     ██║     ██║   ██║██║╚██╔╝██║██╔══╝  
-╚███╔███╔╝███████╗███████╗╚██████╗╚██████╔╝██║ ╚═╝ ██║███████╗
- ╚══╝╚══╝ ╚══════╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝
-
-████████╗ ██████╗     ███╗   ███╗██╗   ██╗                    
-╚══██╔══╝██╔═══██╗    ████╗ ████║╚██╗ ██╔╝                    
-   ██║   ██║   ██║    ██╔████╔██║ ╚████╔╝                     
-   ██║   ██║   ██║    ██║╚██╔╝██║  ╚██╔╝                      
-   ██║   ╚██████╔╝    ██║ ╚═╝ ██║   ██║                       
-   ╚═╝    ╚═════╝     ╚═╝     ╚═╝   ╚═╝                       
-
- ██████╗ ██╗████████╗██╗  ██╗██╗   ██╗██████╗                 
-██╔════╝ ██║╚══██╔══╝██║  ██║██║   ██║██╔══██╗                
-██║  ███╗██║   ██║   ███████║██║   ██║██████╔╝                
-██║   ██║██║   ██║   ██╔══██║██║   ██║██╔══██╗                
-╚██████╔╝██║   ██║   ██║  ██║╚██████╔╝██████╔╝                
- ╚═════╝ ╚═╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝ ╚═════╝                 
+                <div class="window-body" style="padding: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; background: rgba(0, 0, 0, 0.95);">
+                    <style>
+                        #hacker-dragon-container {
+                            font-size: 8.5px;
+                            line-height: 1.1;
+                            white-space: pre;
+                            text-align: left;
+                            margin: 0 0 0 13.7%;
+                            color: #00ff41;
+                            font-family: 'Courier New', monospace;
+                        }
+                        #hacker-name-container {
+                            font-size: 8.5px;
+                            line-height: 1.1;
+                            white-space: pre;
+                            text-align: left;
+                            margin-top: 20px;
+                            min-height: 100px;
+                            color: #00ff41;
+                            font-family: 'Courier New', monospace;
+                            text-shadow: 0 0 5px rgba(0, 255, 65, 0.5);
+                        }
+                        .hacker-ascii-wrapper {
+                            animation: glitch 3s infinite;
+                            display: flex;
+                            flex-direction: column;
+                            align-items: flex-start;
+                        }
+                    </style>
+                    <div class="hacker-ascii-wrapper">
+                        <div id="hacker-dragon-container"></div>
+                        <div id="hacker-name-container"></div>
                     </div>
-                    <div class="hacker-text" data-i18n="hacker.msg4">> Repository access enabled</div>
-                    <div class="hacker-text" data-i18n="hacker.msg5">> Decrypting file system...</div>
-                    <div class="hacker-text"><span data-i18n="hacker.msg6">> All systems operational</span> <span class="cursor-blink">█</span></div>
+                    <script src="js/dragon_data.js"></script>
+                    <script src="js/ethan_data.js"></script>
+                    <script src="js/hacker_ascii.js"></script>
                 </div>
             </div>
 
@@ -1395,6 +1434,51 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Arcade Window -->
+            <div class="window" id="arcade" style="width: 500px;">
+                <div class="window-header">
+                    <div class="window-controls">
+                        <div class="window-btn close"></div>
+                        <div class="window-btn minimize"></div>
+                        <div class="window-btn maximize"></div>
+                    </div>
+                    <span class="window-title" data-i18n="arcade.title">Retro Arcade</span>
+                </div>
+                <div class="window-body" style="padding: 20px;">
+                    <style>
+                        .arcade-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; }
+                        .arcade-card { background: rgba(255,255,255,0.05); border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; transition: all 0.3s ease; border: 1px solid rgba(255,255,255,0.1); }
+                        .arcade-card:hover { transform: translateY(-5px); background: rgba(255,255,255,0.1); border-color: rgba(255,8,68,0.5); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+                        .arcade-card i { font-size: 2.5rem; margin-bottom: 15px; color: #ffb199; transition: color 0.3s ease; }
+                        .arcade-card:hover i { color: #ff0844; }
+                        .arcade-card h3 { margin: 0 0 10px 0; font-size: 1.2rem; color: #fff; }
+                        .arcade-card p { font-size: 0.85rem; color: #aaa; margin: 0; line-height: 1.4; }
+                    </style>
+                    <div class="arcade-grid">
+                        <div class="arcade-card" onclick="launchGame('invader_protocol'); closeWindow('arcade');">
+                            <i class="fas fa-space-shuttle"></i>
+                            <h3>Space Invaders</h3>
+                            <p>Classic retro shooter</p>
+                        </div>
+                        <div class="arcade-card" onclick="launchGame('pitchybird'); closeWindow('arcade');">
+                            <i class="fas fa-crow"></i>
+                            <h3>Pitchybird</h3>
+                            <p>Flap through pipes</p>
+                        </div>
+                        <div class="arcade-card" onclick="launchGame('2048'); closeWindow('arcade');">
+                            <i class="fas fa-th-large"></i>
+                            <h3>2048</h3>
+                            <p>Slide and combine tiles</p>
+                        </div>
+                        <div class="arcade-card" onclick="launchGame('battleship'); closeWindow('arcade');">
+                            <i class="fas fa-ship"></i>
+                            <h3>Battleship</h3>
+                            <p>Sink the enemy fleet</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1402,6 +1486,20 @@
     <script src="js/2048.js?v=20260220"></script>
     <script src="js/battleship_game.js?v=20260220"></script>
     <script>
+        // Calculate dynamic age
+        const birthDate = new Date(atob('MjAwMi0wOS0yNQ=='));
+        const today = new Date();
+        let age = today.getFullYear() - birthDate.getFullYear();
+        if (today < new Date(today.getFullYear(), birthDate.getMonth(), birthDate.getDate())) {
+            age--;
+        }
+
+        const getRussianAgeSuffix = (age) => {
+            if (age % 10 === 1 && age % 100 !== 11) return 'год';
+            if ([2, 3, 4].includes(age % 10) && ![12, 13, 14].includes(age % 100)) return 'года';
+            return 'лет';
+        };
+
         // Translations
         const translations = {
             en: {
@@ -1409,8 +1507,8 @@
                 menu: { finder: "Finder", file: "File", edit: "Edit", view: "View" },
                 status: "Online",
                 name: "Ethan Leigh-Fellows",
-                subtitle: "San Francisco | 23 y/o | Product",
-                icon: { projects: "Projects", access: "Access", music: "Music", contact: "Contact", linkedin: "LinkedIn", github: "GitHub" },
+                subtitle: `San Francisco | ${age} y/o | Product`,
+                icon: { projects: "Projects", access: "Access", music: "Music", contact: "Contact", linkedin: "LinkedIn", github: "GitHub", arcade: "Arcade", places: "Places" },
                 terminal: { fetching: "Fetching public repositories from GitHub...", loading: "Loading repositories...", updated: "Updated:", title: "ethan@localhost — zsh — 80×24" },
                 hacker: {
                     title: "[SYSTEM ACCESS] — AUTHORIZED",
@@ -1422,15 +1520,16 @@
                     msg6: "> All systems operational"
                 },
                 music: { title: "Spotify — Now Playing" },
-                contact: { title: "Get In Touch", location: "Location", locationValue: "San Francisco Bay Area" }
+                contact: { title: "Get In Touch", location: "Location", locationValue: "San Francisco Bay Area" },
+                arcade: { title: "Retro Arcade" }
             },
             fr: {
                 loading: "Initialisation du système...",
                 menu: { finder: "Finder", file: "Fichier", edit: "Éditer", view: "Affichage" },
                 status: "En ligne",
                 name: "Ethan Leigh-Fellows",
-                subtitle: "San Francisco | 23 ans | Product",
-                icon: { projects: "Projets", access: "Accès", music: "Musique", contact: "Contact", linkedin: "LinkedIn", github: "GitHub" },
+                subtitle: `San Francisco | ${age} ans | Product`,
+                icon: { projects: "Projets", access: "Accès", music: "Musique", contact: "Contact", linkedin: "LinkedIn", github: "GitHub", arcade: "Arcade", places: "Galerie" },
                 terminal: { fetching: "Récupération des dépôts publics depuis GitHub...", loading: "Chargement des dépôts...", updated: "Mis à jour le :", title: "ethan@localhost — zsh — 80×24" },
                 hacker: {
                     title: "[ACCÈS SYSTÈME] — AUTORISÉ",
@@ -1442,15 +1541,16 @@
                     msg6: "> Tous les systèmes opérationnels"
                 },
                 music: { title: "Spotify — En lecture" },
-                contact: { title: "Me Contacter", location: "Localisation", locationValue: "Région de San Francisco" }
+                contact: { title: "Me Contacter", location: "Localisation", locationValue: "Région de San Francisco" },
+                arcade: { title: "Arcade Rétro" }
             },
             ru: {
                 loading: "Инициализация системы...",
                 menu: { finder: "Finder", file: "Файл", edit: "Правка", view: "Вид" },
                 status: "В сети",
                 name: "Итан Ли-Феллоуз",
-                subtitle: "Сан-Франциско | 23 года | Продукт",
-                icon: { projects: "Проекты", access: "Доступ", music: "Музыка", contact: "Контакт", linkedin: "LinkedIn", github: "GitHub" },
+                subtitle: `Сан-Франциско | ${age} ${getRussianAgeSuffix(age)} | Продукт`,
+                icon: { projects: "Проекты", access: "Доступ", music: "Музыка", contact: "Контакт", linkedin: "LinkedIn", github: "GitHub", arcade: "Аркада", places: "Галерея" },
                 terminal: { fetching: "Получение публичных репозиториев с GitHub...", loading: "Загрузка репозиториев...", updated: "Обновлено:", title: "итан@localhost — zsh — 80×24" },
                 hacker: {
                     title: "[ДОСТУП К СИСТЕМЕ] — АВТОРИЗОВАН",
@@ -1462,7 +1562,8 @@
                     msg6: "> Все системы функционируют"
                 },
                 music: { title: "Spotify — Сейчас играет" },
-                contact: { title: "Связаться", location: "Местоположение", locationValue: "Район Залива Сан-Франциско" }
+                contact: { title: "Связаться", location: "Местоположение", locationValue: "Район Залива Сан-Франциско" },
+                arcade: { title: "Ретро Аркада" }
             }
         };
 
@@ -1531,6 +1632,7 @@
 
         window.addEventListener('load', () => {
             pageLoaded = true;
+            updateTranslations(currentLang);
             checkLoadingComplete();
         });
 
@@ -1546,6 +1648,8 @@
                     window.open('https://www.linkedin.com/in/ethan-leigh-fellows/', '_blank');
                 } else if (app === 'github') {
                     window.open('https://github.com/ethanleighfellows', '_blank');
+                } else if (app === 'places') {
+                    showPlacesWindow();
                 } else {
                     openWindow(app);
                 }
@@ -2578,7 +2682,7 @@
             const container = document.body;
             const count = 50;
             
-            showNotification('Allegiance', 'Celebrating the Union Jack and the Maple Leaf!', 'fas fa-flag-checkered');
+            showNotification('Nations', 'Celebrating the Union Jack and the Maple Leaf!', 'fas fa-flag-checkered');
 
             for (let i = 0; i < count; i++) {
                 setTimeout(() => {
