@@ -17,6 +17,11 @@ A highly interactive, macOS-inspired personal portfolio and retro arcade platfor
 *   **Security Architecture:** Implements a "Build-Time Enrichment" workflow. A secure Node.js worker runs to fetch Spotify metadata, ensuring sensitive credentials are never exposed to the client.
 *   **Enriched UI:** Features a custom CSS audio visualizer, pulsing "Live" status indicators, and deep-links to the native Spotify app.
 
+### ⚽ Real-time Football Integration (FotMob)
+*   **Live Data Feed:** Fetches real-time statistics for Wolverhampton Wanderers directly from the FotMob API.
+*   **Automated Updates:** A GitHub Action runs periodically to update team standings, form (W/D/L), top scorers, and upcoming match details.
+*   **Media Enrichment:** Integrates the latest non-Shorts YouTube video from the official Wolves channel via RSS feed, ensuring the most recent highlights are always available.
+
 ### 🕹️ Retro Arcade & Apps
 *   **Identity (Terminal-X):** A hacker-themed identity readout featuring animated Dragon ASCII art and system telemetry.
 *   **Projects (GitHub API):** Dynamically fetches and renders public repositories directly from the GitHub API.
