@@ -31,19 +31,30 @@ A highly interactive, macOS-inspired personal portfolio and retro arcade platfor
 
 ```text
 ├── .github/workflows/       # Automated workflows
+│   ├── football_update.yml  # Automated football data enrichment
 │   └── spotify_update.yml   # Periodic Spotify data enrichment
+├── battleship/              # Arcade: Battleship source code
+│   ├── src/                 # Battleship game logic, assets, and components
+│   └── dist/                # Production build of Battleship
 ├── js/                      # Client-side Logic
-│   ├── spotify_top_tracks.js # Music app UI & visualizer logic
-│   ├── spotify_data.js      # Data store for Spotify tracks
 │   ├── 2048.js              # Arcade: 2048 Game logic
-│   ├── battleship_game.js   # Arcade: Battleship logic
+│   ├── battleship_game.js   # Arcade: Battleship UI logic
+│   ├── dragon_data.js       # ASCII Art Data
+│   ├── ethan_data.js        # Identity readout content
+│   ├── football_data.js     # Data store for football results
+│   ├── hacker_ascii.js      # Identity app ASCII animations
 │   ├── pitchybird.js        # Arcade: Pitchybird logic
-│   └── hacker_ascii.js      # Identity app ASCII animations
-├── scripts/                 # Background Utility Scripts
-│   └── update_spotify_data.js # Secure Node.js worker for Spotify API
+│   ├── spotify_data.js      # Data store for Spotify tracks
+│   └── spotify_top_tracks.js # Music app UI & visualizer logic
 ├── photoassets/             # Images for the Places carousel
+├── pitchybird/              # Arcade: Pitchybird standalone assets
+├── scripts/                 # Background Utility Scripts
+│   ├── update_football_data.js # Football data fetcher
+│   └── update_spotify_data.js # Secure Node.js worker for Spotify API
+├── 2048.html                # Standalone 2048 game entry point
+├── background.mp4           # Dynamic video background
 ├── index.html               # Main entry point (Styles, DOM, & core Desktop OS logic)
-└── background.mp4           # Dynamic video background
+└── README.md                # Project documentation
 ```
 
 ## 🛡️ Security & Privacy
