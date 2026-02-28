@@ -1,20 +1,20 @@
 // Automatically updated football data
 window.FOOTBALL_DATA = {
-    "updated_at": "2026-02-27",
+    "updated_at": "2026-02-28",
     "team": "Wolverhampton Wanderers",
-    "nextMatch": "Aston Villa (2/27/2026, 8:00:00 PM)",
-    "points": 10,
+    "nextMatch": "Liverpool (3/3/2026, 8:15:00 PM)",
+    "points": 13,
     "form": [
-        "L",
         "D",
         "W",
         "D",
-        "L"
+        "L",
+        "W"
     ],
     "topScorer": "Ladislav Krejci (2)",
     "topAssister": "David Møller Wolfe (2)",
     "latestVideo": {
-        "title": "Late defeat in London | Crystal Palace 1-0 Wolves | Highlights",
-        "link": "https://www.youtube.com/watch?v=SDaaAGI9_Aw"
+        "title": "N/A",
+        "link": "#"
     }
 };
