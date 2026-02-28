@@ -14,7 +14,7 @@ window.FOOTBALL_DATA = {
     "topScorer": "Ladislav Krejci (2)",
     "topAssister": "David Møller Wolfe (2)",
     "latestVideo": {
-        "title": "N/A",
-        "link": "#"
+        "title": "Gomes and Gomes sink Villa! | Wolves 2-0 Aston Villa | Highlights",
+        "link": "https://www.youtube.com/watch?v=SJVTqND4oq4"
     }
 };
