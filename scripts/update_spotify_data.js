@@ -34,6 +34,8 @@ async function updateData() {
                     name: item.name,
                     artist: item.artists[0].name
                 }));
+            } else {
+                console.warn("API returned successfully, but top tracks were empty. Using fallback tracks. Response:", JSON.stringify(topTracks));
             }
         } catch (error) {
             console.error("Error fetching dynamic tracks, using fallback:", error.message);
@@ -72,7 +74,20 @@ function fetchToken(clientId, clientSecret, refreshToken) {
         const req = https.request(options, (res) => {
             let body = '';
             res.on('data', d => body += d);
-            res.on('end', () => resolve(JSON.parse(body)));
+            res.on('end', () => {
+                try {
+                    const parsed = JSON.parse(body);
+                    if (res.statusCode >= 400) {
+                        reject(new Error(`Spotify Token API Error (${res.statusCode}): ${body}`));
+                    } else if (parsed.error) {
+                        reject(new Error(`Spotify Token API Error: ${parsed.error} - ${parsed.error_description}`));
+                    } else {
+                        resolve(parsed);
+                    }
+                } catch (e) {
+                    reject(new Error(`Failed to parse token response: ${e.message}`));
+                }
+            });
         });
 
         req.on('error', reject);
@@ -95,7 +110,20 @@ function fetchTopTracks(accessToken) {
         const req = https.request(options, (res) => {
             let body = '';
             res.on('data', d => body += d);
-            res.on('end', () => resolve(JSON.parse(body)));
+            res.on('end', () => {
+                try {
+                    const parsed = JSON.parse(body);
+                    if (res.statusCode >= 400) {
+                        reject(new Error(`Spotify Top Tracks API Error (${res.statusCode}): ${body}`));
+                    } else if (parsed.error) {
+                        reject(new Error(`Spotify Top Tracks API Error: ${parsed.error.message}`));
+                    } else {
+                        resolve(parsed);
+                    }
+                } catch (e) {
+                    reject(new Error(`Failed to parse top tracks response: ${e.message}`));
+                }
+            });
         });
 
         req.on('error', reject);
