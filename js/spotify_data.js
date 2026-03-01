@@ -1,16 +1,16 @@
 // This file is automatically updated via a background process to keep Spotify data fresh without exposing credentials.
 window.SPOTIFY_DATA = {
-    updated_at: "2026-02-28",
+    updated_at: "2026-03-01",
     tracks: [
+        {
+                "id": "6zfczP87XO2SxWlQtnjFNa",
+                "name": "The Look",
+                "artist": "Metronomy"
+        },
         {
                 "id": "0ylPYJtAJmAMr9jdPQ3cF7",
                 "name": "This Is The Last Time",
                 "artist": "Keane"
-        },
-        {
-                "id": "1A1BitAAJBXl2wpUaDnYc5",
-                "name": "Torturous",
-                "artist": "Turnerjoy"
         },
         {
                 "id": "6OakIaj4T039vJ8V2AJiWa",
@@ -18,9 +18,9 @@ window.SPOTIFY_DATA = {
                 "artist": "Dave"
         },
         {
-                "id": "6zfczP87XO2SxWlQtnjFNa",
-                "name": "The Look",
-                "artist": "Metronomy"
+                "id": "1A1BitAAJBXl2wpUaDnYc5",
+                "name": "Torturous",
+                "artist": "Turnerjoy"
         },
         {
                 "id": "7454StFiLI0EMexuqtvNv4",
