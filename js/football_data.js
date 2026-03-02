@@ -1,6 +1,6 @@
 // Automatically updated football data
 window.FOOTBALL_DATA = {
-    "updated_at": "2026-03-01",
+    "updated_at": "2026-03-02",
     "team": "Wolverhampton Wanderers",
     "nextMatch": "Liverpool (3/3/2026, 8:15:00 PM)",
     "points": 13,
@@ -14,7 +14,7 @@ window.FOOTBALL_DATA = {
     "topScorer": "Ladislav Krejci (2)",
     "topAssister": "David Møller Wolfe (2)",
     "latestVideo": {
-        "title": "N/A",
-        "link": "#"
+        "title": "Derby victory! | Wolves 2-0 Aston Villa | Extended Highlights",
+        "link": "https://www.youtube.com/watch?v=JDD2XBun4vU"
     }
 };
