@@ -18,13 +18,15 @@ async function initCrypto() {
         const symbol = currency === 'eur' ? '€' : (currency === 'rub' ? '₽' : '$');
 
         const coins = [
-            { id: 'bitcoin', name: 'Bitcoin', ticker: 'BTC', icon: 'fa-bitcoin', color: '#f7931a' },
-            { id: 'ethereum', name: 'Ethereum', ticker: 'ETH', icon: 'fa-ethereum', color: '#627eea' },
-            { id: 'solana', name: 'Solana', ticker: 'SOL', icon: 'fa-sun', color: '#14F195' }, // using sun as proxy for SOL logo
-            { id: 'dogecoin', name: 'Dogecoin', ticker: 'DOGE', icon: 'fa-paw', color: '#c2a633' }
+            { id: 'bitcoin', name: 'Bitcoin', ticker: 'BTC', icon: '<img src="https://assets.coingecko.com/coins/images/1/small/bitcoin.png" />' },
+            { id: 'ethereum', name: 'Ethereum', ticker: 'ETH', icon: '<img src="https://assets.coingecko.com/coins/images/279/small/ethereum.png" />' },
+            { id: 'solana', name: 'Solana', ticker: 'SOL', icon: '<img src="https://assets.coingecko.com/coins/images/4128/small/solana.png" />' },
+            { id: 'dogecoin', name: 'Dogecoin', ticker: 'DOGE', icon: '<img src="https://assets.coingecko.com/coins/images/5/small/dogecoin.png" />' }
         ];
 
-        let html = '<div class="crypto-list">';
+        let html = `
+            <div class="crypto-list" id="crypto-list">
+        `;
 
         coins.forEach((coin, index) => {
             const coinData = data[coin.id];
@@ -36,10 +38,10 @@ async function initCrypto() {
                 const delay = index * 0.15;
 
                 html += `
-                    <div class="crypto-item" style="animation: slideInFromRight 0.5s ease forwards; opacity: 0; animation-delay: ${delay}s;">
+                    <div class="crypto-item" onclick="showCryptoChart('${coin.id}', '${coin.name}', '${coin.ticker}', '${currency}', '${symbol}')" style="animation: slideInFromRight 0.5s ease forwards; opacity: 0; animation-delay: ${delay}s;">
                         <div class="crypto-info">
-                            <div class="crypto-icon" style="color: ${coin.color};">
-                                <i class="fab ${coin.icon}"></i>
+                            <div class="crypto-icon">
+                                ${coin.icon}
                             </div>
                             <div class="crypto-name">
                                 <strong>${coin.ticker}</strong>
@@ -58,6 +60,19 @@ async function initCrypto() {
         });
 
         html += '</div>';
+
+        // Add chart view overlay
+        html += `
+            <div class="crypto-chart-view" id="crypto-chart-view">
+                <div class="crypto-chart-header">
+                    <div class="crypto-back-btn" onclick="hideCryptoChart()"><i class="fas fa-chevron-left"></i> Back</div>
+                    <div class="crypto-chart-title" id="crypto-chart-title"></div>
+                </div>
+                <div class="crypto-chart-container">
+                    <canvas id="cryptoChartCanvas"></canvas>
+                </div>
+            </div>
+        `;
         html += `
             <style>
                 @keyframes slideInFromRight {
@@ -77,6 +92,127 @@ async function initCrypto() {
 
         cryptoContent.innerHTML = `<div style="color: #ff5f57; text-align: center; padding: 20px;">
             <i class="fas fa-exclamation-circle" style="font-size: 2rem; margin-bottom: 10px;"></i><br>${errorText}</div>`;
+    }
+}
+
+let cryptoChartInstance = null;
+
+async function showCryptoChart(coinId, coinName, ticker, currency, symbol) {
+    const listView = document.getElementById('crypto-list');
+    const chartView = document.getElementById('crypto-chart-view');
+    const titleEl = document.getElementById('crypto-chart-title');
+    const canvas = document.getElementById('cryptoChartCanvas');
+
+    if (!listView || !chartView || !canvas) return;
+
+    // UI Transition
+    listView.classList.add('hidden');
+    chartView.classList.add('active');
+    titleEl.textContent = `${coinName} (${ticker})`;
+
+    // Destroy previous chart if exists
+    if (cryptoChartInstance) {
+        cryptoChartInstance.destroy();
+    }
+
+    // Display a temporary loading state on canvas (optional, handled by empty canvas)
+
+    try {
+        const url = `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=30`;
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Failed to fetch historical data');
+
+        const data = await response.json();
+        const prices = data.prices; // Array of [timestamp, price]
+
+        const labels = prices.map(p => {
+            const d = new Date(p[0]);
+            return `${d.getMonth() + 1}/${d.getDate()}`;
+        });
+
+        const dataPoints = prices.map(p => p[1]);
+
+        // Determine line color based on overall 30-day trend
+        const startPrice = dataPoints[0];
+        const endPrice = dataPoints[dataPoints.length - 1];
+        const isPositive = endPrice >= startPrice;
+        const color = isPositive ? '#30d158' : '#ff5f57';
+        const gradientColor = isPositive ? 'rgba(48, 209, 88, 0.2)' : 'rgba(255, 95, 87, 0.2)';
+
+        const ctx = canvas.getContext('2d');
+        const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+        gradient.addColorStop(0, gradientColor);
+        gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+        cryptoChartInstance = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: `${ticker} Price`,
+                    data: dataPoints,
+                    borderColor: color,
+                    backgroundColor: gradient,
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    pointHoverRadius: 4,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        callbacks: {
+                            label: function (context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += symbol + context.parsed.y.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        display: false,
+                        grid: { display: false }
+                    },
+                    y: {
+                        display: false,
+                        grid: { display: false }
+                    }
+                },
+                interaction: {
+                    mode: 'nearest',
+                    axis: 'x',
+                    intersect: false
+                }
+            }
+        });
+
+    } catch (err) {
+        console.error("Chart error:", err);
+        titleEl.textContent = "Error loading chart";
+    }
+}
+
+function hideCryptoChart() {
+    const listView = document.getElementById('crypto-list');
+    const chartView = document.getElementById('crypto-chart-view');
+
+    if (listView && chartView) {
+        chartView.classList.remove('active');
+        listView.classList.remove('hidden');
     }
 }
 

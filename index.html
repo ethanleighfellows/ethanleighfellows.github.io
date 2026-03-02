@@ -1945,6 +1945,8 @@
                             height: 100%;
                             display: flex;
                             flex-direction: column;
+                            position: relative;
+                            overflow: hidden;
                         }
 
                         .crypto-loading {
@@ -1958,6 +1960,76 @@
                             display: flex;
                             flex-direction: column;
                             gap: 10px;
+                            transition: transform 0.3s ease, opacity 0.3s ease;
+                        }
+
+                        .crypto-list.hidden {
+                            transform: translateX(-100%);
+                            opacity: 0;
+                            pointer-events: none;
+                            position: absolute;
+                            width: 100%;
+                        }
+
+                        .crypto-chart-view {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            background: transparent;
+                            transform: translateX(100%);
+                            opacity: 0;
+                            transition: transform 0.3s ease, opacity 0.3s ease;
+                            pointer-events: none;
+                            display: flex;
+                            flex-direction: column;
+                        }
+
+                        .crypto-chart-view.active {
+                            transform: translateX(0);
+                            opacity: 1;
+                            pointer-events: all;
+                        }
+
+                        .crypto-chart-header {
+                            display: flex;
+                            align-items: center;
+                            margin-bottom: 15px;
+                            padding-bottom: 10px;
+                            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                        }
+
+                        .crypto-back-btn {
+                            cursor: pointer;
+                            color: #a18cd1;
+                            margin-right: 15px;
+                            font-size: 14px;
+                            transition: color 0.2s ease;
+                        }
+
+                        .crypto-back-btn:hover {
+                            color: #fbc2eb;
+                        }
+
+                        .crypto-chart-title {
+                            flex: 1;
+                            font-size: 16px;
+                            font-weight: 600;
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                        }
+
+                        .crypto-chart-title img {
+                            width: 20px;
+                            height: 20px;
+                        }
+
+                        .crypto-chart-container {
+                            flex: 1;
+                            position: relative;
+                            width: 100%;
                         }
 
                         .crypto-item {
@@ -1968,12 +2040,14 @@
                             padding: 15px;
                             border-radius: 12px;
                             border: 1px solid rgba(255, 255, 255, 0.05);
-                            transition: transform 0.2s ease, background 0.2s ease;
+                            transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+                            cursor: pointer;
                         }
 
                         .crypto-item:hover {
                             background: rgba(255, 255, 255, 0.1);
-                            transform: scale(1.02);
+                            transform: translateY(-2px);
+                            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
                         }
 
                         .crypto-info {
@@ -1984,6 +2058,16 @@
 
                         .crypto-icon {
                             font-size: 1.8rem;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            width: 32px;
+                        }
+
+                        .crypto-icon img {
+                            width: 100%;
+                            height: auto;
+                            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
                         }
 
                         .crypto-name {
@@ -2178,6 +2262,7 @@
     <script src="js/spotify_top_tracks.js?v=20260225"></script>
     <script src="js/football_data.js?v=20260226"></script>
     <script src="js/weather.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="js/crypto.js"></script>
     <script>
         // Calculate dynamic age
