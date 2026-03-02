@@ -22,6 +22,10 @@ A highly interactive, macOS-inspired personal portfolio and retro arcade platfor
 *   **Automated Updates:** A GitHub Action runs periodically to update team standings, form (W/D/L), top scorers, and upcoming match details.
 *   **Media Enrichment:** Integrates the latest non-Shorts YouTube video from the official Wolves channel via RSS feed, ensuring the most recent highlights are always available.
 
+### 🌤️ Live Widgets (API Integrations)
+*   **Crypto Tracker:** Real-time cryptocurrency price tracker for top assets (BTC, ETH, SOL, DOGE) using the CoinGecko API. Features 24h percentage changes and interactive 30-day historical line charts powered by Chart.js.
+*   **Weather:** Auto-locating weather widget that dynamically fetches current temperature and conditions based on the user's IP (via GeoJS and Open-Meteo).
+
 ### 🕹️ Retro Arcade & Apps
 *   **Identity (Terminal-X):** A hacker-themed identity readout featuring animated Dragon ASCII art and system telemetry.
 *   **Projects (GitHub API):** Dynamically fetches and renders public repositories directly from the GitHub API.
@@ -44,13 +48,15 @@ A highly interactive, macOS-inspired personal portfolio and retro arcade platfor
 ├── js/                      # Client-side Logic
 │   ├── 2048.js              # Arcade: 2048 Game logic
 │   ├── battleship_game.js   # Arcade: Battleship UI logic
+│   ├── crypto.js            # Crypto Tracker logic & Chart.js integration
 │   ├── dragon_data.js       # ASCII Art Data
 │   ├── ethan_data.js        # Identity readout content
 │   ├── football_data.js     # Data store for football results
 │   ├── hacker_ascii.js      # Identity app ASCII animations
 │   ├── pitchybird.js        # Arcade: Pitchybird logic
 │   ├── spotify_data.js      # Data store for Spotify tracks
-│   └── spotify_top_tracks.js # Music app UI & visualizer logic
+│   ├── spotify_top_tracks.js # Music app UI & visualizer logic
+│   └── weather.js           # Live weather widget logic
 ├── photoassets/             # Images for the Places carousel
 ├── pitchybird/              # Arcade: Pitchybird standalone assets
 ├── scripts/                 # Background Utility Scripts
@@ -70,9 +76,10 @@ The project follows modern security practices for static site deployments:
 
 ## 👨‍💻 Tech Stack
 *   **Frontend:** Vanilla JS (ES6+), HTML5, CSS3 (Custom Variables & Keyframes).
-*   **APIs:** Spotify Web API, GitHub REST API.
+*   **APIs:** Spotify Web API, GitHub REST API, CoinGecko API, Open-Meteo API.
+*   **Libraries:** Chart.js, FontAwesome.
 *   **Automation:** Node.js.
-*   **Design:** SF Pro / Inter Typography, Apple Glassmorphism, FontAwesome.
+*   **Design:** SF Pro / Inter Typography, Apple Glassmorphism.
 
 ---
 *Created and maintained by Ethan Leigh-Fellows*
