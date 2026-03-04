@@ -1,20 +1,20 @@
 // Automatically updated football data
 window.FOOTBALL_DATA = {
-    "updated_at": "2026-03-03",
+    "updated_at": "2026-03-04",
     "team": "Wolverhampton Wanderers",
-    "nextMatch": "Liverpool (3/3/2026, 8:15:00 PM)",
-    "points": 13,
+    "nextMatch": "Liverpool (3/6/2026, 8:00:00 PM)",
+    "points": 16,
     "form": [
-        "D",
         "W",
         "D",
         "L",
+        "W",
         "W"
     ],
-    "topScorer": "Ladislav Krejci (2)",
+    "topScorer": "Rodrigo Gomes (3)",
     "topAssister": "David Møller Wolfe (2)",
     "latestVideo": {
-        "title": "The Ride Along: Wolves Talk Football, Grit &amp; Game Day with Monster Energy",
-        "link": "https://www.youtube.com/watch?v=6DCtCeyFEmU"
+        "title": "Andre sinks Liverpool in stoppage time! | Wolves 2-1 Liverpool | Highlights",
+        "link": "https://www.youtube.com/watch?v=oBFLXm6FtFg"
     }
 };
