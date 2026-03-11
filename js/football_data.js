@@ -1,6 +1,6 @@
 // Automatically updated football data
 window.FOOTBALL_DATA = {
-    "updated_at": "2026-03-10",
+    "updated_at": "2026-03-11",
     "team": "Wolverhampton Wanderers",
     "nextMatch": "Brentford (3/16/2026, 8:00:00 PM)",
     "points": 16,
