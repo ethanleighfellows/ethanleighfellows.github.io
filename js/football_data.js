@@ -1,20 +1,20 @@
 // Automatically updated football data
 window.FOOTBALL_DATA = {
-    "updated_at": "2026-03-16",
+    "updated_at": "2026-03-17",
     "team": "Wolverhampton Wanderers",
-    "nextMatch": "Brentford (3/16/2026, 8:00:00 PM)",
-    "points": 16,
+    "nextMatch": "West Ham (4/10/2026, 7:00:00 PM)",
+    "points": 17,
     "form": [
-        "D",
         "L",
         "W",
         "W",
-        "L"
+        "L",
+        "D"
     ],
     "topScorer": "Rodrigo Gomes (3)",
     "topAssister": "David Møller Wolfe (2)",
     "latestVideo": {
-        "title": "Defeat in the FA Cup | Wolves 1-3 Liverpool | Extended Highlights",
-        "link": "https://www.youtube.com/watch?v=sdoJpAvlS1A"
+        "title": "Two goal comeback earns a point! | Brentford 2-2 Wolves | Highlights",
+        "link": "https://www.youtube.com/watch?v=oTpQA7kLcDk"
     }
 };
