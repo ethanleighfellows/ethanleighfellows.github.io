@@ -1,6 +1,6 @@
 // Automatically updated football data
 window.FOOTBALL_DATA = {
-    "updated_at": "2026-03-17",
+    "updated_at": "2026-03-18",
     "team": "Wolverhampton Wanderers",
     "nextMatch": "West Ham (4/10/2026, 7:00:00 PM)",
     "points": 17,
@@ -14,7 +14,7 @@ window.FOOTBALL_DATA = {
     "topScorer": "Rodrigo Gomes (3)",
     "topAssister": "David Møller Wolfe (2)",
     "latestVideo": {
-        "title": "Two goal comeback earns a point! | Brentford 2-2 Wolves | Highlights",
-        "link": "https://www.youtube.com/watch?v=oTpQA7kLcDk"
+        "title": "Armstrong and Arokodare net in draw! | Brentford 2-2 Wolves | Extended Highlights",
+        "link": "https://www.youtube.com/watch?v=X-6OpNUxpqg"
     }
 };
