@@ -1,6 +1,6 @@
 // This file is automatically updated via a background process to keep Spotify data fresh without exposing credentials.
 window.SPOTIFY_DATA = {
-    updated_at: "2026-03-20",
+    updated_at: "2026-03-21",
     tracks: [
         {
                 "id": "6zfczP87XO2SxWlQtnjFNa",
@@ -23,9 +23,9 @@ window.SPOTIFY_DATA = {
                 "artist": "Crazy Town"
         },
         {
-                "id": "6tsojOQ5wHaIjKqIryLZK6",
-                "name": "All My Life",
-                "artist": "Foo Fighters"
+                "id": "4WyKUZdpgCwUdX9RhNi1V2",
+                "name": "Ringfinger",
+                "artist": "Nine Inch Nails"
         }
 ]
 };
