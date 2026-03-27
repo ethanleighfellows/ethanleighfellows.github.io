@@ -1,6 +1,6 @@
 // This file is automatically updated via a background process to keep Spotify data fresh without exposing credentials.
 window.SPOTIFY_DATA = {
-    updated_at: "2026-03-26",
+    updated_at: "2026-03-27",
     tracks: [
         {
                 "id": "6zfczP87XO2SxWlQtnjFNa",
@@ -23,9 +23,9 @@ window.SPOTIFY_DATA = {
                 "artist": "Keane"
         },
         {
-                "id": "4Zc7TCHzuNwL0AFBlyLdyr",
-                "name": "Run to the Hills - 2015 Remaster",
-                "artist": "Iron Maiden"
+                "id": "4WyKUZdpgCwUdX9RhNi1V2",
+                "name": "Ringfinger",
+                "artist": "Nine Inch Nails"
         }
 ]
 };
