@@ -1,6 +1,6 @@
 // This file is automatically updated via a background process to keep Spotify data fresh without exposing credentials.
 window.SPOTIFY_DATA = {
-    updated_at: "2026-04-06",
+    updated_at: "2026-04-07",
     tracks: [
         {
                 "id": "7falOwHJ9MjskdcNehIh79",
@@ -23,9 +23,9 @@ window.SPOTIFY_DATA = {
                 "artist": "Nine Inch Nails"
         },
         {
-                "id": "6zfczP87XO2SxWlQtnjFNa",
-                "name": "The Look",
-                "artist": "Metronomy"
+                "id": "6GQ3WTaNHMFlVmN4burGat",
+                "name": "Butterfly",
+                "artist": "Crazy Town"
         }
 ]
 };
