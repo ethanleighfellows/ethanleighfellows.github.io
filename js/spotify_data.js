@@ -1,6 +1,6 @@
 // This file is automatically updated via a background process to keep Spotify data fresh without exposing credentials.
 window.SPOTIFY_DATA = {
-    updated_at: "2026-04-08",
+    updated_at: "2026-04-09",
     tracks: [
         {
                 "id": "7falOwHJ9MjskdcNehIh79",
@@ -18,14 +18,14 @@ window.SPOTIFY_DATA = {
                 "artist": "Keane"
         },
         {
-                "id": "4WyKUZdpgCwUdX9RhNi1V2",
-                "name": "Ringfinger",
-                "artist": "Nine Inch Nails"
-        },
-        {
                 "id": "7AODNxFNPnKaz4hURLzw5l",
                 "name": "Ladbroke Grove",
                 "artist": "AJ Tracey"
+        },
+        {
+                "id": "603q8qCfQVX7uRVnDpRpqb",
+                "name": "Sin",
+                "artist": "Nine Inch Nails"
         }
 ]
 };
