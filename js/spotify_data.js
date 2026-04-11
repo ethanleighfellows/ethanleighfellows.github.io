@@ -1,6 +1,6 @@
 // This file is automatically updated via a background process to keep Spotify data fresh without exposing credentials.
 window.SPOTIFY_DATA = {
-    updated_at: "2026-04-10",
+    updated_at: "2026-04-11",
     tracks: [
         {
                 "id": "7falOwHJ9MjskdcNehIh79",
@@ -23,9 +23,9 @@ window.SPOTIFY_DATA = {
                 "artist": "AJ Tracey"
         },
         {
-                "id": "6zfczP87XO2SxWlQtnjFNa",
-                "name": "The Look",
-                "artist": "Metronomy"
+                "id": "09ttHg3ZNVgDlYBZa1ZBw0",
+                "name": "Starburster",
+                "artist": "Fontaines D.C."
         }
 ]
 };
