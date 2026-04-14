@@ -1,6 +1,6 @@
 // This file is automatically updated via a background process to keep Spotify data fresh without exposing credentials.
 window.SPOTIFY_DATA = {
-    updated_at: "2026-04-13",
+    updated_at: "2026-04-14",
     tracks: [
         {
                 "id": "7falOwHJ9MjskdcNehIh79",
@@ -23,9 +23,9 @@ window.SPOTIFY_DATA = {
                 "artist": "AJ Tracey"
         },
         {
-                "id": "6tsojOQ5wHaIjKqIryLZK6",
-                "name": "All My Life",
-                "artist": "Foo Fighters"
+                "id": "7Jvbv41yOSYRFPtwq4zBaA",
+                "name": "Ej m'en fus",
+                "artist": "P'tit Belliveau"
         }
 ]
 };
