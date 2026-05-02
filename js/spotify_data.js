@@ -1,6 +1,6 @@
 // This file is automatically updated via a background process to keep Spotify data fresh without exposing credentials.
 window.SPOTIFY_DATA = {
-    updated_at: "2026-05-01",
+    updated_at: "2026-05-02",
     tracks: [
         {
                 "id": "7v3JnschFe8WfFUVuradHk",
@@ -18,9 +18,9 @@ window.SPOTIFY_DATA = {
                 "artist": "Richard Wagner"
         },
         {
-                "id": "7AODNxFNPnKaz4hURLzw5l",
-                "name": "Ladbroke Grove",
-                "artist": "AJ Tracey"
+                "id": "0faG7Q7aBpArmgnjqv5CpU",
+                "name": "Всего лишь друг",
+                "artist": "DEAD BLONDE"
         },
         {
                 "id": "0WMObwSSmP8k9azseajaKt",
