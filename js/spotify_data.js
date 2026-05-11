@@ -1,6 +1,6 @@
 // This file is automatically updated via a background process to keep Spotify data fresh without exposing credentials.
 window.SPOTIFY_DATA = {
-    updated_at: "2026-05-10",
+    updated_at: "2026-05-11",
     tracks: [
         {
                 "id": "7v3JnschFe8WfFUVuradHk",
@@ -18,14 +18,14 @@ window.SPOTIFY_DATA = {
                 "artist": "DEAD BLONDE"
         },
         {
-                "id": "5eCffkMawPFyRLe2KNcxhc",
-                "name": "Чёрные глаза",
-                "artist": "Aidamir Mugu"
-        },
-        {
                 "id": "0WMObwSSmP8k9azseajaKt",
                 "name": "Звезда по имени Солнце",
                 "artist": "Kino"
+        },
+        {
+                "id": "5eCffkMawPFyRLe2KNcxhc",
+                "name": "Чёрные глаза",
+                "artist": "Aidamir Mugu"
         }
 ]
 };
