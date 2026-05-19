@@ -1,31 +1,31 @@
 // This file is automatically updated via a background process to keep Spotify data fresh without exposing credentials.
 window.SPOTIFY_DATA = {
-    updated_at: "2026-05-18",
+    updated_at: "2026-05-19",
     tracks: [
         {
-                "id": "3ehteaflS2A0B1wUanmdCi",
-                "name": "Беги от меня",
-                "artist": "Три дня дождя"
+                "id": "4WjEY877D3AgyMLqMKrUsV",
+                "name": "Parsifal: Prelude",
+                "artist": "Richard Wagner"
         },
         {
-                "id": "7v3JnschFe8WfFUVuradHk",
-                "name": "Атаман",
-                "artist": "Kino"
+                "id": "7pyDecU8b4zIVuNv6YdI0q",
+                "name": "Requiem, Op. 48: In Paradisum",
+                "artist": "Gabriel Fauré"
         },
         {
-                "id": "0WMObwSSmP8k9azseajaKt",
-                "name": "Звезда по имени Солнце",
-                "artist": "Kino"
+                "id": "6bDd1ETtj3yBcTuCYMxSmM",
+                "name": "Psalm 104",
+                "artist": "Poor Bishop Hooper"
         },
         {
-                "id": "5ruzrDWcT0vuJIOMW7gMnW",
-                "name": "The Adults Are Talking",
-                "artist": "The Strokes"
+                "id": "4RqW6FZXZLUrndtWNaMGAf",
+                "name": "Turandot: Nessun dorma!",
+                "artist": "Giacomo Puccini"
         },
         {
-                "id": "0faG7Q7aBpArmgnjqv5CpU",
-                "name": "Всего лишь друг",
-                "artist": "DEAD BLONDE"
+                "id": "1lWoPg6qu3RNLeXkt1OPmh",
+                "name": "The Isle of the Dead, Op. 29",
+                "artist": "Sergei Rachmaninoff"
         }
 ]
 };
