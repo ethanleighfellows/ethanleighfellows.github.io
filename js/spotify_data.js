@@ -1,6 +1,6 @@
 // This file is automatically updated via a background process to keep Spotify data fresh without exposing credentials.
 window.SPOTIFY_DATA = {
-    updated_at: "2026-05-23",
+    updated_at: "2026-05-24",
     tracks: [
         {
                 "id": "0WMObwSSmP8k9azseajaKt",
@@ -15,12 +15,12 @@ window.SPOTIFY_DATA = {
         {
                 "id": "3ehteaflS2A0B1wUanmdCi",
                 "name": "Беги от меня",
-                "artist": "Три дня д��ждя"
+                "artist": "Три дня дождя"
         },
         {
-                "id": "7v3JnschFe8WfFUVuradHk",
-                "name": "Атаман",
-                "artist": "Kino"
+                "id": "21D6jwGbF3TsG7L0RirUxv",
+                "name": "Picky Princess 2",
+                "artist": "FXNN"
         },
         {
                 "id": "6ka8kjWYjiTttvn8EArcEV",
