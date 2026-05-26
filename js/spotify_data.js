@@ -1,6 +1,6 @@
 // This file is automatically updated via a background process to keep Spotify data fresh without exposing credentials.
 window.SPOTIFY_DATA = {
-    updated_at: "2026-05-25",
+    updated_at: "2026-05-26",
     tracks: [
         {
                 "id": "0WMObwSSmP8k9azseajaKt",
@@ -13,11 +13,6 @@ window.SPOTIFY_DATA = {
                 "artist": "The Strokes"
         },
         {
-                "id": "3ehteaflS2A0B1wUanmdCi",
-                "name": "Беги от меня",
-                "artist": "Три дня д��ждя"
-        },
-        {
                 "id": "21D6jwGbF3TsG7L0RirUxv",
                 "name": "Picky Princess 2",
                 "artist": "FXNN"
@@ -26,6 +21,11 @@ window.SPOTIFY_DATA = {
                 "id": "6ka8kjWYjiTttvn8EArcEV",
                 "name": "На грани болевого порога",
                 "artist": "Планка"
+        },
+        {
+                "id": "3ehteaflS2A0B1wUanmdCi",
+                "name": "Беги от меня",
+                "artist": "Три дня дождя"
         }
 ]
 };
