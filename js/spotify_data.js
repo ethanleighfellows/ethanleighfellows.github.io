@@ -1,6 +1,6 @@
 // This file is automatically updated via a background process to keep Spotify data fresh without exposing credentials.
 window.SPOTIFY_DATA = {
-    updated_at: "2026-05-28",
+    updated_at: "2026-05-29",
     tracks: [
         {
                 "id": "0WMObwSSmP8k9azseajaKt",
@@ -8,14 +8,14 @@ window.SPOTIFY_DATA = {
                 "artist": "Kino"
         },
         {
-                "id": "5ruzrDWcT0vuJIOMW7gMnW",
-                "name": "The Adults Are Talking",
-                "artist": "The Strokes"
-        },
-        {
                 "id": "21D6jwGbF3TsG7L0RirUxv",
                 "name": "Picky Princess 2",
                 "artist": "FXNN"
+        },
+        {
+                "id": "5ruzrDWcT0vuJIOMW7gMnW",
+                "name": "The Adults Are Talking",
+                "artist": "The Strokes"
         },
         {
                 "id": "6ka8kjWYjiTttvn8EArcEV",
@@ -23,9 +23,9 @@ window.SPOTIFY_DATA = {
                 "artist": "Планка"
         },
         {
-                "id": "3ehteaflS2A0B1wUanmdCi",
-                "name": "Беги от меня",
-                "artist": "Три дня дождя"
+                "id": "5LZHnBt7PIz6TXPgAM1fZ1",
+                "name": "Ave Maria",
+                "artist": "Kollegah"
         }
 ]
 };
