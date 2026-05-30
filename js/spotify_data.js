@@ -1,6 +1,6 @@
 // This file is automatically updated via a background process to keep Spotify data fresh without exposing credentials.
 window.SPOTIFY_DATA = {
-    updated_at: "2026-05-29",
+    updated_at: "2026-05-30",
     tracks: [
         {
                 "id": "0WMObwSSmP8k9azseajaKt",
@@ -23,9 +23,9 @@ window.SPOTIFY_DATA = {
                 "artist": "Планка"
         },
         {
-                "id": "5LZHnBt7PIz6TXPgAM1fZ1",
-                "name": "Ave Maria",
-                "artist": "Kollegah"
+                "id": "47x8g4l24IpCvlcRxv2Jb6",
+                "name": "World in Motion",
+                "artist": "New Order"
         }
 ]
 };
