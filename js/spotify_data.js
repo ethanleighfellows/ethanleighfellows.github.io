@@ -1,6 +1,6 @@
 // This file is automatically updated via a background process to keep Spotify data fresh without exposing credentials.
 window.SPOTIFY_DATA = {
-    updated_at: "2026-05-31",
+    updated_at: "2026-06-01",
     tracks: [
         {
                 "id": "0WMObwSSmP8k9azseajaKt",
@@ -23,9 +23,9 @@ window.SPOTIFY_DATA = {
                 "artist": "Kollegah"
         },
         {
-                "id": "6ka8kjWYjiTttvn8EArcEV",
-                "name": "На грани болевого порога",
-                "artist": "Планка"
+                "id": "7AODNxFNPnKaz4hURLzw5l",
+                "name": "Ladbroke Grove",
+                "artist": "AJ Tracey"
         }
 ]
 };
