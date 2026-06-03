@@ -1,6 +1,6 @@
 // This file is automatically updated via a background process to keep Spotify data fresh without exposing credentials.
 window.SPOTIFY_DATA = {
-    updated_at: "2026-06-02",
+    updated_at: "2026-06-03",
     tracks: [
         {
                 "id": "21D6jwGbF3TsG7L0RirUxv",
@@ -13,19 +13,19 @@ window.SPOTIFY_DATA = {
                 "artist": "Kino"
         },
         {
-                "id": "5ruzrDWcT0vuJIOMW7gMnW",
-                "name": "The Adults Are Talking",
-                "artist": "The Strokes"
-        },
-        {
                 "id": "5LZHnBt7PIz6TXPgAM1fZ1",
                 "name": "Ave Maria",
                 "artist": "Kollegah"
         },
         {
-                "id": "7AODNxFNPnKaz4hURLzw5l",
-                "name": "Ladbroke Grove",
-                "artist": "AJ Tracey"
+                "id": "5ruzrDWcT0vuJIOMW7gMnW",
+                "name": "The Adults Are Talking",
+                "artist": "The Strokes"
+        },
+        {
+                "id": "47x8g4l24IpCvlcRxv2Jb6",
+                "name": "World in Motion",
+                "artist": "New Order"
         }
 ]
 };
