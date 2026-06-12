@@ -1,6 +1,6 @@
 // This file is automatically updated via a background process to keep Spotify data fresh without exposing credentials.
 window.SPOTIFY_DATA = {
-    updated_at: "2026-06-11",
+    updated_at: "2026-06-12",
     tracks: [
         {
                 "id": "21D6jwGbF3TsG7L0RirUxv",
@@ -13,19 +13,19 @@ window.SPOTIFY_DATA = {
                 "artist": "Kollegah"
         },
         {
-                "id": "5ruzrDWcT0vuJIOMW7gMnW",
-                "name": "The Adults Are Talking",
-                "artist": "The Strokes"
+                "id": "47x8g4l24IpCvlcRxv2Jb6",
+                "name": "World in Motion",
+                "artist": "New Order"
+        },
+        {
+                "id": "6OakIaj4T039vJ8V2AJiWa",
+                "name": "History (feat. James Blake)",
+                "artist": "Dave"
         },
         {
                 "id": "0WMObwSSmP8k9azseajaKt",
                 "name": "Звезда по имени Солнце",
                 "artist": "Kino"
-        },
-        {
-                "id": "47x8g4l24IpCvlcRxv2Jb6",
-                "name": "World in Motion",
-                "artist": "New Order"
         }
 ]
 };
