@@ -1,6 +1,6 @@
 // This file is automatically updated via a background process to keep Spotify data fresh without exposing credentials.
 window.SPOTIFY_DATA = {
-    updated_at: "2026-06-12",
+    updated_at: "2026-06-13",
     tracks: [
         {
                 "id": "21D6jwGbF3TsG7L0RirUxv",
@@ -13,14 +13,14 @@ window.SPOTIFY_DATA = {
                 "artist": "Kollegah"
         },
         {
-                "id": "47x8g4l24IpCvlcRxv2Jb6",
-                "name": "World in Motion",
-                "artist": "New Order"
-        },
-        {
                 "id": "6OakIaj4T039vJ8V2AJiWa",
                 "name": "History (feat. James Blake)",
                 "artist": "Dave"
+        },
+        {
+                "id": "47x8g4l24IpCvlcRxv2Jb6",
+                "name": "World in Motion",
+                "artist": "New Order"
         },
         {
                 "id": "0WMObwSSmP8k9azseajaKt",
