@@ -1,6 +1,6 @@
 // This file is automatically updated via a background process to keep Spotify data fresh without exposing credentials.
 window.SPOTIFY_DATA = {
-    updated_at: "2026-06-16",
+    updated_at: "2026-06-17",
     tracks: [
         {
                 "id": "21D6jwGbF3TsG7L0RirUxv",
@@ -23,9 +23,9 @@ window.SPOTIFY_DATA = {
                 "artist": "New Order"
         },
         {
-                "id": "0WMObwSSmP8k9azseajaKt",
-                "name": "Звезда по имени Солнце",
-                "artist": "Kino"
+                "id": "2MrKx1k7CSLryCP1sf3cwl",
+                "name": "Ohne Benzin - 1,1x Speed Version",
+                "artist": "Domiziana"
         }
 ]
 };
