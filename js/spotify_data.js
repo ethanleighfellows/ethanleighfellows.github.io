@@ -1,16 +1,16 @@
 // This file is automatically updated via a background process to keep Spotify data fresh without exposing credentials.
 window.SPOTIFY_DATA = {
-    updated_at: "2026-06-27",
+    updated_at: "2026-06-28",
     tracks: [
-        {
-                "id": "5LZHnBt7PIz6TXPgAM1fZ1",
-                "name": "Ave Maria",
-                "artist": "Kollegah"
-        },
         {
                 "id": "6OakIaj4T039vJ8V2AJiWa",
                 "name": "History (feat. James Blake)",
                 "artist": "Dave"
+        },
+        {
+                "id": "5LZHnBt7PIz6TXPgAM1fZ1",
+                "name": "Ave Maria",
+                "artist": "Kollegah"
         },
         {
                 "id": "30cjLreSF4Xq0uAB89i2Ac",
