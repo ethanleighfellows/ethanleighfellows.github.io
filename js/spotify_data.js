@@ -1,16 +1,11 @@
 // This file is automatically updated via a background process to keep Spotify data fresh without exposing credentials.
 window.SPOTIFY_DATA = {
-    updated_at: "2026-06-28",
+    updated_at: "2026-06-29",
     tracks: [
         {
                 "id": "6OakIaj4T039vJ8V2AJiWa",
                 "name": "History (feat. James Blake)",
                 "artist": "Dave"
-        },
-        {
-                "id": "5LZHnBt7PIz6TXPgAM1fZ1",
-                "name": "Ave Maria",
-                "artist": "Kollegah"
         },
         {
                 "id": "30cjLreSF4Xq0uAB89i2Ac",
@@ -21,6 +16,11 @@ window.SPOTIFY_DATA = {
                 "id": "5ruzrDWcT0vuJIOMW7gMnW",
                 "name": "The Adults Are Talking",
                 "artist": "The Strokes"
+        },
+        {
+                "id": "7r7bgSkPjUdtTpaVPmZoH5",
+                "name": "Клофелинщица",
+                "artist": "DEAD BLONDE"
         },
         {
                 "id": "47x8g4l24IpCvlcRxv2Jb6",
