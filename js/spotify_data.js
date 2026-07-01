@@ -1,6 +1,6 @@
 // This file is automatically updated via a background process to keep Spotify data fresh without exposing credentials.
 window.SPOTIFY_DATA = {
-    updated_at: "2026-06-30",
+    updated_at: "2026-07-01",
     tracks: [
         {
                 "id": "30cjLreSF4Xq0uAB89i2Ac",
@@ -13,18 +13,18 @@ window.SPOTIFY_DATA = {
                 "artist": "Dave"
         },
         {
-                "id": "5ruzrDWcT0vuJIOMW7gMnW",
-                "name": "The Adults Are Talking",
-                "artist": "The Strokes"
-        },
-        {
                 "id": "7r7bgSkPjUdtTpaVPmZoH5",
                 "name": "Клофелинщица",
                 "artist": "DEAD BLONDE"
         },
         {
-                "id": "47x8g4l24IpCvlcRxv2Jb6",
-                "name": "World in Motion",
+                "id": "5ruzrDWcT0vuJIOMW7gMnW",
+                "name": "The Adults Are Talking",
+                "artist": "The Strokes"
+        },
+        {
+                "id": "01jBLs7IZQzPt3dVdn5rDa",
+                "name": "True Faith '94",
                 "artist": "New Order"
         }
 ]
