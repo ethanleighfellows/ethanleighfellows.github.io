@@ -1,6 +1,6 @@
 // This file is automatically updated via a background process to keep Spotify data fresh without exposing credentials.
 window.SPOTIFY_DATA = {
-    updated_at: "2026-07-01",
+    updated_at: "2026-07-02",
     tracks: [
         {
                 "id": "30cjLreSF4Xq0uAB89i2Ac",
@@ -23,9 +23,9 @@ window.SPOTIFY_DATA = {
                 "artist": "The Strokes"
         },
         {
-                "id": "01jBLs7IZQzPt3dVdn5rDa",
-                "name": "True Faith '94",
-                "artist": "New Order"
+                "id": "1CgbwsrNDlFrRuk2ebQ7zr",
+                "name": "9Pm (Till I Come)",
+                "artist": "ATB"
         }
 ]
 };
