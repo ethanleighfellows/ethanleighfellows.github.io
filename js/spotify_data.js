@@ -1,6 +1,6 @@
 // This file is automatically updated via a background process to keep Spotify data fresh without exposing credentials.
 window.SPOTIFY_DATA = {
-    updated_at: "2026-07-02",
+    updated_at: "2026-07-03",
     tracks: [
         {
                 "id": "30cjLreSF4Xq0uAB89i2Ac",
@@ -13,6 +13,11 @@ window.SPOTIFY_DATA = {
                 "artist": "Dave"
         },
         {
+                "id": "1CgbwsrNDlFrRuk2ebQ7zr",
+                "name": "9Pm (Till I Come)",
+                "artist": "ATB"
+        },
+        {
                 "id": "7r7bgSkPjUdtTpaVPmZoH5",
                 "name": "Клофелинщица",
                 "artist": "DEAD BLONDE"
@@ -21,11 +26,6 @@ window.SPOTIFY_DATA = {
                 "id": "5ruzrDWcT0vuJIOMW7gMnW",
                 "name": "The Adults Are Talking",
                 "artist": "The Strokes"
-        },
-        {
-                "id": "1CgbwsrNDlFrRuk2ebQ7zr",
-                "name": "9Pm (Till I Come)",
-                "artist": "ATB"
         }
 ]
 };
