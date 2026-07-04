@@ -1,6 +1,6 @@
 // This file is automatically updated via a background process to keep Spotify data fresh without exposing credentials.
 window.SPOTIFY_DATA = {
-    updated_at: "2026-07-03",
+    updated_at: "2026-07-04",
     tracks: [
         {
                 "id": "30cjLreSF4Xq0uAB89i2Ac",
@@ -23,9 +23,9 @@ window.SPOTIFY_DATA = {
                 "artist": "DEAD BLONDE"
         },
         {
-                "id": "5ruzrDWcT0vuJIOMW7gMnW",
-                "name": "The Adults Are Talking",
-                "artist": "The Strokes"
+                "id": "1jxVRXHqJKPzyhDQBmT6vU",
+                "name": "Everytime - Nalin & Kane Mix",
+                "artist": "Lustral"
         }
 ]
 };
