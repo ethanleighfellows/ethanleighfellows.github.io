@@ -1,6 +1,6 @@
 // This file is automatically updated via a background process to keep Spotify data fresh without exposing credentials.
 window.SPOTIFY_DATA = {
-    updated_at: "2026-07-06",
+    updated_at: "2026-07-07",
     tracks: [
         {
                 "id": "30cjLreSF4Xq0uAB89i2Ac",
@@ -8,24 +8,24 @@ window.SPOTIFY_DATA = {
                 "artist": "Reflekt"
         },
         {
-                "id": "6OakIaj4T039vJ8V2AJiWa",
-                "name": "History (feat. James Blake)",
-                "artist": "Dave"
-        },
-        {
                 "id": "1CgbwsrNDlFrRuk2ebQ7zr",
                 "name": "9Pm (Till I Come)",
                 "artist": "ATB"
         },
         {
-                "id": "7r7bgSkPjUdtTpaVPmZoH5",
-                "name": "Клофелинщица",
-                "artist": "DEAD BLONDE"
+                "id": "6OakIaj4T039vJ8V2AJiWa",
+                "name": "History (feat. James Blake)",
+                "artist": "Dave"
         },
         {
                 "id": "1jxVRXHqJKPzyhDQBmT6vU",
                 "name": "Everytime - Nalin & Kane Mix",
                 "artist": "Lustral"
+        },
+        {
+                "id": "0gTeDTRPPVAYcdyPXhWqt2",
+                "name": "Don't Give Up",
+                "artist": "Chicane"
         }
 ]
 };
