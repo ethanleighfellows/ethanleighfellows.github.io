@@ -1,6 +1,6 @@
 // This file is automatically updated via a background process to keep Spotify data fresh without exposing credentials.
 window.SPOTIFY_DATA = {
-    updated_at: "2026-07-18",
+    updated_at: "2026-07-19",
     tracks: [
         {
                 "id": "30cjLreSF4Xq0uAB89i2Ac",
@@ -18,14 +18,14 @@ window.SPOTIFY_DATA = {
                 "artist": "ATB"
         },
         {
-                "id": "1jxVRXHqJKPzyhDQBmT6vU",
-                "name": "Everytime - Nalin & Kane Mix",
-                "artist": "Lustral"
-        },
-        {
                 "id": "0tRDDFPijcSILWXWZ60Wx5",
                 "name": "Parsifal, WWV 111: Prelude",
                 "artist": "Richard Wagner"
+        },
+        {
+                "id": "1jxVRXHqJKPzyhDQBmT6vU",
+                "name": "Everytime - Nalin & Kane Mix",
+                "artist": "Lustral"
         }
 ]
 };
