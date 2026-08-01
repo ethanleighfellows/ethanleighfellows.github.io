@@ -1,6 +1,6 @@
 // This file is automatically updated via a background process to keep Spotify data fresh without exposing credentials.
 window.SPOTIFY_DATA = {
-    updated_at: "2026-07-31",
+    updated_at: "2026-08-01",
     tracks: [
         {
                 "id": "5UWwZ5lm5PKu6eKsHAGxOk",
@@ -13,6 +13,11 @@ window.SPOTIFY_DATA = {
                 "artist": "Foo Fighters"
         },
         {
+                "id": "1Bv3h7Vc4AaYA2BcSM3rVd",
+                "name": "All I Wanted",
+                "artist": "Paramore"
+        },
+        {
                 "id": "6tsojOQ5wHaIjKqIryLZK6",
                 "name": "All My Life",
                 "artist": "Foo Fighters"
@@ -21,11 +26,6 @@ window.SPOTIFY_DATA = {
                 "id": "2UKARCqDrhkYDoVR4FN5Wi",
                 "name": "Plug in Baby",
                 "artist": "Muse"
-        },
-        {
-                "id": "0tRDDFPijcSILWXWZ60Wx5",
-                "name": "Parsifal, WWV 111: Prelude",
-                "artist": "Richard Wagner"
         }
 ]
 };
