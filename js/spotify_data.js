@@ -1,6 +1,6 @@
 // This file is automatically updated via a background process to keep Spotify data fresh without exposing credentials.
 window.SPOTIFY_DATA = {
-    updated_at: "2026-08-03",
+    updated_at: "2026-08-04",
     tracks: [
         {
                 "id": "5UWwZ5lm5PKu6eKsHAGxOk",
@@ -23,9 +23,9 @@ window.SPOTIFY_DATA = {
                 "artist": "Foo Fighters"
         },
         {
-                "id": "2UKARCqDrhkYDoVR4FN5Wi",
-                "name": "Plug in Baby",
-                "artist": "Muse"
+                "id": "6OakIaj4T039vJ8V2AJiWa",
+                "name": "History (feat. James Blake)",
+                "artist": "Dave"
         }
 ]
 };
