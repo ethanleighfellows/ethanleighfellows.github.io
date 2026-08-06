@@ -1,6 +1,6 @@
 // This file is automatically updated via a background process to keep Spotify data fresh without exposing credentials.
 window.SPOTIFY_DATA = {
-    updated_at: "2026-08-05",
+    updated_at: "2026-08-06",
     tracks: [
         {
                 "id": "5UWwZ5lm5PKu6eKsHAGxOk",
@@ -13,14 +13,14 @@ window.SPOTIFY_DATA = {
                 "artist": "Paramore"
         },
         {
-                "id": "7x8dCjCr0x6x2lXKujYD34",
-                "name": "The Pretender",
-                "artist": "Foo Fighters"
-        },
-        {
                 "id": "6OakIaj4T039vJ8V2AJiWa",
                 "name": "History (feat. James Blake)",
                 "artist": "Dave"
+        },
+        {
+                "id": "7x8dCjCr0x6x2lXKujYD34",
+                "name": "The Pretender",
+                "artist": "Foo Fighters"
         },
         {
                 "id": "6tsojOQ5wHaIjKqIryLZK6",
