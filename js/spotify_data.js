@@ -1,6 +1,6 @@
 // This file is automatically updated via a background process to keep Spotify data fresh without exposing credentials.
 window.SPOTIFY_DATA = {
-    updated_at: "2026-08-14",
+    updated_at: "2026-08-15",
     tracks: [
         {
                 "id": "6OakIaj4T039vJ8V2AJiWa",
@@ -8,14 +8,14 @@ window.SPOTIFY_DATA = {
                 "artist": "Dave"
         },
         {
-                "id": "5UWwZ5lm5PKu6eKsHAGxOk",
-                "name": "Everlong",
-                "artist": "Foo Fighters"
-        },
-        {
                 "id": "1Bv3h7Vc4AaYA2BcSM3rVd",
                 "name": "All I Wanted",
                 "artist": "Paramore"
+        },
+        {
+                "id": "5UWwZ5lm5PKu6eKsHAGxOk",
+                "name": "Everlong",
+                "artist": "Foo Fighters"
         },
         {
                 "id": "6tsojOQ5wHaIjKqIryLZK6",
