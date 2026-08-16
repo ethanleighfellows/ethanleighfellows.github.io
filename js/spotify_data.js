@@ -1,6 +1,6 @@
 // This file is automatically updated via a background process to keep Spotify data fresh without exposing credentials.
 window.SPOTIFY_DATA = {
-    updated_at: "2026-08-15",
+    updated_at: "2026-08-16",
     tracks: [
         {
                 "id": "6OakIaj4T039vJ8V2AJiWa",
