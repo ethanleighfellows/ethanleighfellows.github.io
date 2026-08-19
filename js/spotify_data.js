@@ -1,6 +1,6 @@
 // This file is automatically updated via a background process to keep Spotify data fresh without exposing credentials.
 window.SPOTIFY_DATA = {
-    updated_at: "2026-08-18",
+    updated_at: "2026-08-19",
     tracks: [
         {
                 "id": "1Bv3h7Vc4AaYA2BcSM3rVd",
@@ -23,9 +23,9 @@ window.SPOTIFY_DATA = {
                 "artist": "Foo Fighters"
         },
         {
-                "id": "5UWwZ5lm5PKu6eKsHAGxOk",
-                "name": "Everlong",
-                "artist": "Foo Fighters"
+                "id": "30cjLreSF4Xq0uAB89i2Ac",
+                "name": "Need To Feel Loved - Adam K & Soha Vocal Mix",
+                "artist": "Reflekt"
         }
 ]
 };
