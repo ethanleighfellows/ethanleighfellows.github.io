@@ -1,6 +1,6 @@
 // This file is automatically updated via a background process to keep Spotify data fresh without exposing credentials.
 window.SPOTIFY_DATA = {
-    updated_at: "2026-08-19",
+    updated_at: "2026-08-20",
     tracks: [
         {
                 "id": "1Bv3h7Vc4AaYA2BcSM3rVd",
@@ -18,14 +18,14 @@ window.SPOTIFY_DATA = {
                 "artist": "Coldplay"
         },
         {
+                "id": "5egqKwgK5r5rvGD1LrtR7J",
+                "name": "Points of Authority",
+                "artist": "Linkin Park"
+        },
+        {
                 "id": "6tsojOQ5wHaIjKqIryLZK6",
                 "name": "All My Life",
                 "artist": "Foo Fighters"
-        },
-        {
-                "id": "30cjLreSF4Xq0uAB89i2Ac",
-                "name": "Need To Feel Loved - Adam K & Soha Vocal Mix",
-                "artist": "Reflekt"
         }
 ]
 };
