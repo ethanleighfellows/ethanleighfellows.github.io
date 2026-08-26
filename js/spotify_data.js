@@ -1,6 +1,6 @@
 // This file is automatically updated via a background process to keep Spotify data fresh without exposing credentials.
 window.SPOTIFY_DATA = {
-    updated_at: "2026-08-25",
+    updated_at: "2026-08-26",
     tracks: [
         {
                 "id": "1Bv3h7Vc4AaYA2BcSM3rVd",
@@ -18,8 +18,8 @@ window.SPOTIFY_DATA = {
                 "artist": "Coldplay"
         },
         {
-                "id": "5egqKwgK5r5rvGD1LrtR7J",
-                "name": "Points of Authority",
+                "id": "3qmvK8QARSPkFTuKeIXSbs",
+                "name": "Bleed It Out",
                 "artist": "Linkin Park"
         },
         {
