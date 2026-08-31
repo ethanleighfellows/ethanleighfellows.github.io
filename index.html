@@ -5,11 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ethan Leigh-Fellows | Product</title>
+    <link rel="preload" as="image" href="photoassets/saturn-nestaeric.webp" type="image/webp" fetchpriority="high">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=SF+Pro+Display:wght@300;400;600&family=Raleway:wght@600;800&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Raleway:wght@600;800&display=swap"
         rel="stylesheet">
     <style>
         * {
@@ -25,63 +26,273 @@
             background: #000;
         }
 
-        /* Preloader */
+        /* ── Preloader ────────────────────────────────────────────────
+           One image, one line of type, one hairline, on true black.
+           Nothing animates that isn't opacity or transform.           */
+        :root {
+            --ink: 232, 227, 217;
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-in: cubic-bezier(0.5, 0, 0.85, 0.35);
+        }
+
         #preloader {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #0a0a0a;
+            inset: 0;
+            z-index: 10050;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease-out;
+            padding: 0 20px calc(6vh + env(safe-area-inset-bottom, 0px));
+            background: #000;
+            overflow: hidden;
         }
 
-        #preloader.fade-out {
+        /* 780px wide lands the 1536px asset at ~1:1 on a 2x display, so the
+           hero stays pin sharp instead of being upscaled to fill. */
+        .saturn-stage {
+            position: relative;
+            /* 128vh caps the height so a landscape phone still fits the
+               frame and the copy without either overflowing. */
+            width: min(780px, 72vw, 128vh);
+            aspect-ratio: 16 / 9;
+            margin-bottom: clamp(20px, 4.5vh, 52px);
+            /* The planet sits right of the asset's centre; offsetting the
+               frame puts its mass on the same axis as the copy below. */
+            --shift: -15%;
+            translate: var(--shift) 0;
+        }
+
+        .saturn-render {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* Let the subject be the brightest thing on screen: the dark
+               comes from the aperture, not from dimming the image. */
+            filter: saturate(0.55) contrast(1.06) brightness(0.88);
+            /* The planet runs off the asset's own right and bottom edges;
+               an elliptical aperture dissolves it into the black instead
+               of leaving a straight cut anywhere. */
+            -webkit-mask-image: radial-gradient(ellipse 50% 50% at 56% 52%, #000 0 46%, rgba(0, 0, 0, 0.78) 68%, rgba(0, 0, 0, 0.24) 88%, transparent 100%);
+            mask-image: radial-gradient(ellipse 50% 50% at 56% 52%, #000 0 46%, rgba(0, 0, 0, 0.78) 68%, rgba(0, 0, 0, 0.24) 88%, transparent 100%);
             opacity: 0;
-            pointer-events: none;
         }
 
-        .loader-3d {
+        body.stage-lit .saturn-render {
+            animation:
+                stageDawn 1400ms var(--ease-out) both,
+                saturnDrift 24s ease-in-out infinite;
+        }
+
+        .loader-copy {
+            position: relative;
+            z-index: 3;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            margin-bottom: 20px;
-            perspective: 1000px;
-        }
-
-        .cyber-loader {
-            filter: drop-shadow(0 0 15px rgba(0, 255, 65, 0.6));
+            max-width: 90vw;
         }
 
         .loader-text {
-            color: #00ff41;
-            margin-top: 25px;
-            font-family: 'Courier New', monospace;
-            font-size: 16px;
-            font-weight: bold;
-            letter-spacing: 4px;
-            text-shadow: 0 0 5px #00ff41, 0 0 10px #00ff41;
-            animation: cyberPulse 2s infinite;
+            margin: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 10.5px;
+            font-weight: 400;
+            line-height: 1;
+            /* text-indent cancels the trailing letter-space so tracked
+               centred type is optically, not mathematically, centred. */
+            letter-spacing: 0.26em;
+            text-indent: 0.26em;
+            text-transform: uppercase;
+            text-align: center;
+            color: rgba(var(--ink), 0.46);
+            opacity: 0;
         }
 
-        @keyframes cyberPulse {
+        .loader-rule {
+            position: relative;
+            width: 152px;
+            max-width: 44vw;
+            height: 1px;
+            margin-top: 22px;
+            background: rgba(var(--ink), 0.1);
+            overflow: hidden;
+            opacity: 0;
+        }
 
-            0%,
-            100% {
-                opacity: 0.6;
-                text-shadow: 0 0 5px rgba(0, 255, 65, 0.5);
+        .loader-rule i {
+            position: absolute;
+            inset: 0;
+            transform: scaleX(0);
+            transform-origin: 0 50%;
+            background: linear-gradient(90deg, rgba(var(--ink), 0.3), rgba(var(--ink), 0.85));
+            transition: transform 380ms cubic-bezier(0.33, 0, 0.15, 1);
+        }
+
+        body.stage-lit .loader-text {
+            animation: copyEnter 900ms var(--ease-out) 620ms both;
+        }
+
+        body.stage-lit .loader-rule {
+            animation: copyEnter 900ms var(--ease-out) 760ms both;
+        }
+
+        /* The scan line that carries the handoff from loader to desktop.
+           It sits outside #preloader so the curtain's fade doesn't dim it. */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            margin: -1px;
+            padding: 0;
+            border: 0;
+            overflow: hidden;
+            clip: rect(0 0 0 0);
+            clip-path: inset(50%);
+            white-space: nowrap;
+        }
+
+        .crt-seed {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            width: 100%;
+            height: 2px;
+            z-index: 10051;
+            opacity: 0;
+            pointer-events: none;
+            transform: translate(-50%, -50%) scaleX(0.04);
+            background: linear-gradient(90deg, transparent, rgba(214, 226, 232, 0.85) 20%, #fff 50%, rgba(214, 226, 232, 0.85) 80%, transparent);
+            box-shadow: 0 0 26px rgba(178, 212, 232, 0.45);
+        }
+
+        /* ── Exit ─────────────────────────────────────────────────────
+           0    copy withdraws          260ms
+           260  image pinches to a line 440ms
+           620  scan line ignites       420ms
+           700  black curtain dissolves 520ms
+           700  desktop settles in      980ms  → teardown at 1680ms   */
+        #preloader.is-leaving {
+            pointer-events: none;
+            animation: curtainClear 520ms cubic-bezier(0.4, 0, 0.2, 1) 700ms forwards;
+        }
+
+        #preloader.is-leaving .loader-copy {
+            animation: copyExit 260ms var(--ease-in) both;
+        }
+
+        #preloader.is-leaving .saturn-stage {
+            animation: crtCollapse 440ms cubic-bezier(0.7, 0, 0.3, 1) 260ms both;
+        }
+
+        body.site-revealing .crt-seed {
+            animation: crtSeed 420ms cubic-bezier(0.22, 0.8, 0.2, 1) 620ms both;
+        }
+
+        @keyframes stageDawn {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+
+        @keyframes copyEnter {
+            from { opacity: 0; transform: translateY(6px); }
+            to   { opacity: 1; transform: none; }
+        }
+
+        @keyframes copyExit {
+            from { opacity: 1; transform: none; }
+            to   { opacity: 0; transform: translateY(-5px); }
+        }
+
+        @keyframes saturnDrift {
+            0%, 100% { transform: scale(1.012) translate3d(-0.4%, 0.24%, 0); }
+            50%      { transform: scale(1.012) translate3d(0.4%, -0.24%, 0); }
+        }
+
+        @keyframes crtCollapse {
+            0%   { opacity: 1; transform: scale(1); translate: var(--shift) 0; }
+            58%  { opacity: 1; transform: scale(1.004, 0.028); translate: 0 0; }
+            100% { opacity: 0; transform: scale(0.03, 0.012); translate: 0 0; }
+        }
+
+        @keyframes crtSeed {
+            0%   { opacity: 0; transform: translate(-50%, -50%) scaleX(0.04); }
+            22%  { opacity: 1; }
+            58%  { opacity: 1; transform: translate(-50%, -50%) scaleX(1); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scaleX(1) scaleY(0.14); }
+        }
+
+        @keyframes curtainClear {
+            to { opacity: 0; visibility: hidden; }
+        }
+
+        /* ── The site behind the curtain ──────────────────────────── */
+        body.preload-active .desktop,
+        body.preload-active .video-overlay,
+        body.preload-active #bg-video {
+            opacity: 0;
+        }
+
+        body.site-revealing .desktop {
+            opacity: 1;
+        }
+
+        body.site-revealing #bg-video {
+            will-change: opacity, transform;
+            animation: videoSettle 980ms var(--ease-out) 560ms both;
+        }
+
+        body.site-revealing .video-overlay {
+            will-change: opacity;
+            animation: overlayFade 980ms var(--ease-out) 560ms both;
+        }
+
+        @keyframes videoSettle {
+            from { opacity: 0; transform: translate(-50%, -50%) scale(1.03); }
+            to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+
+        @keyframes overlayFade {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+
+        /* Calm path: the same three beats, but as plain cross-fades —
+           nothing scales, drifts, collapses or strikes across. */
+        @media (prefers-reduced-motion: reduce) {
+            .crt-seed,
+            .loader-rule {
+                display: none;
             }
 
-            50% {
-                opacity: 1;
-                text-shadow: 0 0 15px rgba(0, 255, 65, 0.9), 0 0 30px rgba(0, 255, 65, 0.6);
+            body.stage-lit .saturn-render {
+                animation: fadeIn 600ms linear both;
+            }
+
+            body.stage-lit .loader-text {
+                animation: fadeIn 500ms linear 200ms both;
+            }
+
+            #preloader.is-leaving .loader-copy,
+            #preloader.is-leaving .saturn-stage {
+                animation: fadeOut 300ms linear both;
+            }
+
+            #preloader.is-leaving {
+                animation: curtainClear 400ms linear 220ms forwards;
+            }
+
+            body.site-revealing .desktop,
+            body.site-revealing .video-overlay,
+            body.site-revealing #bg-video {
+                animation: fadeIn 420ms linear 260ms both;
             }
         }
+
+        @keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
 
         /* Video Background */
         #bg-video {
@@ -1598,55 +1809,32 @@
     </style>
 </head>
 
-<body>
+<body class="preload-active">
+    <noscript>
+        <style>
+            #preloader { display: none; }
+
+            body.preload-active .desktop,
+            body.preload-active .video-overlay,
+            body.preload-active #bg-video { opacity: 1; }
+        </style>
+    </noscript>
+
     <!-- Preloader -->
     <div id="preloader">
-        <div class="loader-3d">
-            <svg class="cyber-loader" viewBox="-50 -50 100 100" width="160" height="160"
-                xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                    <filter id="cyber-glow" x="-50%" y="-50%" width="200%" height="200%">
-                        <feGaussianBlur stdDeviation="1.5" result="blur" />
-                        <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                    </filter>
-                </defs>
-                <g filter="url(#cyber-glow)" stroke="#00ff41" stroke-width="1.5" fill="none">
-                    <!-- Outer rotating dashed ring -->
-                    <circle cx="0" cy="0" r="45" stroke-dasharray="10 5 2 5">
-                        <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="6s"
-                            repeatCount="indefinite" />
-                    </circle>
-                    <!-- Inner fast counter-rotating dashed ring -->
-                    <circle cx="0" cy="0" r="35" stroke-dasharray="15 15">
-                        <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="4s"
-                            repeatCount="indefinite" />
-                    </circle>
-                    <!-- Hexagon frame -->
-                    <polygon points="0,-25 21.65,-12.5 21.65,12.5 0,25 -21.65,12.5 -21.65,-12.5"
-                        fill="rgba(0, 255, 65, 0.05)">
-                        <animateTransform attributeName="transform" type="scale" values="0.9; 1.05; 0.9" dur="2s"
-                            repeatCount="indefinite" />
-                    </polygon>
-                    <!-- Inner scanning triangle -->
-                    <polygon points="0,-15 13,7.5 -13,7.5" fill="rgba(0, 255, 65, 0.2)">
-                        <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="2s"
-                            repeatCount="indefinite" />
-                    </polygon>
-                    <!-- Center dot -->
-                    <circle cx="0" cy="0" r="3" fill="#00ff41">
-                        <animate attributeName="opacity" values="0; 1; 0" dur="1s" repeatCount="indefinite" />
-                    </circle>
-                    <!-- Radar scan line -->
-                    <line x1="0" y1="0" x2="0" y2="-45" stroke-width="2">
-                        <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="3s"
-                            repeatCount="indefinite" />
-                        <animate attributeName="opacity" values="0.8;0.2;0.8" dur="3s" repeatCount="indefinite" />
-                    </line>
-                </g>
-            </svg>
+        <div class="saturn-stage" aria-hidden="true">
+            <!-- Saturn model by Nestaeric, CC BY 4.0, via Sketchfab:
+                 https://sketchfab.com/3d-models/saturn-c09a1970148c43ad99db134a9d6d00b5 -->
+            <img class="saturn-render" src="photoassets/saturn-nestaeric.webp" alt="" width="1536" height="864"
+                decoding="sync" fetchpriority="high" draggable="false">
         </div>
-        <div class="loader-text" data-i18n="loading">BOOTING KERNEL...</div>
+        <div class="loader-copy">
+            <p class="loader-text" data-i18n="loading">Awaiting signal...</p>
+            <div class="loader-rule" aria-hidden="true"><i></i></div>
+        </div>
     </div>
+    <div class="crt-seed" aria-hidden="true"></div>
+    <p id="load-status" class="sr-only" role="status" aria-live="polite"></p>
 
     <!-- Game Container -->
     <div id="game-container">
@@ -2282,7 +2470,7 @@
         // Translations
         const translations = {
             en: {
-                loading: "Initializing system...",
+                loading: "Awaiting signal...",
                 menu: { finder: "Finder", file: "File", edit: "Edit", view: "View" },
                 status: "Online",
                 name: "Ethan Leigh-Fellows",
@@ -2305,7 +2493,7 @@
                 arcade: { title: "Retro Arcade" }
             },
             fr: {
-                loading: "Initialisation du système...",
+                loading: "En attente du signal...",
                 menu: { finder: "Finder", file: "Fichier", edit: "Éditer", view: "Affichage" },
                 status: "En ligne",
                 name: "Ethan Leigh-Fellows",
@@ -2328,7 +2516,7 @@
                 arcade: { title: "Arcade Rétro" }
             },
             ru: {
-                loading: "Инициализация системы...",
+                loading: "Ожидание сигнала...",
                 menu: { finder: "Finder", file: "Файл", edit: "Правка", view: "Вид" },
                 status: "В сети",
                 name: "Итан Ли-Феллоуз",
@@ -2365,7 +2553,9 @@
                 for (const k of keys) {
                     value = value[k];
                 }
-                el.textContent = value;
+                // Skip no-op writes: rewriting identical text re-announces it
+                // in any live region using this attribute.
+                if (el.textContent !== value) el.textContent = value;
             });
 
             // Update language buttons
@@ -2389,37 +2579,166 @@
             'Shell': '#89e051', 'Jupyter Notebook': '#DA5B0B'
         };
 
-        // Preloader
-        const preloader = document.getElementById('preloader');
+        // ── Preloader ────────────────────────────────────────────────
+        // Holds until the video and the page are ready, shows honest
+        // progress while it waits, then hands off to the desktop with a
+        // single opacity/transform-only CRT beat.
         const video = document.getElementById('bg-video');
-        let videoLoaded = false, pageLoaded = false;
 
-        function checkLoadingComplete() {
-            if (videoLoaded && pageLoaded) {
-                setTimeout(() => {
-                    preloader.classList.add('fade-out');
-                    setTimeout(() => preloader.style.display = 'none', 500);
-                }, 300);
+        (function preloader() {
+            const panel = document.getElementById('preloader');
+            if (!panel) {
+                document.body.classList.remove('preload-active');
+                return;
             }
-        }
 
-        video.addEventListener('loadeddata', () => {
-            videoLoaded = true;
-            checkLoadingComplete();
-        });
+            const body = document.body;
+            const stage = panel.querySelector('.saturn-render');
+            const fill = panel.querySelector('.loader-rule i');
+            const shell = document.querySelector('.desktop');
+            const overlay = document.querySelector('.video-overlay');
+            const seed = document.querySelector('.crt-seed');
+            const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        setTimeout(() => {
-            if (!videoLoaded) {
-                videoLoaded = true;
-                checkLoadingComplete();
+            const store = (key, value) => {
+                try {
+                    if (value === undefined) return sessionStorage.getItem(key);
+                    sessionStorage.setItem(key, value);
+                } catch (e) { /* private mode */ }
+                return null;
+            };
+
+            // Long enough to read on a first visit, brief on a repeat one.
+            const hold = calm ? 700 : (store('loader_seen') ? 1100 : 2100);
+            const exitDuration = calm ? 660 : 1680;
+            const startedAt = performance.now();
+            const ready = { image: 0, video: 0, page: 0, fonts: 0 };
+
+            let progress = 0;
+            let dismissed = false;
+            let ticker = null;
+            let videoTimer = null;
+
+            function setProgress(value) {
+                progress = Math.max(progress, Math.min(1, value));
+                if (fill) fill.style.transform = 'scaleX(' + progress.toFixed(3) + ')';
             }
-        }, 5000);
 
-        window.addEventListener('load', () => {
-            pageLoaded = true;
-            updateTranslations(currentLang);
-            checkLoadingComplete();
-        });
+            // Real milestones carry the bar; a decelerating creep covers
+            // the gaps so it never sits still, and never reaches 1 early.
+            ticker = setInterval(() => {
+                const t = Math.min(1, (performance.now() - startedAt) / hold);
+                const timed = 0.88 * (1 - Math.pow(1 - t, 2.4));
+                const real = ready.image * 0.26 + ready.video * 0.3 + ready.page * 0.3 + ready.fonts * 0.14;
+                setProgress(Math.max(timed, real * 0.94));
+            }, 120);
+
+            // Don't light the scene until the hero has actually decoded,
+            // so it fades in rather than popping in mid-shot.
+            function light() {
+                if (body.classList.contains('stage-lit')) return;
+                ready.image = 1;
+                body.classList.add('stage-lit');
+            }
+
+            if (!stage) {
+                light();
+            } else if (stage.decode) {
+                stage.decode().then(light).catch(light);
+            } else if (stage.complete) {
+                light();
+            } else {
+                stage.addEventListener('load', light, { once: true });
+                stage.addEventListener('error', light, { once: true });
+            }
+            setTimeout(light, 900); // never strand the scene on a slow decode
+
+            // background.mp4 is 24MB with its moov atom last, so nothing
+            // decodes until the whole file lands — and `autoplay` makes
+            // window 'load' wait for exactly that. Gate on DOMContentLoaded
+            // instead and give the video a bounded grace period, so a slow
+            // connection costs the visitor a plain backdrop, not a stare.
+            function videoReady() {
+                if (ready.video) return;
+                ready.video = 1;
+                clearTimeout(videoTimer);
+                settle();
+            }
+
+            if (!video) {
+                ready.video = 1;
+            } else if (video.readyState >= 3) {
+                ready.video = 1;
+            } else {
+                video.addEventListener('canplay', videoReady, { once: true });
+                video.addEventListener('loadeddata', videoReady, { once: true });
+                video.addEventListener('error', videoReady, { once: true });
+                videoTimer = setTimeout(videoReady, 2500);
+            }
+
+            function pageReady() {
+                if (ready.page) return;
+                ready.page = 1;
+                updateTranslations(currentLang);
+                settle();
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', pageReady, { once: true });
+            } else {
+                pageReady();
+            }
+
+            // Webfonts settle the copy's metrics; never let them block.
+            function fontsReady() {
+                if (ready.fonts) return;
+                ready.fonts = 1;
+                settle();
+            }
+
+            if (document.fonts && document.fonts.ready) document.fonts.ready.then(fontsReady);
+            else fontsReady();
+            setTimeout(fontsReady, 1500);
+
+            function settle() {
+                if (dismissed || !ready.video || !ready.page || !ready.fonts) return;
+                dismissed = true;
+                clearInterval(ticker);
+                setProgress(1);
+                // Let the hairline visibly land before the curtain moves.
+                const wait = Math.max(0, hold - (performance.now() - startedAt)) + 420;
+                setTimeout(leave, wait);
+            }
+
+            function leave() {
+                store('loader_seen', '1');
+                body.classList.add('site-revealing');
+                panel.classList.add('is-leaving');
+
+                let done = false;
+                const teardown = () => {
+                    if (done) return;
+                    done = true;
+                    if (overlay) overlay.removeEventListener('animationend', teardown);
+                    panel.remove();
+                    if (seed) seed.remove();
+                    body.classList.remove('preload-active', 'site-revealing', 'stage-lit');
+                    body.classList.add('site-ready');
+                    if (shell) shell.inert = false;
+                    const status = document.getElementById('load-status');
+                    if (status) status.textContent = 'Portfolio loaded.';
+                    document.dispatchEvent(new Event('site-ready'));
+                };
+
+                if (overlay) overlay.addEventListener('animationend', teardown);
+                // The reduced-motion query can flip mid-load, so never let the
+                // safety net fire before the longer of the two exits.
+                setTimeout(teardown, 2000);
+            }
+
+            // Keep the covered site out of the tab order and the a11y tree.
+            if (shell) shell.inert = true;
+        })();
 
         // Desktop Icon Management
         const desktopIcons = document.querySelectorAll('.desktop-icon');
@@ -3592,12 +3911,15 @@
             }
         }
 
-        // Initial welcome (show only once)
+        // Initial welcome (show only once, and never over the preloader)
         if (!localStorage.getItem('welcome_shown')) {
-            setTimeout(() => {
+            const welcome = () => setTimeout(() => {
                 showNotification('System Update', 'New zsh features available. Type "help" in terminal.', 'fas fa-robot');
                 localStorage.setItem('welcome_shown', 'true');
-            }, 3000);
+            }, 1400);
+
+            if (document.body.classList.contains('site-ready')) welcome();
+            else document.addEventListener('site-ready', welcome, { once: true });
         }
     </script>
 </body>
